@@ -667,13 +667,13 @@
             <div class="card-screening">
                 <div class="card-header">
                     <span><i class="fas fa-brain"></i> Signal Intelligence</span>
-                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Live screener</span></div>
+                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Live screening</span></div>
                 </div>
                 <div class="card-body" id="signalPanel">
                     <div id="emptySignalState" class="empty-state-lux">
                         <div class="empty-icon"><i class="fas fa-chart-line"></i></div>
                         <div class="empty-title">Awaiting Market Data</div>
-                        <div class="empty-desc">Upload chart → AI analysis → 15 Indicators Voting → Signal </div>
+                        <div class="empty-desc">Upload chart → AI analysis → 15 Indicators Voting → Signal</div>
                         <div class="empty-steps">
                             <div class="step-modern"><i class="fas fa-cloud-upload-alt"></i> Upload</div>
                             <div class="step-modern"><i class="fas fa-microchip"></i> 15 Indicators</div>
@@ -727,7 +727,7 @@
                 <p style="margin-top:12px; font-size:0.65rem; text-align:center; color:#8BA0C0;">Jarak entry sangat dekat (0.05%) dari harga saat ini untuk eksekusi cepat</p>
             </div>
         </div>
-        <footer>© Hunters Group · 15 Indicators Voting System · Tight Breakout Entry · Licence 2025</footer>
+        <footer>© Hunters Group · 15 Indicators Voting System · Breakout Entry Strategy · Licence 2025</footer>
     </div>
 </div>
 
@@ -931,6 +931,93 @@
     setGuideState(guideCollapsed);
     if(guideToggle) guideToggle.onclick = () => { guideCollapsed = !guideCollapsed; setGuideState(guideCollapsed); };
     
+    // ========== FUNGSI NORMALISASI SEMUA PAIR ==========
+    function normalizePair(pair) {
+        if (!pair) return pair;
+        const upperPair = pair.toUpperCase();
+        
+        // ========== LOGAM MULIA ==========
+        if (upperPair.includes('XAUUSD')) return 'XAUUSD';
+        if (upperPair.includes('XAGUSD')) return 'XAGUSD';
+        
+        // ========== CRYPTO USD ==========
+        if (upperPair.includes('BTCUSD')) return 'BTCUSD';
+        if (upperPair.includes('ETHUSD')) return 'ETHUSD';
+        if (upperPair.includes('SOLUSD')) return 'SOLUSD';
+        if (upperPair.includes('XRPUSD')) return 'XRPUSD';
+        if (upperPair.includes('BNBUSD')) return 'BNBUSD';
+        
+        // ========== FOREX MAJOR ==========
+        if (upperPair.includes('EURUSD')) return 'EUR/USD';
+        if (upperPair.includes('GBPUSD')) return 'GBP/USD';
+        if (upperPair.includes('USDJPY')) return 'USD/JPY';
+        if (upperPair.includes('AUDUSD')) return 'AUD/USD';
+        if (upperPair.includes('USDCAD')) return 'USD/CAD';
+        if (upperPair.includes('USDCHF')) return 'USD/CHF';
+        if (upperPair.includes('NZDUSD')) return 'NZD/USD';
+        
+        // ========== FOREX MINOR ==========
+        if (upperPair.includes('EURGBP')) return 'EUR/GBP';
+        if (upperPair.includes('EURAUD')) return 'EUR/AUD';
+        if (upperPair.includes('GBPJPY')) return 'GBP/JPY';
+        if (upperPair.includes('EURJPY')) return 'EUR/JPY';
+        
+        // ========== INDICES ==========
+        if (upperPair.includes('US30') || upperPair.includes('DJI')) return 'US30';
+        if (upperPair.includes('US500') || upperPair.includes('SPX')) return 'US500';
+        if (upperPair.includes('NAS100') || upperPair.includes('USTEC')) return 'NAS100';
+        if (upperPair.includes('UK100')) return 'UK100';
+        if (upperPair.includes('GER40')) return 'GER40';
+        
+        return pair;
+    }
+    
+    // ========== FUNGSI DETEKSI PAIR DARI OCR ==========
+    function detectPairFromText(text) {
+        // 1. Deteksi khusus XAUUSD dalam bentuk apapun (XAUUSDm, XAUUSD.std, XAUUSDc, dll)
+        let xauMatch = text.match(/\bXAUUSD[a-z.]*\b/i);
+        if (xauMatch) {
+            return 'XAUUSD';
+        }
+        
+        // 2. Deteksi BTCUSD dalam bentuk apapun
+        let btcMatch = text.match(/\bBTCUSD[a-z.]*\b/i);
+        if (btcMatch) {
+            return 'BTCUSD';
+        }
+        
+        // 3. Deteksi ETHUSD dalam bentuk apapun
+        let ethMatch = text.match(/\bETHUSD[a-z.]*\b/i);
+        if (ethMatch) {
+            return 'ETHUSD';
+        }
+        
+        // 4. Deteksi pair dengan format STANDAR (contoh: EURUSD, GBPUSD)
+        let standardMatch = text.match(/\b([A-Z]{3,4})(USD|USDT|BTC|ETH|USDC|JPY|GBP|EUR|AUD|CAD|CHF|NZD)\b/i);
+        if (standardMatch) {
+            let pair = standardMatch[1] + '/' + standardMatch[2];
+            return normalizePair(pair);
+        }
+        
+        // 5. Deteksi pair dengan format SLASH (contoh: EUR/USD)
+        let slashMatch = text.match(/\b([A-Z]{3})\s*\/\s*([A-Z]{3})\b/i);
+        if (slashMatch) {
+            let pair = slashMatch[1] + '/' + slashMatch[2];
+            return normalizePair(pair);
+        }
+        
+        // 6. Deteksi crypto (BTC, ETH, SOL, XRP, BNB) tanpa USD
+        let cryptoNames = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ADA', 'DOGE', 'DOT', 'LTC', 'LINK'];
+        for (let crypto of cryptoNames) {
+            let cryptoMatch = text.match(new RegExp(`\\b${crypto}\\b`, 'i'));
+            if (cryptoMatch) {
+                return crypto + '/USD';
+            }
+        }
+        
+        return null;
+    }
+    
     // ========== 15 INDICATORS VOTING SYSTEM ==========
     class FifteenIndicatorsVoting {
         constructor() {
@@ -1040,12 +1127,12 @@
                 finalDecision = 'BUY';
                 confidence = 50 + (buyPercentage * 0.4);
                 decisionReason = `${this.votes.buy} BUY vs ${this.votes.sell} SELL`;
-                recommendationText = `Momentum positif dari ${this.votes.buy} indikator. Entry BUY STOP di atas harga (Tight Breakout).`;
+                recommendationText = `Momentum positif dari ${this.votes.buy} indikator. Entry BUY STOP di atas harga (Breakout).`;
             } else if (this.votes.sell > this.votes.buy && voteDiff >= 2) {
                 finalDecision = 'SELL';
                 confidence = 50 + (sellPercentage * 0.4);
                 decisionReason = `${this.votes.sell} SELL vs ${this.votes.buy} BUY`;
-                recommendationText = `Tekanan jual dominan. Entry SELL STOP di bawah harga (Tight Breakdown).`;
+                recommendationText = `Tekanan jual dominan. Entry SELL STOP di bawah harga (Breakdown).`;
             } else {
                 finalDecision = 'HOLD';
                 confidence = 40 + (voteDiff * 10);
@@ -1077,13 +1164,13 @@
         
         calculateFixedRiskRewardEntry(decision, price) {
             const riskPercent = 0.0015;      // 0.15% untuk SL dari entry
-            const breakoutPercent = 0.0005;   // 0.05% jarak breakout (5-8 pips) - SANGAT DEKAT!
+            const breakoutPercent = 0.0005;   // 0.05% jarak breakout (sangat dekat)
             const rewardPercent1 = 0.0015;    // TP1: 0.15% dari entry
             const rewardPercent2 = 0.0025;    // TP2: 0.25% dari entry
             const rewardPercent3 = 0.0035;    // TP3: 0.35% dari entry
             
             if (decision === 'BUY') {
-                // BUY STOP: Entry DI ATAS harga saat ini (Tight Breakout)
+                // BUY STOP: Entry DI ATAS harga saat ini (Breakout)
                 const entry = price * (1 + breakoutPercent);
                 const stopLoss = entry * (1 - riskPercent);
                 const takeProfits = [
@@ -1099,7 +1186,7 @@
                 return { entry, stopLoss, takeProfits, riskReward, entryType: 'BUY STOP' };
                 
             } else if (decision === 'SELL') {
-                // SELL STOP: Entry DI BAWAH harga saat ini (Tight Breakdown)
+                // SELL STOP: Entry DI BAWAH harga saat ini (Breakdown)
                 const entry = price * (1 - breakoutPercent);
                 const stopLoss = entry * (1 + riskPercent);
                 const takeProfits = [
@@ -1265,10 +1352,16 @@
     
     // ========== FUNGSI FETCH MARKET DATA ==========
     async function fetchMarketData(symbol, interval) {
+        // Konversi format pair untuk API Twelve Data
+        let apiSymbol = symbol;
+        if (symbol === 'XAUUSD') apiSymbol = 'XAU/USD';
+        if (symbol === 'BTCUSD') apiSymbol = 'BTC/USD';
+        if (symbol === 'ETHUSD') apiSymbol = 'ETH/USD';
+        
         const proxy = "https://corsproxy.io/";
         const API_KEY = "57a8707e27744a5088d7f9d276e2203e";
         const output = (interval === '1min' || interval === '5min') ? 150 : 100;
-        const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(symbol)}&interval=${interval}&outputsize=${output}&apikey=${API_KEY}`;
+        const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(apiSymbol)}&interval=${interval}&outputsize=${output}&apikey=${API_KEY}`;
         const response = await fetch(proxy + url);
         const json = await response.json();
         if (!json || !json.values || json.values.length < 30) throw new Error("Data tidak mencukupi");
@@ -1331,15 +1424,19 @@
                 const { data } = await worker.recognize(file);
                 await worker.terminate();
                 let text = data.text;
-                let pair = null;
-                let pairMatch = text.match(/\b([A-Z]{3,4})(USD|USDT|BTC|ETH|USDC)\b/i);
-                if(pairMatch) pair = pairMatch[1] + '/' + pairMatch[2];
-                if(!pair) { let forexMatch = text.match(/\b([A-Z]{3})\s*\/\s*([A-Z]{3})\b/i); if(forexMatch) pair = forexMatch[1]+'/'+forexMatch[2]; }
-                if(!pair && text.match(/BTC|ETH|SOL|XRP|BNB/)) pair = 'BTC/USD';
-                if(!pair) pair = 'EUR/USD';
+                
+                // DETECT PAIR MENGGUNAKAN FUNGSI BARU
+                let pair = detectPairFromText(text);
+                
+                if (!pair) {
+                    // Fallback ke default
+                    pair = 'EUR/USD';
+                }
+                
                 const tf = detectTimeframe(text);
                 currentSymbol = pair;
                 currentTimeframe = tf.interval;
+                
                 if(assetDisplayArea){
                     assetDisplayArea.innerHTML = `<div class="info-neon-grid"><div class="neon-card"><div class="neon-icon"><i class="fas fa-chart-line"></i></div><div class="neon-label">Trading Pair</div><div class="neon-value">${pair}</div><div class="neon-badge">Identified</div></div><div class="neon-card"><div class="neon-icon"><i class="fas fa-clock"></i></div><div class="neon-label">Timeframe</div><div class="neon-value">${tf.display}</div><div class="neon-badge">Detected</div></div></div>`;
                 }
@@ -1404,7 +1501,7 @@
         `).join('') : '';
         
         const currentPriceDisplay = currentPrice > 0 ? round(currentPrice) : 'N/A';
-        const entryTypeText = result.entryType || (result.decision === 'BUY' ? 'BUY STOP' : (result.decision === 'SELL' ? 'SELL STOP ' : 'MARKET'));
+        const entryTypeText = result.entryType || (result.decision === 'BUY' ? 'BUY STOP' : (result.decision === 'SELL' ? 'SELL STOP' : 'MARKET'));
         
         const html = `
             <div class="signal-modern-card">
@@ -1480,7 +1577,7 @@
                     <div class="detail-vote-list">${voteDetailsHtml || '<div style="text-align:center; padding:20px; color:#8BA0C0;">No details</div>'}</div>
                 </div>
                 
-                <div style="margin-top:20px; padding:12px; text-align:center; font-size:0.65rem; background:rgba(44,156,212,0.05); border-radius:50px;">15 Indicators Voting · Tight Breakout Entry (0.05% jarak)</div>
+                <div style="margin-top:20px; padding:12px; text-align:center; font-size:0.65rem; background:rgba(44,156,212,0.05); border-radius:50px;">15 Indicators Voting · Breakout Entry Strategy (0.05% jarak)</div>
             </div>
         `;
         
