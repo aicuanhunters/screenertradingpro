@@ -667,7 +667,7 @@
             <div class="card-screening">
                 <div class="card-header">
                     <span><i class="fas fa-brain"></i> Signal Intelligence</span>
-                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Breakout Entry</span></div>
+                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Live Screener</span></div>
                 </div>
                 <div class="card-body" id="signalPanel">
                     <div id="emptySignalState" class="empty-state-lux">
@@ -931,87 +931,82 @@
     setGuideState(guideCollapsed);
     if(guideToggle) guideToggle.onclick = () => { guideCollapsed = !guideCollapsed; setGuideState(guideCollapsed); };
     
-    // ========== FUNGSI NORMALISASI SEMUA PAIR ==========
+    // ========== FUNGSI NORMALISASI PAIR DENGAN FLEKSIBILITAS AKHIRAN ==========
     function normalizePair(pair) {
         if (!pair) return pair;
-        const upperPair = pair.toUpperCase();
-        
-        // Logam mulia
-        if (upperPair.includes('XAUUSD')) return 'XAUUSD';
-        if (upperPair.includes('XAGUSD')) return 'XAGUSD';
-        
-        // Crypto USD
-        if (upperPair.includes('BTCUSD')) return 'BTCUSD';
-        if (upperPair.includes('ETHUSD')) return 'ETHUSD';
-        if (upperPair.includes('SOLUSD')) return 'SOLUSD';
-        if (upperPair.includes('XRPUSD')) return 'XRPUSD';
-        if (upperPair.includes('BNBUSD')) return 'BNBUSD';
-        
-        // Forex major
-        if (upperPair.includes('EURUSD')) return 'EUR/USD';
-        if (upperPair.includes('GBPUSD')) return 'GBP/USD';
-        if (upperPair.includes('USDJPY')) return 'USD/JPY';
-        if (upperPair.includes('AUDUSD')) return 'AUD/USD';
-        if (upperPair.includes('USDCAD')) return 'USD/CAD';
-        if (upperPair.includes('USDCHF')) return 'USD/CHF';
-        if (upperPair.includes('NZDUSD')) return 'NZD/USD';
-        
-        // Forex minor (sebagian)
-        if (upperPair.includes('EURGBP')) return 'EUR/GBP';
-        if (upperPair.includes('EURAUD')) return 'EUR/AUD';
-        if (upperPair.includes('GBPJPY')) return 'GBP/JPY';
-        if (upperPair.includes('EURJPY')) return 'EUR/JPY';
-        
-        // Indices
-        if (upperPair.includes('US30') || upperPair.includes('DJI')) return 'US30';
-        if (upperPair.includes('US500') || upperPair.includes('SPX')) return 'US500';
-        if (upperPair.includes('NAS100') || upperPair.includes('USTEC')) return 'NAS100';
-        if (upperPair.includes('UK100')) return 'UK100';
-        if (upperPair.includes('GER40')) return 'GER40';
-        
+        // Bersihkan dari akhiran seperti .sc, m, .c, t, dll.
+        let clean = pair.toUpperCase().replace(/[._\-][A-Z0-9]*$/, '').replace(/[0-9]+$/, '');
+        // Daftar pasangan yang dikenali
+        if (clean.startsWith('XAU') || clean === 'GOLD') return 'XAUUSD';
+        if (clean.startsWith('XAG') || clean === 'SILVER') return 'XAGUSD';
+        if (clean.startsWith('BTC')) return 'BTCUSD';
+        if (clean.startsWith('ETH')) return 'ETHUSD';
+        if (clean.startsWith('SOL')) return 'SOLUSD';
+        if (clean.startsWith('XRP')) return 'XRPUSD';
+        if (clean.startsWith('BNB')) return 'BNBUSD';
+        // Forex major (format 3 huruf + 3 huruf)
+        const forexMatch = clean.match(/^([A-Z]{3})(USD|JPY|GBP|EUR|AUD|CAD|CHF|NZD)$/);
+        if (forexMatch) return `${forexMatch[1]}/${forexMatch[2]}`;
         return pair;
     }
     
-    // ========== FUNGSI DETEKSI PAIR DARI OCR ==========
+    // DETEKSI PAIR YANG SANGAT FLEKSIBEL (MENGABAIKAN AKHIRAN)
     function detectPairFromText(text) {
-        // Deteksi XAUUSD dalam bentuk apapun
-        let xauMatch = text.match(/\bXAUUSD[a-z.]*\b/i);
-        if (xauMatch) return 'XAUUSD';
+        if (!text) return null;
+        const upperText = text.toUpperCase();
         
-        // Deteksi BTCUSD
-        let btcMatch = text.match(/\bBTCUSD[a-z.]*\b/i);
-        if (btcMatch) return 'BTCUSD';
-        
-        // Deteksi ETHUSD
-        let ethMatch = text.match(/\bETHUSD[a-z.]*\b/i);
-        if (ethMatch) return 'ETHUSD';
-        
-        // Deteksi pair dengan format standar (EURUSD, GBPUSD, dll)
-        let standardMatch = text.match(/\b([A-Z]{3,4})(USD|USDT|BTC|ETH|USDC|JPY|GBP|EUR|AUD|CAD|CHF|NZD)\b/i);
-        if (standardMatch) {
-            let pair = standardMatch[1] + '/' + standardMatch[2];
-            return normalizePair(pair);
-        }
-        
-        // Deteksi pair dengan format slash (EUR/USD)
-        let slashMatch = text.match(/\b([A-Z]{3})\s*\/\s*([A-Z]{3})\b/i);
-        if (slashMatch) {
-            let pair = slashMatch[1] + '/' + slashMatch[2];
-            return normalizePair(pair);
-        }
-        
-        // Deteksi crypto hanya nama
-        let cryptoNames = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ADA', 'DOGE', 'DOT', 'LTC', 'LINK'];
-        for (let crypto of cryptoNames) {
-            if (text.match(new RegExp(`\\b${crypto}\\b`, 'i'))) {
-                return crypto + '/USD';
+        // PRIORITAS UTAMA: XAUUSD dalam berbagai bentuk termasuk GOLD, XAU, EMAS, dan variasi akhiran
+        // Pola: XAUUSD diikuti opsional oleh titik/huruf/angka/garis bawah, atau GOLD, XAU, EMAS
+        const xauPatterns = [
+            /\bXAU[\s\/\-]?USD(?:[\._\-]?[A-Z0-9]*)?\b/i,  // XAUUSD, XAUUSD.sc, XAUUSD.c, XAUUSDM
+            /\bGOLD\b/i,
+            /\bXAU\b/i,
+            /\bEMAS\b/i
+        ];
+        for (let pattern of xauPatterns) {
+            if (pattern.test(text)) {
+                console.log("Detected XAUUSD via pattern:", pattern);
+                return 'XAUUSD';
             }
+        }
+        
+        // SILVER
+        if (/\bXAG[\s\/\-]?USD(?:[\._\-]?[A-Z0-9]*)?\b/i.test(text) || /\bSILVER\b/i.test(text)) return 'XAGUSD';
+        
+        // CRYPTO: BTC, ETH, SOL, XRP, BNB dengan akhiran apapun (USDT, USDM, .c, dll)
+        const cryptoMap = {
+            'BTC': 'BTCUSD', 'ETH': 'ETHUSD', 'SOL': 'SOLUSD', 'XRP': 'XRPUSD', 'BNB': 'BNBUSD'
+        };
+        for (const [crypto, pair] of Object.entries(cryptoMap)) {
+            // Mencari BTCUSD, BTCUSDT, BTCUSDM, BTCUSD.c, BTC-USD, BTC/USD, dll
+            const regex = new RegExp(`\\b${crypto}[\\s\\/\\-]?USD(?:[\._\\-]?[A-Z0-9]*)?\\b`, 'i');
+            if (regex.test(text)) return pair;
+            // Juga deteksi hanya nama crypto (misal "BTC" saja) tapi hati-hati jangan tertukar dengan kata lain
+            if (new RegExp(`\\b${crypto}\\b`, 'i').test(text) && !text.match(/EUR|GBP|JPY|AUD/)) return pair;
+        }
+        
+        // FOREX MAJOR (3 huruf + 3 huruf) tapi hindari yang sudah tertangkap crypto
+        const forexMatch = text.match(/\b([A-Z]{3})(USD|JPY|GBP|EUR|AUD|CAD|CHF|NZD)\b/i);
+        if (forexMatch) {
+            let base = forexMatch[1].toUpperCase();
+            let quote = forexMatch[2].toUpperCase();
+            if (base === 'XAU' || base === 'XAG' || cryptoMap[base]) return null;
+            return `${base}/${quote}`;
+        }
+        
+        // Dengan slash
+        const slashMatch = text.match(/\b([A-Z]{3})\s*\/\s*([A-Z]{3})\b/i);
+        if (slashMatch) {
+            let base = slashMatch[1].toUpperCase();
+            let quote = slashMatch[2].toUpperCase();
+            if (base === 'XAU' || base === 'XAG' || cryptoMap[base]) return null;
+            return `${base}/${quote}`;
         }
         
         return null;
     }
     
-    // ========== 15 INDICATORS VOTING SYSTEM ==========
+    // ========== 15 INDICATORS VOTING SYSTEM (sama seperti sebelumnya) ==========
     class FifteenIndicatorsVoting {
         constructor() {
             this.votes = { buy: 0, sell: 0, neutral: 0 };
@@ -1033,7 +1028,7 @@
             else if (currentEma9 < currentEma21 && currentPrice < currentEma9) this.addVote('sell', 'EMA9 below EMA21 (Death Cross)', currentEma9);
             else this.addVote('neutral', 'EMA9 & EMA21 mixed signal', currentEma9);
             
-            // RSI 14 - DIPERBAIKI: Bearish zone -> sell, Bullish zone -> buy
+            // RSI 14
             const rsi = this.calculateRSI(closes, 14);
             const currentRSI = rsi[rsi.length-1];
             if (currentRSI < 30) this.addVote('buy', `RSI oversold (${currentRSI.toFixed(1)})`, currentRSI);
@@ -1116,7 +1111,6 @@
             let decisionReason = '';
             let recommendationText = '';
             
-            // Aturan final decision: minimal selisih 2 suara
             if (this.votes.buy > this.votes.sell && voteDiff >= 2) {
                 finalDecision = 'BUY';
                 confidence = 50 + (buyPercentage * 0.4);
@@ -1157,11 +1151,11 @@
         }
         
         calculateFixedRiskRewardEntry(decision, price) {
-            const riskPercent = 0.0015;      // 0.15% untuk SL dari entry
-            const breakoutPercent = 0.0005;   // 0.05% jarak breakout (sangat dekat)
-            const rewardPercent1 = 0.0015;    // TP1: 0.15% dari entry
-            const rewardPercent2 = 0.0025;    // TP2: 0.25% dari entry
-            const rewardPercent3 = 0.0035;    // TP3: 0.35% dari entry
+            const riskPercent = 0.0015;
+            const breakoutPercent = 0.0005;
+            const rewardPercent1 = 0.0015;
+            const rewardPercent2 = 0.0025;
+            const rewardPercent3 = 0.0035;
             
             if (decision === 'BUY') {
                 const entry = price * (1 + breakoutPercent);
@@ -1191,7 +1185,6 @@
             return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
         }
         
-        // ========== METODE PERHITUNGAN INDIKATOR (EMA, RSI, MACD, dll) ==========
         calculateEMA(data, period) {
             const k = 2 / (period + 1);
             const ema = [data[0]];
@@ -1361,7 +1354,20 @@
         };
     }
     
-    // ========== OCR & DETECTION ==========
+    // ========== DETEKSI TIMEFRAME ==========
+    function detectTimeframe(text) {
+        const lower = text.toLowerCase();
+        if (/\bm15\b|\b15m\b/.test(lower)) return { interval: '15min', display: 'M15' };
+        if (/\bm30\b|\b30m\b/.test(lower)) return { interval: '30min', display: 'M30' };
+        if (/\bm1\b|\b1m\b/.test(lower)) return { interval: '1min', display: 'M1' };
+        if (/\bm5\b|\b5m\b/.test(lower)) return { interval: '5min', display: 'M5' };
+        if (/\bh1\b|\b1h\b/.test(lower)) return { interval: '1h', display: 'H1' };
+        if (/\bh4\b|\b4h\b/.test(lower)) return { interval: '4h', display: 'H4' };
+        if (/\bd1\b|\b1d\b|\bdaily\b/.test(lower)) return { interval: '1day', display: 'Daily' };
+        return { interval: '1day', display: 'Daily' };
+    }
+    
+    // ========== PROSES UPLOAD GAMBAR + OCR ==========
     const dropzoneDiv = document.getElementById('dropzone');
     const fileInputElem = document.getElementById('fileInput');
     const previewAreaDiv = document.getElementById('previewArea');
@@ -1381,18 +1387,6 @@
     }
     if(fileInputElem) fileInputElem.onchange = (e) => { if(e.target.files[0]) processImageWithScan(e.target.files[0]); };
     
-    function detectTimeframe(text) {
-        const lower = text.toLowerCase();
-        if (/\bm15\b|\b15m\b/.test(lower)) return { interval: '15min', display: 'M15' };
-        if (/\bm30\b|\b30m\b/.test(lower)) return { interval: '30min', display: 'M30' };
-        if (/\bm1\b|\b1m\b/.test(lower)) return { interval: '1min', display: 'M1' };
-        if (/\bm5\b|\b5m\b/.test(lower)) return { interval: '5min', display: 'M5' };
-        if (/\bh1\b|\b1h\b/.test(lower)) return { interval: '1h', display: 'H1' };
-        if (/\bh4\b|\b4h\b/.test(lower)) return { interval: '4h', display: 'H4' };
-        if (/\bd1\b|\b1d\b|\bdaily\b/.test(lower)) return { interval: '1day', display: 'Daily' };
-        return { interval: '1day', display: 'Daily' };
-    }
-    
     async function processImageWithScan(file) {
         if(isProcessing) return;
         isProcessing = true;
@@ -1409,12 +1403,23 @@
                 const worker = await Tesseract.createWorker('eng');
                 const { data } = await worker.recognize(file);
                 await worker.terminate();
-                let text = data.text;
+                let rawText = data.text;
+                // Bersihkan teks OCR: hapus karakter aneh, ganti newline dengan spasi
+                let cleanText = rawText.replace(/[^\w\s\/\-]/g, ' ').replace(/\s+/g, ' ');
+                console.log("OCR Clean Text:", cleanText);
                 
-                let pair = detectPairFromText(text);
+                let pair = detectPairFromText(cleanText);
+                // Fallback manual jika tidak terdeteksi
+                if (!pair) {
+                    let userInput = prompt("Tidak dapat mendeteksi pair secara otomatis. Masukkan kode pair (contoh: XAUUSD, BTCUSD, EURUSD):", "XAUUSD");
+                    if (userInput) pair = userInput.toUpperCase();
+                }
                 if (!pair) pair = 'EUR/USD';
                 
-                const tf = detectTimeframe(text);
+                // Normalisasi lebih lanjut untuk menghilangkan akhiran (misal XAUUSD.sc -> XAUUSD)
+                pair = normalizePair(pair);
+                
+                const tf = detectTimeframe(cleanText);
                 currentSymbol = pair;
                 currentTimeframe = tf.interval;
                 
