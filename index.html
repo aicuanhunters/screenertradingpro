@@ -635,7 +635,7 @@
         <div class="header-hedge">
             <div class="logo-area">
                 <img class="logo-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9YQmaIHSrk0AT8IpfU-nDQ2NmGo700YpMQSj3Lvo-_7kX4G6xyX_pd5KyxCznX6r0Tl2vYvZkZf797uCgHXQflFsDW5-HThG2rIg3PCR1LXrhuU3GDndJkLyyfdhC5LfsQuw2TFnwTAePABrvRF-PVrOF3ZTqBqMNYZ-ErDcXvCW5sCzLGcIkWzO_6YwN/s1024/1000832791.png" alt="logo">
-                <div class="logo-text"><h1>Screener System Pro</h1><p></p></div>
+                <div class="logo-text"><h1>Screener System Pro</h1><p>Breakout Entry System</p></div>
             </div>
             <div class="limit-controls">
                 <div class="add-limit-btn" id="addLimitBtn"><i class="fas fa-plus-circle"></i> Beli Credit</div>
@@ -667,18 +667,18 @@
             <div class="card-screening">
                 <div class="card-header">
                     <span><i class="fas fa-brain"></i> Signal Intelligence</span>
-                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Live screening</span></div>
+                    <div class="live-header-badge"><i class="fas fa-circle" style="font-size:0.6rem; animation:liveIconBlink 1s step-end infinite;"></i> <span style="background:linear-gradient(135deg,#E0F5FF,#00FFAA); -webkit-background-clip:text; background-clip:text; color:transparent;">Breakout Entry</span></div>
                 </div>
                 <div class="card-body" id="signalPanel">
                     <div id="emptySignalState" class="empty-state-lux">
                         <div class="empty-icon"><i class="fas fa-chart-line"></i></div>
                         <div class="empty-title">Awaiting Market Data</div>
-                        <div class="empty-desc">Upload chart → AI analysis → 15 Indicators Voting → Signal</div>
+                        <div class="empty-desc">Upload chart → AI analysis → 15 Indicators Voting → Breakout Signal</div>
                         <div class="empty-steps">
                             <div class="step-modern"><i class="fas fa-cloud-upload-alt"></i> Upload</div>
                             <div class="step-modern"><i class="fas fa-microchip"></i> 15 Indicators</div>
                             <div class="step-modern"><i class="fas fa-vote-yea"></i> Voting</div>
-                            <div class="step-modern"><i class="fas fa-chart-line"></i>Signal</div>
+                            <div class="step-modern"><i class="fas fa-chart-line"></i> Breakout Signal</div>
                         </div>
                         <div class="waiting-badge"><i class="fas fa-circle"></i> Waiting Screening</div>
                     </div>
@@ -936,18 +936,18 @@
         if (!pair) return pair;
         const upperPair = pair.toUpperCase();
         
-        // ========== LOGAM MULIA ==========
+        // Logam mulia
         if (upperPair.includes('XAUUSD')) return 'XAUUSD';
         if (upperPair.includes('XAGUSD')) return 'XAGUSD';
         
-        // ========== CRYPTO USD ==========
+        // Crypto USD
         if (upperPair.includes('BTCUSD')) return 'BTCUSD';
         if (upperPair.includes('ETHUSD')) return 'ETHUSD';
         if (upperPair.includes('SOLUSD')) return 'SOLUSD';
         if (upperPair.includes('XRPUSD')) return 'XRPUSD';
         if (upperPair.includes('BNBUSD')) return 'BNBUSD';
         
-        // ========== FOREX MAJOR ==========
+        // Forex major
         if (upperPair.includes('EURUSD')) return 'EUR/USD';
         if (upperPair.includes('GBPUSD')) return 'GBP/USD';
         if (upperPair.includes('USDJPY')) return 'USD/JPY';
@@ -956,13 +956,13 @@
         if (upperPair.includes('USDCHF')) return 'USD/CHF';
         if (upperPair.includes('NZDUSD')) return 'NZD/USD';
         
-        // ========== FOREX MINOR ==========
+        // Forex minor (sebagian)
         if (upperPair.includes('EURGBP')) return 'EUR/GBP';
         if (upperPair.includes('EURAUD')) return 'EUR/AUD';
         if (upperPair.includes('GBPJPY')) return 'GBP/JPY';
         if (upperPair.includes('EURJPY')) return 'EUR/JPY';
         
-        // ========== INDICES ==========
+        // Indices
         if (upperPair.includes('US30') || upperPair.includes('DJI')) return 'US30';
         if (upperPair.includes('US500') || upperPair.includes('SPX')) return 'US500';
         if (upperPair.includes('NAS100') || upperPair.includes('USTEC')) return 'NAS100';
@@ -974,43 +974,36 @@
     
     // ========== FUNGSI DETEKSI PAIR DARI OCR ==========
     function detectPairFromText(text) {
-        // 1. Deteksi khusus XAUUSD dalam bentuk apapun (XAUUSDm, XAUUSD.std, XAUUSDc, dll)
+        // Deteksi XAUUSD dalam bentuk apapun
         let xauMatch = text.match(/\bXAUUSD[a-z.]*\b/i);
-        if (xauMatch) {
-            return 'XAUUSD';
-        }
+        if (xauMatch) return 'XAUUSD';
         
-        // 2. Deteksi BTCUSD dalam bentuk apapun
+        // Deteksi BTCUSD
         let btcMatch = text.match(/\bBTCUSD[a-z.]*\b/i);
-        if (btcMatch) {
-            return 'BTCUSD';
-        }
+        if (btcMatch) return 'BTCUSD';
         
-        // 3. Deteksi ETHUSD dalam bentuk apapun
+        // Deteksi ETHUSD
         let ethMatch = text.match(/\bETHUSD[a-z.]*\b/i);
-        if (ethMatch) {
-            return 'ETHUSD';
-        }
+        if (ethMatch) return 'ETHUSD';
         
-        // 4. Deteksi pair dengan format STANDAR (contoh: EURUSD, GBPUSD)
+        // Deteksi pair dengan format standar (EURUSD, GBPUSD, dll)
         let standardMatch = text.match(/\b([A-Z]{3,4})(USD|USDT|BTC|ETH|USDC|JPY|GBP|EUR|AUD|CAD|CHF|NZD)\b/i);
         if (standardMatch) {
             let pair = standardMatch[1] + '/' + standardMatch[2];
             return normalizePair(pair);
         }
         
-        // 5. Deteksi pair dengan format SLASH (contoh: EUR/USD)
+        // Deteksi pair dengan format slash (EUR/USD)
         let slashMatch = text.match(/\b([A-Z]{3})\s*\/\s*([A-Z]{3})\b/i);
         if (slashMatch) {
             let pair = slashMatch[1] + '/' + slashMatch[2];
             return normalizePair(pair);
         }
         
-        // 6. Deteksi crypto (BTC, ETH, SOL, XRP, BNB) tanpa USD
+        // Deteksi crypto hanya nama
         let cryptoNames = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ADA', 'DOGE', 'DOT', 'LTC', 'LINK'];
         for (let crypto of cryptoNames) {
-            let cryptoMatch = text.match(new RegExp(`\\b${crypto}\\b`, 'i'));
-            if (cryptoMatch) {
+            if (text.match(new RegExp(`\\b${crypto}\\b`, 'i'))) {
                 return crypto + '/USD';
             }
         }
@@ -1040,13 +1033,13 @@
             else if (currentEma9 < currentEma21 && currentPrice < currentEma9) this.addVote('sell', 'EMA9 below EMA21 (Death Cross)', currentEma9);
             else this.addVote('neutral', 'EMA9 & EMA21 mixed signal', currentEma9);
             
-            // RSI 14
+            // RSI 14 - DIPERBAIKI: Bearish zone -> sell, Bullish zone -> buy
             const rsi = this.calculateRSI(closes, 14);
             const currentRSI = rsi[rsi.length-1];
             if (currentRSI < 30) this.addVote('buy', `RSI oversold (${currentRSI.toFixed(1)})`, currentRSI);
             else if (currentRSI > 70) this.addVote('sell', `RSI overbought (${currentRSI.toFixed(1)})`, currentRSI);
-            else if (currentRSI < 45) this.addVote('buy', `RSI bearish zone (${currentRSI.toFixed(1)})`, currentRSI);
-            else if (currentRSI > 55) this.addVote('sell', `RSI bullish zone (${currentRSI.toFixed(1)})`, currentRSI);
+            else if (currentRSI < 45) this.addVote('sell', `RSI bearish zone (${currentRSI.toFixed(1)})`, currentRSI);
+            else if (currentRSI > 55) this.addVote('buy', `RSI bullish zone (${currentRSI.toFixed(1)})`, currentRSI);
             else this.addVote('neutral', `RSI neutral (${currentRSI.toFixed(1)})`, currentRSI);
             
             // MACD
@@ -1123,6 +1116,7 @@
             let decisionReason = '';
             let recommendationText = '';
             
+            // Aturan final decision: minimal selisih 2 suara
             if (this.votes.buy > this.votes.sell && voteDiff >= 2) {
                 finalDecision = 'BUY';
                 confidence = 50 + (buyPercentage * 0.4);
@@ -1170,7 +1164,6 @@
             const rewardPercent3 = 0.0035;    // TP3: 0.35% dari entry
             
             if (decision === 'BUY') {
-                // BUY STOP: Entry DI ATAS harga saat ini (Breakout)
                 const entry = price * (1 + breakoutPercent);
                 const stopLoss = entry * (1 - riskPercent);
                 const takeProfits = [
@@ -1179,14 +1172,10 @@
                     { price: entry * (1 + rewardPercent3), percentage: 25 }
                 ];
                 const risk = entry - stopLoss;
-                const rewardAvg = (takeProfits[0].price - entry) * 0.4 + 
-                                 (takeProfits[1].price - entry) * 0.35 + 
-                                 (takeProfits[2].price - entry) * 0.25;
+                const rewardAvg = (takeProfits[0].price - entry) * 0.4 + (takeProfits[1].price - entry) * 0.35 + (takeProfits[2].price - entry) * 0.25;
                 const riskReward = risk > 0 ? (rewardAvg / risk).toFixed(2) : '0.60';
                 return { entry, stopLoss, takeProfits, riskReward, entryType: 'BUY STOP' };
-                
             } else if (decision === 'SELL') {
-                // SELL STOP: Entry DI BAWAH harga saat ini (Breakdown)
                 const entry = price * (1 - breakoutPercent);
                 const stopLoss = entry * (1 + riskPercent);
                 const takeProfits = [
@@ -1195,16 +1184,14 @@
                     { price: entry * (1 - rewardPercent3), percentage: 25 }
                 ];
                 const risk = stopLoss - entry;
-                const rewardAvg = (entry - takeProfits[0].price) * 0.4 + 
-                                 (entry - takeProfits[1].price) * 0.35 + 
-                                 (entry - takeProfits[2].price) * 0.25;
+                const rewardAvg = (entry - takeProfits[0].price) * 0.4 + (entry - takeProfits[1].price) * 0.35 + (entry - takeProfits[2].price) * 0.25;
                 const riskReward = risk > 0 ? (rewardAvg / risk).toFixed(2) : '0.60';
                 return { entry, stopLoss, takeProfits, riskReward, entryType: 'SELL STOP' };
             }
-            
             return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
         }
         
+        // ========== METODE PERHITUNGAN INDIKATOR (EMA, RSI, MACD, dll) ==========
         calculateEMA(data, period) {
             const k = 2 / (period + 1);
             const ema = [data[0]];
@@ -1352,7 +1339,6 @@
     
     // ========== FUNGSI FETCH MARKET DATA ==========
     async function fetchMarketData(symbol, interval) {
-        // Konversi format pair untuk API Twelve Data
         let apiSymbol = symbol;
         if (symbol === 'XAUUSD') apiSymbol = 'XAU/USD';
         if (symbol === 'BTCUSD') apiSymbol = 'BTC/USD';
@@ -1425,13 +1411,8 @@
                 await worker.terminate();
                 let text = data.text;
                 
-                // DETECT PAIR MENGGUNAKAN FUNGSI BARU
                 let pair = detectPairFromText(text);
-                
-                if (!pair) {
-                    // Fallback ke default
-                    pair = 'EUR/USD';
-                }
+                if (!pair) pair = 'EUR/USD';
                 
                 const tf = detectTimeframe(text);
                 currentSymbol = pair;
