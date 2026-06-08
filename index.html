@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
+        /* ========== STYLE GLOBAL (TIDAK BERUBAH) ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #070A12; color: #EDF2F9; line-height: 1.5; overflow-x: hidden; }
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 20% 30%, #0C1122, #03050B); z-index: -2; }
@@ -16,1304 +17,211 @@
         #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.4; }
         ::-webkit-scrollbar { width: 4px; background: #11161F; }
         ::-webkit-scrollbar-thumb { background: #2C9CD4; border-radius: 4px; }
-        
-        /* LOADING OVERLAY INITIAL */
-        .loading-overlay-init {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, #0a0f1a, #03050b);
-            backdrop-filter: blur(0px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            overflow: hidden;
-        }
-        .loading-overlay-init::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: repeating-linear-gradient(0deg, rgba(44,156,212,0.08) 0px, rgba(44,156,212,0.08) 1px, transparent 1px, transparent 6px);
-            background-size: 100% 8px;
-            animation: scanMoveVertical 2s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes scanMoveVertical {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 8px; }
-        }
-        .quantum-loader {
-            position: relative;
-            background: rgba(15, 22, 34, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(44,156,212,0.5);
-            border-radius: 80px;
-            padding: 40px 55px;
-            text-align: center;
-            width: 380px;
-            box-shadow: 0 0 40px rgba(44,156,212,0.2), inset 0 0 20px rgba(44,156,212,0.1);
-            animation: floatLoader 3s ease-in-out infinite;
-            z-index: 2;
-        }
-        @keyframes floatLoader {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-        .globe-container-3d {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5);
-            animation: globePulse 2s infinite;
-        }
-        @keyframes globePulse {
-            0% { box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 0 6px rgba(44,156,212,0.4), 0 0 50px rgba(44,156,212,0.8); transform: scale(1.02); }
-            100% { box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5); transform: scale(1); }
-        }
-        .loader-progress-bar {
-            height: 5px;
-            background: #1F2A3E;
-            margin: 20px 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .loader-progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #2C9CD4, #00FFAA, #2C9CD4);
-            background-size: 200% auto;
-            animation: gradientShift 2s ease infinite;
-            border-radius: 10px;
-            transition: width 0.1s linear;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-        .loader-status-text {
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #00FFAA;
-            text-shadow: 0 0 5px cyan;
-            margin-top: 12px;
-            font-weight: 600;
-            animation: textBlink 1.5s infinite;
-        }
-        @keyframes textBlink {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; text-shadow: 0 0 12px cyan; }
-        }
-        .loader-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .loader-dot {
-            width: 8px;
-            height: 8px;
-            background: #2C9CD4;
-            border-radius: 50%;
-            animation: dotPulse 1.2s infinite;
-        }
-        .loader-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loader-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dotPulse {
-            0%, 100% { transform: scale(0.6); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 1; background: #00FFAA; box-shadow: 0 0 8px #00FFAA; }
-        }
+        .loading-overlay-init { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 30%, #0a0f1a, #03050b); backdrop-filter: blur(0px); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); overflow: hidden; }
+        .loading-overlay-init::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, rgba(44,156,212,0.08) 0px, rgba(44,156,212,0.08) 1px, transparent 1px, transparent 6px); background-size: 100% 8px; animation: scanMoveVertical 2s linear infinite; pointer-events: none; }
+        @keyframes scanMoveVertical { 0% { background-position: 0 0; } 100% { background-position: 0 8px; } }
+        .quantum-loader { position: relative; background: rgba(15, 22, 34, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(44,156,212,0.5); border-radius: 80px; padding: 40px 55px; text-align: center; width: 380px; box-shadow: 0 0 40px rgba(44,156,212,0.2), inset 0 0 20px rgba(44,156,212,0.1); animation: floatLoader 3s ease-in-out infinite; z-index: 2; }
+        @keyframes floatLoader { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0px); } }
+        .globe-container-3d { width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5); animation: globePulse 2s infinite; }
+        @keyframes globePulse { 0% { box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5); transform: scale(1); } 50% { box-shadow: 0 0 0 6px rgba(44,156,212,0.4), 0 0 50px rgba(44,156,212,0.8); transform: scale(1.02); } 100% { box-shadow: 0 0 0 3px rgba(44,156,212,0.6), 0 0 30px rgba(44,156,212,0.5); transform: scale(1); } }
+        .loader-progress-bar { height: 5px; background: #1F2A3E; margin: 20px 0; border-radius: 10px; overflow: hidden; }
+        .loader-progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #2C9CD4, #00FFAA, #2C9CD4); background-size: 200% auto; animation: gradientShift 2s ease infinite; border-radius: 10px; transition: width 0.1s linear; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .loader-status-text { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #00FFAA; text-shadow: 0 0 5px cyan; margin-top: 12px; font-weight: 600; animation: textBlink 1.5s infinite; }
+        @keyframes textBlink { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; text-shadow: 0 0 12px cyan; } }
+        .loader-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+        .loader-dot { width: 8px; height: 8px; background: #2C9CD4; border-radius: 50%; animation: dotPulse 1.2s infinite; }
+        .loader-dot:nth-child(2) { animation-delay: 0.2s; } .loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse { 0%, 100% { transform: scale(0.6); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; background: #00FFAA; box-shadow: 0 0 8px #00FFAA; } }
         .main-content { opacity: 0; transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
         .main-content.visible { opacity: 1; }
         .container { max-width: 1480px; margin: 0 auto; padding: 20px 24px; position: relative; z-index: 2; }
-        
-        /* HEADER PREMIUM */
-        .header-premium {
-            position: relative;
-            background: rgba(6, 12, 24, 0.65);
-            backdrop-filter: blur(20px);
-            border-radius: 48px;
-            margin-bottom: 32px;
-            border: 1px solid rgba(44, 156, 212, 0.4);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 15px 35px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(44,156,212,0.1) inset;
-        }
-        .header-premium:hover {
-            border-color: rgba(44, 156, 212, 0.8);
-            box-shadow: 0 20px 40px -15px rgba(44,156,212,0.3);
-        }
-        .header-glow {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(44,156,212,0.15) 0%, transparent 70%);
-            animation: rotateGlow 20s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .header-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 18px 32px;
-        }
-        .logo-premium {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        .logo-3d-container {
-            position: relative;
-            width: 58px;
-            height: 58px;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        .logo-3d-container:hover {
-            transform: scale(1.05) rotate(3deg);
-        }
-        .logo-img-premium {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #2C9CD4;
-            box-shadow: 0 0 15px rgba(44,156,212,0.6);
-            transition: all 0.3s;
-        }
-        .logo-ring {
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            right: -6px;
-            bottom: -6px;
-            border-radius: 50%;
-            border: 1px solid rgba(44,156,212,0.6);
-            animation: pulseRing 2s infinite;
-            pointer-events: none;
-        }
-        @keyframes pulseRing {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.15); opacity: 0; }
-        }
-        .logo-text-premium h1 {
-            font-size: 1.7rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFFFFF, #7AD0FF, #00FFAA);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gradientShift 3s ease infinite;
-            letter-spacing: -0.5px;
-        }
-        .header-stats {
-            display: flex;
-            gap: 28px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px 24px;
-            border-radius: 60px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(44,156,212,0.2);
-        }
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .stat-item i {
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, #2C9CD4, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .stat-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .stat-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8BA0C0;
-        }
-        .stat-value {
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFF, #B0E0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .credit-control-premium {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .credit-card {
-            background: linear-gradient(145deg, rgba(0,0,0,0.6), rgba(20,30,50,0.8));
-            backdrop-filter: blur(12px);
-            padding: 8px 18px;
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(44,156,212,0.4);
-            transition: all 0.2s;
-        }
-        .credit-card i {
-            font-size: 1.2rem;
-            color: #FFD966;
-        }
-        .credit-amount {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #FFF;
-            margin-right: 4px;
-        }
-        .credit-label {
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: #8BA0C0;
-            letter-spacing: 1px;
-        }
-        .btn-buy-credit {
-            position: relative;
-            background: linear-gradient(105deg, #0D4D6B, #0A3A50);
-            border: none;
-            padding: 8px 22px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(44,156,212,0.2);
-        }
-        .btn-buy-credit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(44,156,212,0.4);
-            background: linear-gradient(105deg, #0F5D80, #0C4A64);
-        }
-        .btn-glow {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-        .btn-buy-credit:hover .btn-glow {
-            left: 100%;
-        }
-        @media (max-width: 1024px) {
-            .header-content {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                gap: 16px;
-            }
-            .logo-premium {
-                justify-content: center;
-            }
-            .header-stats {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .credit-control-premium {
-                justify-content: center;
-            }
-        }
-        
-        /* CARD SCREENING */
-        .card-screening {
-            background: rgba(8, 14, 24, 0.45);
-            backdrop-filter: blur(24px);
-            border-radius: 48px;
-            overflow: hidden;
-            border: 1px solid rgba(44, 156, 212, 0.25);
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(44,156,212,0.1) inset;
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            position: relative;
-            margin-bottom: 32px;
-        }
-        .card-screening::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(44,156,212,0.08), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.6s;
-            pointer-events: none;
-        }
+        .header-premium { position: relative; background: rgba(6, 12, 24, 0.65); backdrop-filter: blur(20px); border-radius: 48px; margin-bottom: 32px; border: 1px solid rgba(44, 156, 212, 0.4); overflow: hidden; transition: all 0.3s ease; box-shadow: 0 15px 35px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(44,156,212,0.1) inset; }
+        .header-premium:hover { border-color: rgba(44, 156, 212, 0.8); box-shadow: 0 20px 40px -15px rgba(44,156,212,0.3); }
+        .header-glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(44,156,212,0.15) 0%, transparent 70%); animation: rotateGlow 20s linear infinite; pointer-events: none; z-index: 0; }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .header-content { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding: 18px 32px; }
+        .logo-premium { display: flex; align-items: center; gap: 18px; }
+        .logo-3d-container { position: relative; width: 58px; height: 58px; transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        .logo-3d-container:hover { transform: scale(1.05) rotate(3deg); }
+        .logo-img-premium { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #2C9CD4; box-shadow: 0 0 15px rgba(44,156,212,0.6); transition: all 0.3s; }
+        .logo-ring { position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border-radius: 50%; border: 1px solid rgba(44,156,212,0.6); animation: pulseRing 2s infinite; pointer-events: none; }
+        @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.15); opacity: 0; } }
+        .logo-text-premium h1 { font-size: 1.7rem; font-weight: 800; background: linear-gradient(135deg, #FFFFFF, #7AD0FF, #00FFAA); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gradientShift 3s ease infinite; letter-spacing: -0.5px; }
+        .header-stats { display: flex; gap: 28px; background: rgba(0,0,0,0.3); padding: 8px 24px; border-radius: 60px; backdrop-filter: blur(8px); border: 1px solid rgba(44,156,212,0.2); }
+        .stat-item { display: flex; align-items: center; gap: 12px; }
+        .stat-item i { font-size: 1.2rem; background: linear-gradient(135deg, #2C9CD4, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-info { display: flex; flex-direction: column; }
+        .stat-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: #8BA0C0; }
+        .stat-value { font-size: 0.8rem; font-weight: 700; background: linear-gradient(135deg, #FFF, #B0E0FF); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .credit-control-premium { display: flex; align-items: center; gap: 16px; }
+        .credit-card { background: linear-gradient(145deg, rgba(0,0,0,0.6), rgba(20,30,50,0.8)); backdrop-filter: blur(12px); padding: 8px 18px; border-radius: 60px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(44,156,212,0.4); transition: all 0.2s; }
+        .credit-card i { font-size: 1.2rem; color: #FFD966; }
+        .credit-amount { font-size: 1.3rem; font-weight: 800; color: #FFF; margin-right: 4px; }
+        .credit-label { font-size: 0.6rem; font-weight: 600; color: #8BA0C0; letter-spacing: 1px; }
+        .btn-buy-credit { position: relative; background: linear-gradient(105deg, #0D4D6B, #0A3A50); border: none; padding: 8px 22px; border-radius: 50px; color: white; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; overflow: hidden; transition: all 0.3s; box-shadow: 0 4px 12px rgba(44,156,212,0.2); }
+        .btn-buy-credit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(44,156,212,0.4); background: linear-gradient(105deg, #0F5D80, #0C4A64); }
+        .btn-glow { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
+        .btn-buy-credit:hover .btn-glow { left: 100%; }
+        @media (max-width: 1024px) { .header-content { flex-direction: column; align-items: stretch; text-align: center; gap: 16px; } .logo-premium { justify-content: center; } .header-stats { justify-content: center; flex-wrap: wrap; } .credit-control-premium { justify-content: center; } }
+        .card-screening { background: rgba(8, 14, 24, 0.45); backdrop-filter: blur(24px); border-radius: 48px; overflow: hidden; border: 1px solid rgba(44, 156, 212, 0.25); box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(44,156,212,0.1) inset; transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); position: relative; margin-bottom: 32px; }
+        .card-screening::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, rgba(44,156,212,0.08), transparent 70%); opacity: 0; transition: opacity 0.6s; pointer-events: none; }
         .card-screening:hover::before { opacity: 1; }
-        .card-screening:hover {
-            border-color: rgba(44, 156, 212, 0.7);
-            transform: translateY(-6px);
-            box-shadow: 0 30px 50px -15px rgba(44,156,212,0.3), 0 0 0 1px rgba(44,156,212,0.2) inset;
-        }
-        .card-header {
-            padding: 24px 32px;
-            border-bottom: 1px solid rgba(44,156,212,0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 1rem;
-            background: linear-gradient(135deg, rgba(44,156,212,0.08), rgba(0,255,170,0.02));
-            backdrop-filter: blur(8px);
-        }
+        .card-screening:hover { border-color: rgba(44, 156, 212, 0.7); transform: translateY(-6px); box-shadow: 0 30px 50px -15px rgba(44,156,212,0.3), 0 0 0 1px rgba(44,156,212,0.2) inset; }
+        .card-header { padding: 24px 32px; border-bottom: 1px solid rgba(44,156,212,0.2); display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1rem; background: linear-gradient(135deg, rgba(44,156,212,0.08), rgba(0,255,170,0.02)); backdrop-filter: blur(8px); }
         .card-header i:first-child { color: #2C9CD4; margin-right: 12px; font-size: 1.2rem; }
         .card-body { padding: 32px; }
-        
-        /* DROPZONE */
-        .dropzone-ultimate {
-            background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(10, 20, 40, 0.5));
-            border: 2px dashed rgba(44,156,212,0.5);
-            border-radius: 40px;
-            padding: 50px 28px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .dropzone-ultimate::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(44,156,212,0.2), transparent 80%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
+        .dropzone-ultimate { background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(10, 20, 40, 0.5)); border: 2px dashed rgba(44,156,212,0.5); border-radius: 40px; padding: 50px 28px; text-align: center; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .dropzone-ultimate::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(44,156,212,0.2), transparent 80%); opacity: 0; transition: opacity 0.4s; }
         .dropzone-ultimate:hover::before { opacity: 1; }
-        .dropzone-ultimate.drag-over {
-            background: rgba(44,156,212,0.15);
-            border-color: #5AD0FF;
-            transform: scale(0.98);
-        }
-        .dropzone-ultimate:hover {
-            border-color: #5AD0FF;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px -12px rgba(44,156,212,0.3);
-        }
-        .dropzone-icon {
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, #2C9CD4, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 20px;
-        }
-        .preview-box {
-            margin-top: 24px;
-            border-radius: 32px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
-        }
+        .dropzone-ultimate.drag-over { background: rgba(44,156,212,0.15); border-color: #5AD0FF; transform: scale(0.98); }
+        .dropzone-ultimate:hover { border-color: #5AD0FF; transform: translateY(-3px); box-shadow: 0 15px 30px -12px rgba(44,156,212,0.3); }
+        .dropzone-icon { font-size: 3.5rem; background: linear-gradient(135deg, #2C9CD4, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
+        .preview-box { margin-top: 24px; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6); }
         .preview-img { width: 100%; border-radius: 32px; display: block; }
-        .scan-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.85), rgba(0,0,0,0.95));
-            backdrop-filter: blur(4px);
-            border-radius: 32px;
-            z-index: 5;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .scan-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: repeating-linear-gradient(0deg, rgba(0,255,255,0.1) 0px, rgba(0,255,255,0.1) 1px, transparent 1px, transparent 4px);
-            background-size: 100% 8px;
-            animation: scanMoveVertical 1.5s linear infinite;
-        }
-        .scan-beam {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(125deg, transparent 30%, rgba(0,255,255,0.25) 50%, transparent 70%);
-            animation: scanBeam 3s ease-in-out infinite;
-            transform: rotate(45deg);
-        }
-        @keyframes scanBeam {
-            0% { transform: rotate(45deg) translateX(-100%) translateY(-100%); }
-            100% { transform: rotate(45deg) translateX(100%) translateY(100%); }
-        }
-        .scan-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle, rgba(0,255,255,0.3) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: particleGlow 2s linear infinite;
-            opacity: 0.6;
-        }
-        @keyframes particleGlow {
-            0% { background-position: 0 0; opacity: 0.3; }
-            50% { background-position: 10px 10px; opacity: 0.8; }
-            100% { background-position: 0 0; opacity: 0.3; }
-        }
-        .scan-text {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-weight: 600;
-            color: #0af;
-            text-shadow: 0 0 10px cyan;
-            background: rgba(0,0,0,0.7);
-            width: fit-content;
-            margin: 0 auto;
-            padding: 8px 24px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0,255,170,0.5);
-            letter-spacing: 2px;
-            animation: glitchText 1.5s infinite;
-            z-index: 10;
-        }
-        @keyframes glitchText {
-            0% { text-shadow: 0 0 5px cyan; transform: skew(0deg); }
-            95% { text-shadow: 0 0 5px cyan; transform: skew(0deg); }
-            96% { text-shadow: -2px 0 red, 2px 0 blue; transform: skew(2deg); }
-            97% { text-shadow: 2px 0 red, -2px 0 blue; transform: skew(-2deg); }
-            98% { text-shadow: 0 0 5px cyan; transform: skew(0deg); }
-            100% { text-shadow: 0 0 5px cyan; transform: skew(0deg); }
-        }
-        
-        /* INFO NEON GRID */
-        .info-neon-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 28px;
-        }
-        .neon-card {
-            background: linear-gradient(145deg, rgba(8, 20, 36, 0.95), rgba(4, 12, 24, 0.98));
-            backdrop-filter: blur(12px);
-            border-radius: 28px;
-            padding: 16px 12px;
-            text-align: center;
-            border: 1px solid rgba(44, 156, 212, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .neon-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(44, 156, 212, 0.8);
-            box-shadow: 0 15px 25px -10px rgba(44,156,212,0.5);
-        }
-        .neon-icon {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #2C9CD4, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .neon-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #8BA0C0;
-            margin-bottom: 6px;
-        }
-        .neon-value {
-            font-size: 1.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFFFFF, #B0E0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .neon-badge {
-            display: inline-block;
-            background: rgba(0,255,170,0.12);
-            padding: 3px 10px;
-            border-radius: 30px;
-            font-size: 0.65rem;
-            margin-top: 8px;
-            color: #00FFAA;
-            border: 1px solid rgba(0,255,170,0.3);
-        }
-        
-        /* BUTTONS */
-        .btn-generate {
-            width: 100%;
-            background: linear-gradient(105deg, #0D4D6B, #0A3A50);
-            border: none;
-            padding: 18px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1rem;
-            margin-top: 32px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-generate::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
+        .scan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.85), rgba(0,0,0,0.95)); backdrop-filter: blur(4px); border-radius: 32px; z-index: 5; pointer-events: none; overflow: hidden; }
+        .scan-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: repeating-linear-gradient(0deg, rgba(0,255,255,0.1) 0px, rgba(0,255,255,0.1) 1px, transparent 1px, transparent 4px); background-size: 100% 8px; animation: scanMoveVertical 1.5s linear infinite; }
+        .scan-beam { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(125deg, transparent 30%, rgba(0,255,255,0.25) 50%, transparent 70%); animation: scanBeam 3s ease-in-out infinite; transform: rotate(45deg); }
+        @keyframes scanBeam { 0% { transform: rotate(45deg) translateX(-100%) translateY(-100%); } 100% { transform: rotate(45deg) translateX(100%) translateY(100%); } }
+        .scan-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle, rgba(0,255,255,0.3) 1px, transparent 1px); background-size: 20px 20px; animation: particleGlow 2s linear infinite; opacity: 0.6; }
+        @keyframes particleGlow { 0% { background-position: 0 0; opacity: 0.3; } 50% { background-position: 10px 10px; opacity: 0.8; } 100% { background-position: 0 0; opacity: 0.3; } }
+        .scan-text { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-weight: 600; color: #0af; text-shadow: 0 0 10px cyan; background: rgba(0,0,0,0.7); width: fit-content; margin: 0 auto; padding: 8px 24px; border-radius: 50px; font-size: 0.75rem; backdrop-filter: blur(8px); border: 1px solid rgba(0,255,170,0.5); letter-spacing: 2px; animation: glitchText 1.5s infinite; z-index: 10; }
+        @keyframes glitchText { 0% { text-shadow: 0 0 5px cyan; transform: skew(0deg); } 95% { text-shadow: 0 0 5px cyan; transform: skew(0deg); } 96% { text-shadow: -2px 0 red, 2px 0 blue; transform: skew(2deg); } 97% { text-shadow: 2px 0 red, -2px 0 blue; transform: skew(-2deg); } 98% { text-shadow: 0 0 5px cyan; transform: skew(0deg); } 100% { text-shadow: 0 0 5px cyan; transform: skew(0deg); } }
+        .info-neon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+        .neon-card { background: linear-gradient(145deg, rgba(8, 20, 36, 0.95), rgba(4, 12, 24, 0.98)); backdrop-filter: blur(12px); border-radius: 28px; padding: 16px 12px; text-align: center; border: 1px solid rgba(44, 156, 212, 0.3); transition: all 0.3s ease; cursor: pointer; }
+        .neon-card:hover { transform: translateY(-5px); border-color: rgba(44, 156, 212, 0.8); box-shadow: 0 15px 25px -10px rgba(44,156,212,0.5); }
+        .neon-icon { font-size: 2.2rem; margin-bottom: 10px; background: linear-gradient(135deg, #2C9CD4, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .neon-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: #8BA0C0; margin-bottom: 6px; }
+        .neon-value { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #FFFFFF, #B0E0FF); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .neon-badge { display: inline-block; background: rgba(0,255,170,0.12); padding: 3px 10px; border-radius: 30px; font-size: 0.65rem; margin-top: 8px; color: #00FFAA; border: 1px solid rgba(0,255,170,0.3); }
+        .btn-generate { width: 100%; background: linear-gradient(105deg, #0D4D6B, #0A3A50); border: none; padding: 18px; border-radius: 60px; font-weight: 700; font-size: 1rem; margin-top: 32px; color: white; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-generate::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s; }
         .btn-generate:hover::after { left: 100%; }
-        .btn-generate:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px -10px rgba(44,156,212,0.5);
-            background: linear-gradient(105deg, #0F5D80, #0C4A64);
-        }
+        .btn-generate:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -10px rgba(44,156,212,0.5); background: linear-gradient(105deg, #0F5D80, #0C4A64); }
         .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .reset-btn {
-            background: transparent;
-            border: 1px solid rgba(59, 90, 122, 0.7);
-            padding: 14px;
-            border-radius: 60px;
-            width: 100%;
-            margin-top: 18px;
-            color: #A0B5D0;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
+        .reset-btn { background: transparent; border: 1px solid rgba(59, 90, 122, 0.7); padding: 14px; border-radius: 60px; width: 100%; margin-top: 18px; color: #A0B5D0; cursor: pointer; transition: all 0.3s; font-weight: 500; }
         .reset-btn:hover { background: rgba(44,156,212,0.12); border-color: #2C9CD4; color: white; transform: translateY(-2px); }
-        
-        /* SIGNAL PREMIUM CARD */
-        .signal-premium-card {
-            background: rgba(8, 14, 24, 0.75);
-            backdrop-filter: blur(28px);
-            border-radius: 48px;
-            border: 1px solid rgba(44, 156, 212, 0.35);
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.6);
-        }
-        .signal-premium-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(44, 156, 212, 0.6);
-            box-shadow: 0 30px 50px -15px rgba(44,156,212,0.3);
-        }
-        .signal-header {
-            padding: 22px 30px;
-            border-bottom: 1px solid rgba(44,156,212,0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            background: linear-gradient(135deg, rgba(44,156,212,0.06), rgba(0,255,170,0.02));
-        }
-        .pair-badge {
-            background: rgba(0,0,0,0.5);
-            border-radius: 60px;
-            padding: 8px 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border: 1px solid rgba(44,156,212,0.4);
-            backdrop-filter: blur(4px);
-        }
-        .entry-type-badge {
-            background: rgba(0,255,170,0.2);
-            border-radius: 60px;
-            padding: 6px 18px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            border: 1px solid rgba(0,255,170,0.5);
-        }
-        .consensus-badge {
-            background: rgba(44,156,212,0.15);
-            border-radius: 60px;
-            padding: 6px 18px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .signal-decision-modern {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0 20px;
-        }
-        .decision-glow {
-            border-radius: 100px;
-            padding: 14px 48px;
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            animation: decisionPulse 0.5s ease-out;
-            transition: all 0.3s;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0,255,170,0.2);
-        }
-        .decision-glow:hover {
-            transform: scale(1.02);
-            filter: brightness(1.05);
-            box-shadow: 0 0 30px rgba(0,255,170,0.4);
-        }
+        .signal-premium-card { background: rgba(8, 14, 24, 0.75); backdrop-filter: blur(28px); border-radius: 48px; border: 1px solid rgba(44, 156, 212, 0.35); overflow: hidden; transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); box-shadow: 0 25px 45px -12px rgba(0,0,0,0.6); }
+        .signal-premium-card:hover { transform: translateY(-5px); border-color: rgba(44, 156, 212, 0.6); box-shadow: 0 30px 50px -15px rgba(44,156,212,0.3); }
+        .signal-header { padding: 22px 30px; border-bottom: 1px solid rgba(44,156,212,0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: linear-gradient(135deg, rgba(44,156,212,0.06), rgba(0,255,170,0.02)); }
+        .pair-badge { background: rgba(0,0,0,0.5); border-radius: 60px; padding: 8px 22px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(44,156,212,0.4); backdrop-filter: blur(4px); }
+        .entry-type-badge { background: rgba(0,255,170,0.2); border-radius: 60px; padding: 6px 18px; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(0,255,170,0.5); }
+        .consensus-badge { background: rgba(44,156,212,0.15); border-radius: 60px; padding: 6px 18px; font-size: 0.7rem; font-weight: 600; }
+        .signal-decision-modern { display: flex; justify-content: center; margin: 30px 0 20px; }
+        .decision-glow { border-radius: 100px; padding: 14px 48px; display: inline-flex; align-items: center; gap: 16px; animation: decisionPulse 0.5s ease-out; transition: all 0.3s; cursor: pointer; box-shadow: 0 0 20px rgba(0,255,170,0.2); }
+        .decision-glow:hover { transform: scale(1.02); filter: brightness(1.05); box-shadow: 0 0 30px rgba(0,255,170,0.4); }
         .decision-glow i { font-size: 1.6rem; }
         .decision-glow span { font-size: 1.5rem; font-weight: 800; letter-spacing: 5px; }
-        @keyframes decisionPulse {
-            0% { transform: scale(0.96); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .current-price-row {
-            text-align: center;
-            margin: 10px 0 20px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .price-badge {
-            background: rgba(0,0,0,0.4);
-            padding: 5px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(44,156,212,0.3);
-        }
-        .entry-gap-badge {
-            background: rgba(0,255,170,0.12);
-            padding: 5px 16px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            border: 1px solid rgba(0,255,170,0.4);
-        }
-        
-        /* INSIGHT PANEL */
-        .recommendation-panel {
-            background: linear-gradient(135deg, rgba(10,20,36,0.95), rgba(5,10,20,0.95));
-            border-radius: 28px;
-            margin: 20px 0;
-            padding: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            border: 1px solid rgba(44,156,212,0.25);
-        }
-        .recommendation-panel:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px -10px rgba(0,255,170,0.3);
-            border-color: rgba(44,156,212,0.5);
-        }
-        .insight-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, rgba(44,156,212,0.15), rgba(0,255,170,0.05));
-            border-bottom: 1px solid rgba(44,156,212,0.2);
-        }
-        .insight-header i {
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #2C9CD4, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: insightPulse 2s infinite;
-        }
-        @keyframes insightPulse {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 5px cyan; }
-        }
-        .insight-header span {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(135deg, #E0F5FF, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .insight-content {
-            padding: 16px 20px;
-        }
-        .insight-text {
-            font-size: 0.85rem;
-            line-height: 1.45;
-            color: #E0EDFF;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-        .insight-stats {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-start;
-            border-top: 1px dashed rgba(44,156,212,0.3);
-            padding-top: 12px;
-            margin-top: 4px;
-        }
-        .insight-stat {
-            background: rgba(0,0,0,0.35);
-            border-radius: 40px;
-            padding: 5px 14px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s;
-        }
-        .insight-stat:hover {
-            background: rgba(44,156,212,0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 0 8px rgba(0,255,170,0.3);
-        }
+        @keyframes decisionPulse { 0% { transform: scale(0.96); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+        .current-price-row { text-align: center; margin: 10px 0 20px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .price-badge { background: rgba(0,0,0,0.4); padding: 5px 16px; border-radius: 40px; font-size: 0.8rem; font-weight: 500; backdrop-filter: blur(4px); border: 1px solid rgba(44,156,212,0.3); }
+        .entry-gap-badge { background: rgba(0,255,170,0.12); padding: 5px 16px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; border: 1px solid rgba(0,255,170,0.4); }
+        .recommendation-panel { background: linear-gradient(135deg, rgba(10,20,36,0.95), rgba(5,10,20,0.95)); border-radius: 28px; margin: 20px 0; padding: 0; overflow: hidden; transition: all 0.3s ease; position: relative; border: 1px solid rgba(44,156,212,0.25); }
+        .recommendation-panel:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -10px rgba(0,255,170,0.3); border-color: rgba(44,156,212,0.5); }
+        .insight-header { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: linear-gradient(135deg, rgba(44,156,212,0.15), rgba(0,255,170,0.05)); border-bottom: 1px solid rgba(44,156,212,0.2); }
+        .insight-header i { font-size: 1.1rem; background: linear-gradient(135deg, #2C9CD4, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; animation: insightPulse 2s infinite; }
+        @keyframes insightPulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 5px cyan; } }
+        .insight-header span { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; background: linear-gradient(135deg, #E0F5FF, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .insight-content { padding: 16px 20px; }
+        .insight-text { font-size: 0.85rem; line-height: 1.45; color: #E0EDFF; margin-bottom: 12px; font-weight: 500; }
+        .insight-stats { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: flex-start; border-top: 1px dashed rgba(44,156,212,0.3); padding-top: 12px; margin-top: 4px; }
+        .insight-stat { background: rgba(0,0,0,0.35); border-radius: 40px; padding: 5px 14px; font-size: 0.7rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(4px); transition: all 0.2s; }
+        .insight-stat:hover { background: rgba(44,156,212,0.25); transform: translateY(-2px); box-shadow: 0 0 8px rgba(0,255,170,0.3); }
         .insight-stat i { font-size: 0.7rem; color: #00FFAA; }
         .confidence-badge { color: #00FFAA; }
         .votediff-badge { color: #FFB347; }
-        
-        /* VOTE STATS HORIZONTAL */
-        .vote-stats-horizontal {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 24px;
-            margin: 32px 0;
-            flex-wrap: wrap;
-        }
-        .vote-stat-item {
-            flex: 1;
-            min-width: 110px;
-            background: linear-gradient(145deg, rgba(5, 12, 22, 0.9), rgba(2, 6, 14, 0.95));
-            backdrop-filter: blur(12px);
-            border-radius: 36px;
-            padding: 20px 12px;
-            text-align: center;
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 1px solid rgba(44,156,212,0.3);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .vote-stat-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00FFAA, transparent);
-            transform: scaleX(0);
-            transition: transform 0.4s;
-        }
-        .vote-stat-item:hover::before {
-            transform: scaleX(1);
-        }
-        .vote-stat-item:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(44,156,212,0.7);
-            box-shadow: 0 20px 35px -12px rgba(44,156,212,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-            background: linear-gradient(145deg, rgba(44,156,212,0.15), rgba(0,255,170,0.05));
-        }
-        .vote-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            background: linear-gradient(135deg, #FFF, #B0E0FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            transition: all 0.3s;
-            animation: numberGlow 1.5s infinite alternate;
-        }
-        @keyframes numberGlow {
-            0% { text-shadow: 0 0 0px rgba(0,255,170,0); }
-            100% { text-shadow: 0 0 8px rgba(0,255,170,0.5); }
-        }
-        .vote-stat-item:hover .vote-number {
-            transform: scale(1.05);
-        }
-        .vote-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 10px;
-            font-weight: 600;
-            color: #A0B5D0;
-            transition: all 0.2s;
-        }
-        .vote-stat-item:hover .vote-label {
-            color: #00FFAA;
-            letter-spacing: 4px;
-        }
-        .vote-percent {
-            font-size: 0.9rem;
-            font-weight: 800;
-            margin-top: 12px;
-            padding: 5px 10px;
-            border-radius: 40px;
-            display: inline-block;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            transition: all 0.2s;
-        }
-        .vote-stat-item:first-child .vote-percent { 
-            color: #00FFAA; 
-            border-left: 2px solid #00FFAA;
-            box-shadow: 0 0 5px rgba(0,255,170,0.3);
-        }
-        .vote-stat-item:nth-child(2) .vote-percent { 
-            color: #FF5555; 
-            border-left: 2px solid #FF5555;
-            box-shadow: 0 0 5px rgba(255,85,85,0.3);
-        }
-        .vote-stat-item:last-child .vote-percent { 
-            color: #FFB347; 
-            border-left: 2px solid #FFB347;
-            box-shadow: 0 0 5px rgba(255,180,71,0.3);
-        }
-        .vote-stat-item:hover .vote-percent {
-            transform: translateY(-2px);
-            background: rgba(0,0,0,0.7);
-            box-shadow: 0 0 12px rgba(0,255,170,0.2);
-        }
-        
-        /* BAR CHART - 3 SEGMENT */
-        .bar-container {
-            background: rgba(0,0,0,0.5);
-            border-radius: 40px;
-            padding: 6px;
-            margin: 28px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        .bar-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(0,255,170,0.1), transparent);
-            pointer-events: none;
-        }
-        .vote-bar {
-            display: flex;
-            height: 50px;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-        }
-        .vote-bar-buy {
-            background: linear-gradient(90deg, #00C896, #00FFAA);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-        }
-        .vote-bar-buy::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: barShimmer 2s infinite;
-            transform: translateX(-100%);
-        }
-        @keyframes barShimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .vote-bar-sell {
-            background: linear-gradient(90deg, #FF5555, #FF3333);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-        }
-        .vote-bar-neutral {
-            background: linear-gradient(90deg, #FFB347, #FF8C00);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.8rem;
-            transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            color: #1A1A2E;
-        }
-        .vote-bar-buy:hover, .vote-bar-sell:hover, .vote-bar-neutral:hover {
-            filter: brightness(1.05);
-        }
-        
-        /* CONFIDENCE MODERN */
-        .confidence-modern {
-            background: linear-gradient(135deg, rgba(10,20,36,0.95), rgba(5,10,20,0.95));
-            border-radius: 36px;
-            padding: 22px 24px;
-            margin: 28px 0;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(44,156,212,0.2);
-            backdrop-filter: blur(8px);
-        }
-        .confidence-modern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #2C9CD4, #00FFAA, #2C9CD4);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s;
-        }
-        .confidence-modern:hover::before {
-            transform: scaleX(1);
-        }
-        .confidence-modern:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px -12px rgba(44,156,212,0.3);
-            border-color: rgba(44,156,212,0.4);
-        }
-        .confidence-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-        .confidence-header span:first-child i {
-            margin-right: 6px;
-            color: #2C9CD4;
-            animation: pulseIcon 2s infinite;
-        }
-        @keyframes pulseIcon {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-        .confidence-bar-bg {
-            height: 16px;
-            background: rgba(0,0,0,0.6);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(44,156,212,0.3);
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .confidence-bar-bg:hover {
-            box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 0 2px #00FFAA;
-        }
-        .confidence-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #2C9CD4, #00FFAA, #7FFF00);
-            background-size: 200% auto;
-            animation: gradientShift 2s ease infinite;
-            transition: width 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 0 12px rgba(0,255,170,0.6);
-        }
-        .confidence-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background: repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);
-            pointer-events: none;
-        }
-        .confidence-value {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            background: rgba(0,0,0,0.4);
-            padding: 12px 16px;
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(44,156,212,0.3);
-            transition: all 0.2s;
-        }
-        .confidence-value:hover {
-            transform: scale(1.01);
-            border-color: #00FFAA;
-            box-shadow: 0 0 12px rgba(0,255,170,0.3);
-        }
-        .confidence-value .reason-text {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .confidence-value .reason-text i {
-            font-size: 1.2rem;
-            color: #00FFAA;
-            animation: pulseIcon 1.5s infinite;
-        }
-        .confidence-value .power-badge {
-            background: linear-gradient(135deg, #00FFAA, #2C9CD4);
-            padding: 4px 14px;
-            border-radius: 40px;
-            color: #0A0F1E;
-            font-weight: 800;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            box-shadow: 0 0 10px rgba(0,255,170,0.5);
-        }
-        
-        /* DETAIL VOTE ITEMS */
-        .detail-vote-list {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
+        .vote-stats-horizontal { display: flex; flex-direction: row; justify-content: center; gap: 24px; margin: 32px 0; flex-wrap: wrap; }
+        .vote-stat-item { flex: 1; min-width: 110px; background: linear-gradient(145deg, rgba(5, 12, 22, 0.9), rgba(2, 6, 14, 0.95)); backdrop-filter: blur(12px); border-radius: 36px; padding: 20px 12px; text-align: center; transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); border: 1px solid rgba(44,156,212,0.3); position: relative; overflow: hidden; cursor: pointer; }
+        .vote-stat-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #00FFAA, transparent); transform: scaleX(0); transition: transform 0.4s; }
+        .vote-stat-item:hover::before { transform: scaleX(1); }
+        .vote-stat-item:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(44,156,212,0.7); box-shadow: 0 20px 35px -12px rgba(44,156,212,0.4), inset 0 1px 0 rgba(255,255,255,0.1); background: linear-gradient(145deg, rgba(44,156,212,0.15), rgba(0,255,170,0.05)); }
+        .vote-number { font-size: 2.5rem; font-weight: 800; line-height: 1.1; background: linear-gradient(135deg, #FFF, #B0E0FF); -webkit-background-clip: text; background-clip: text; color: transparent; transition: all 0.3s; animation: numberGlow 1.5s infinite alternate; }
+        @keyframes numberGlow { 0% { text-shadow: 0 0 0px rgba(0,255,170,0); } 100% { text-shadow: 0 0 8px rgba(0,255,170,0.5); } }
+        .vote-stat-item:hover .vote-number { transform: scale(1.05); }
+        .vote-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; margin-top: 10px; font-weight: 600; color: #A0B5D0; transition: all 0.2s; }
+        .vote-stat-item:hover .vote-label { color: #00FFAA; letter-spacing: 4px; }
+        .vote-percent { font-size: 0.9rem; font-weight: 800; margin-top: 12px; padding: 5px 10px; border-radius: 40px; display: inline-block; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); transition: all 0.2s; }
+        .vote-stat-item:first-child .vote-percent { color: #00FFAA; border-left: 2px solid #00FFAA; box-shadow: 0 0 5px rgba(0,255,170,0.3); }
+        .vote-stat-item:nth-child(2) .vote-percent { color: #FF5555; border-left: 2px solid #FF5555; box-shadow: 0 0 5px rgba(255,85,85,0.3); }
+        .vote-stat-item:last-child .vote-percent { color: #FFB347; border-left: 2px solid #FFB347; box-shadow: 0 0 5px rgba(255,180,71,0.3); }
+        .vote-stat-item:hover .vote-percent { transform: translateY(-2px); background: rgba(0,0,0,0.7); box-shadow: 0 0 12px rgba(0,255,170,0.2); }
+        .bar-container { background: rgba(0,0,0,0.5); border-radius: 40px; padding: 6px; margin: 28px 0; position: relative; overflow: hidden; }
+        .bar-container::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(0,255,170,0.1), transparent); pointer-events: none; }
+        .vote-bar { display: flex; height: 50px; border-radius: 40px; overflow: hidden; position: relative; }
+        .vote-bar-buy { background: linear-gradient(90deg, #00C896, #00FFAA); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); position: relative; overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+        .vote-bar-buy::after { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: barShimmer 2s infinite; transform: translateX(-100%); }
+        @keyframes barShimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .vote-bar-sell { background: linear-gradient(90deg, #FF5555, #FF3333); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+        .vote-bar-neutral { background: linear-gradient(90deg, #FFB347, #FF8C00); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); color: #1A1A2E; }
+        .vote-bar-buy:hover, .vote-bar-sell:hover, .vote-bar-neutral:hover { filter: brightness(1.05); }
+        .confidence-modern { background: linear-gradient(135deg, rgba(10,20,36,0.95), rgba(5,10,20,0.95)); border-radius: 36px; padding: 22px 24px; margin: 28px 0; transition: all 0.3s; position: relative; overflow: hidden; border: 1px solid rgba(44,156,212,0.2); backdrop-filter: blur(8px); }
+        .confidence-modern::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #2C9CD4, #00FFAA, #2C9CD4); transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
+        .confidence-modern:hover::before { transform: scaleX(1); }
+        .confidence-modern:hover { transform: translateY(-4px); box-shadow: 0 15px 30px -12px rgba(44,156,212,0.3); border-color: rgba(44,156,212,0.4); }
+        .confidence-header { display: flex; justify-content: space-between; margin-bottom: 16px; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .confidence-header span:first-child i { margin-right: 6px; color: #2C9CD4; animation: pulseIcon 2s infinite; }
+        @keyframes pulseIcon { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+        .confidence-bar-bg { height: 16px; background: rgba(0,0,0,0.6); border-radius: 20px; overflow: hidden; box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(44,156,212,0.3); position: relative; cursor: pointer; transition: all 0.2s; }
+        .confidence-bar-bg:hover { box-shadow: inset 0 1px 4px rgba(0,0,0,0.5), 0 0 0 2px #00FFAA; }
+        .confidence-bar-fill { height: 100%; background: linear-gradient(90deg, #2C9CD4, #00FFAA, #7FFF00); background-size: 200% auto; animation: gradientShift 2s ease infinite; transition: width 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1); border-radius: 20px; position: relative; box-shadow: 0 0 12px rgba(0,255,170,0.6); }
+        .confidence-bar-fill::after { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px); pointer-events: none; }
+        .confidence-value { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 60px; backdrop-filter: blur(4px); border: 1px solid rgba(44,156,212,0.3); transition: all 0.2s; }
+        .confidence-value:hover { transform: scale(1.01); border-color: #00FFAA; box-shadow: 0 0 12px rgba(0,255,170,0.3); }
+        .confidence-value .reason-text { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .confidence-value .reason-text i { font-size: 1.2rem; color: #00FFAA; animation: pulseIcon 1.5s infinite; }
+        .confidence-value .power-badge { background: linear-gradient(135deg, #00FFAA, #2C9CD4); padding: 4px 14px; border-radius: 40px; color: #0A0F1E; font-weight: 800; letter-spacing: 1px; font-size: 0.8rem; box-shadow: 0 0 10px rgba(0,255,170,0.5); }
+        .detail-vote-list { max-height: 400px; overflow-y: auto; padding-right: 8px; }
         .detail-vote-list::-webkit-scrollbar { width: 4px; }
         .detail-vote-list::-webkit-scrollbar-track { background: #11161F; border-radius: 10px; }
         .detail-vote-list::-webkit-scrollbar-thumb { background: #2C9CD4; border-radius: 10px; }
-        .detail-vote-item {
-            padding: 14px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            font-size: 0.75rem;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border-radius: 20px;
-            margin: 6px 0;
-            cursor: pointer;
-            position: relative;
-            background: rgba(8, 14, 24, 0.4);
-            backdrop-filter: blur(4px);
-            animation: fadeInUp 0.3s ease backwards;
-            animation-delay: calc(var(--i, 0) * 0.03s);
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .detail-vote-item:hover {
-            background: linear-gradient(90deg, rgba(44,156,212,0.25), rgba(0,255,170,0.08));
-            transform: translateX(8px) scale(1.01);
-            border-bottom-color: rgba(44,156,212,0.5);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        .detail-vote-item:active {
-            transform: scale(0.99);
-        }
-        .detail-vote-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 20%;
-            bottom: 20%;
-            width: 3px;
-            background: linear-gradient(180deg, #2C9CD4, #00FFAA);
-            transform: scaleY(0);
-            transition: transform 0.2s;
-            border-radius: 4px;
-        }
-        .detail-vote-item:hover::before {
-            transform: scaleY(1);
-        }
-        .vote-type-badge {
-            min-width: 70px;
-            text-align: center;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 40px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-        }
+        .detail-vote-item { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 14px; align-items: center; font-size: 0.75rem; transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1); border-radius: 20px; margin: 6px 0; cursor: pointer; position: relative; background: rgba(8, 14, 24, 0.4); backdrop-filter: blur(4px); animation: fadeInUp 0.3s ease backwards; animation-delay: calc(var(--i, 0) * 0.03s); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .detail-vote-item:hover { background: linear-gradient(90deg, rgba(44,156,212,0.25), rgba(0,255,170,0.08)); transform: translateX(8px) scale(1.01); border-bottom-color: rgba(44,156,212,0.5); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .detail-vote-item:active { transform: scale(0.99); }
+        .detail-vote-item::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 3px; background: linear-gradient(180deg, #2C9CD4, #00FFAA); transform: scaleY(0); transition: transform 0.2s; border-radius: 4px; }
+        .detail-vote-item:hover::before { transform: scaleY(1); }
+        .vote-type-badge { min-width: 70px; text-align: center; font-weight: 800; padding: 4px 10px; border-radius: 40px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); font-size: 0.7rem; letter-spacing: 1px; }
         .vote-type-buy { color: #00FFAA; border-left: 2px solid #00FFAA; }
         .vote-type-sell { color: #FF5555; border-left: 2px solid #FF5555; }
         .vote-type-neutral { color: #FFB347; border-left: 2px solid #FFB347; }
-        .detail-reason {
-            flex: 1;
-            font-weight: 500;
-            color: #E0EDFF;
-        }
-        .detail-value {
-            font-family: 'Monaco', monospace;
-            font-size: 0.7rem;
-            background: rgba(0,0,0,0.6);
-            padding: 4px 10px;
-            border-radius: 30px;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            color: #B0E0FF;
-            transition: all 0.2s;
-        }
-        .detail-vote-item:hover .detail-value {
-            background: #2C9CD4;
-            color: #0A0F1E;
-            transform: scale(1.02);
-        }
-        
-        /* RISK MANAGEMENT */
-        .risk-management-modern {
-            background: linear-gradient(145deg, rgba(8,20,36,0.9), rgba(4,12,24,0.95));
-            border-radius: 32px;
-            padding: 24px;
-            margin: 24px 0;
-            border: 1px solid rgba(44,156,212,0.2);
-        }
-        .risk-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        .risk-item {
-            background: rgba(0,0,0,0.4);
-            border-radius: 24px;
-            padding: 16px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .risk-item:hover {
-            transform: translateY(-3px);
-            background: rgba(44,156,212,0.12);
-            border: 1px solid rgba(44,156,212,0.3);
-        }
-        .risk-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: #8BA0C0;
-        }
-        .risk-value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-top: 8px;
-            background: linear-gradient(135deg, #FFF, #2C9CD4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .tp-list-modern {
-            margin: 20px 0 0;
-        }
-        .tp-item-modern {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.35);
-            border-radius: 20px;
-            padding: 12px 18px;
-            margin-bottom: 8px;
-            border-left: 3px solid;
-            transition: all 0.2s;
-            font-size: 0.8rem;
-        }
-        .tp-item-modern:hover {
-            transform: translateX(6px);
-            background: rgba(44,156,212,0.1);
-        }
-        
-        /* TABS */
-        .tabs-signal {
-            display: flex;
-            gap: 16px;
-            margin: 28px 0 20px;
-            border-bottom: 1px solid rgba(44,156,212,0.3);
-            padding-bottom: 12px;
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 8px 28px;
-            color: #8BA0C0;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border-radius: 40px;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: rgba(44,156,212,0.2);
-            color: #00FFAA;
-            box-shadow: 0 0 8px rgba(0,255,170,0.3);
-        }
+        .detail-reason { flex: 1; font-weight: 500; color: #E0EDFF; }
+        .detail-value { font-family: 'Monaco', monospace; font-size: 0.7rem; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 30px; letter-spacing: 0.5px; font-weight: 600; color: #B0E0FF; transition: all 0.2s; }
+        .detail-vote-item:hover .detail-value { background: #2C9CD4; color: #0A0F1E; transform: scale(1.02); }
+        .risk-management-modern { background: linear-gradient(145deg, rgba(8,20,36,0.9), rgba(4,12,24,0.95)); border-radius: 32px; padding: 24px; margin: 24px 0; border: 1px solid rgba(44,156,212,0.2); }
+        .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px; }
+        .risk-item { background: rgba(0,0,0,0.4); border-radius: 24px; padding: 16px; text-align: center; transition: all 0.2s; }
+        .risk-item:hover { transform: translateY(-3px); background: rgba(44,156,212,0.12); border: 1px solid rgba(44,156,212,0.3); }
+        .risk-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2.5px; color: #8BA0C0; }
+        .risk-value { font-size: 1.3rem; font-weight: 800; margin-top: 8px; background: linear-gradient(135deg, #FFF, #2C9CD4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .tp-list-modern { margin: 20px 0 0; }
+        .tp-item-modern { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.35); border-radius: 20px; padding: 12px 18px; margin-bottom: 8px; border-left: 3px solid; transition: all 0.2s; font-size: 0.8rem; }
+        .tp-item-modern:hover { transform: translateX(6px); background: rgba(44,156,212,0.1); }
+        .tabs-signal { display: flex; gap: 16px; margin: 28px 0 20px; border-bottom: 1px solid rgba(44,156,212,0.3); padding-bottom: 12px; }
+        .tab-btn { background: transparent; border: none; padding: 8px 28px; color: #8BA0C0; font-weight: 600; font-size: 0.85rem; cursor: pointer; border-radius: 40px; transition: all 0.2s; }
+        .tab-btn.active { background: rgba(44,156,212,0.2); color: #00FFAA; box-shadow: 0 0 8px rgba(0,255,170,0.3); }
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* ========== REKOMENDASI TIMEFRAME - HORIZONTAL KIRI-KANAN ========== */
+        /* ========== STYLE TIMEFRAME H1 ========== */
         .info-timeframe {
-            margin-top: 24px;
-            border-radius: 32px;
+            margin-top: 28px;
+            border-radius: 48px;
             background: linear-gradient(145deg, rgba(5, 12, 22, 0.95), rgba(2, 6, 14, 0.98));
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(44, 156, 212, 0.4);
-            padding: 16px 20px;
+            border: 1px solid rgba(44, 156, 212, 0.5);
+            padding: 24px 28px;
             position: relative;
             overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(44,156,212,0.1) inset;
         }
         .info-timeframe::before {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 32px;
-            padding: 1px;
+            border-radius: 48px;
+            padding: 2px;
             background: linear-gradient(135deg, #2C9CD4, #00FFAA, #2C9CD4);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask-composite: exclude;
@@ -1323,62 +231,73 @@
             0% { background-position: 0% 0%; }
             100% { background-position: 200% 0%; }
         }
-        .timeframe-container {
-            display: flex;
-            flex-direction: row;
-            gap: 16px;
-            justify-content: space-between;
-            align-items: stretch;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            scrollbar-width: thin;
-        }
-        .timeframe-container::-webkit-scrollbar {
-            height: 3px;
-        }
-        .timeframe-container::-webkit-scrollbar-track {
-            background: #1F2A3E;
-            border-radius: 10px;
-        }
-        .timeframe-container::-webkit-scrollbar-thumb {
-            background: #2C9CD4;
-            border-radius: 10px;
-        }
-        .timeframe-card {
-            flex: 1;
-            min-width: 160px;
-            background: rgba(10, 20, 40, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 12px 12px;
+        .timeframe-header {
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 1px solid rgba(44, 156, 212, 0.3);
+            margin-bottom: 16px;
+        }
+        .timeframe-header .badge-recommend {
+            display: inline-block;
+            background: rgba(0,255,170,0.15);
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #00FFAA;
+            border: 1px solid rgba(0,255,170,0.5);
+            backdrop-filter: blur(4px);
+            margin-bottom: 10px;
+        }
+        .timeframe-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF, #7AD0FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .timeframe-single-card {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .timeframe-card-h1 {
+            background: linear-gradient(145deg, rgba(44,156,212,0.2), rgba(0,255,170,0.08));
+            border: 1px solid rgba(44,156,212,0.6);
+            border-radius: 48px;
+            padding: 20px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 15px 30px -12px rgba(44,156,212,0.3);
         }
-        .timeframe-card::before {
+        .timeframe-card-h1::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(44,156,212,0.15), transparent);
-            transition: left 0.5s;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(44,156,212,0.25), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
         }
-        .timeframe-card:hover::before {
-            left: 100%;
+        .timeframe-card-h1:hover::before {
+            opacity: 1;
         }
-        .timeframe-card:hover {
-            transform: translateY(-4px) scale(1.02);
+        .timeframe-card-h1:hover {
+            transform: translateY(-6px) scale(1.02);
             border-color: #00FFAA;
-            box-shadow: 0 12px 20px -10px rgba(44,156,212,0.4);
+            box-shadow: 0 25px 40px -12px rgba(44,156,212,0.5), 0 0 0 1px rgba(0,255,170,0.3) inset;
         }
-        .timeframe-icon {
-            font-size: 1.8rem;
+        .timeframe-icon-large {
+            font-size: 3.2rem;
             margin-bottom: 8px;
             background: linear-gradient(135deg, #2C9CD4, #00FFAA);
             -webkit-background-clip: text;
@@ -1388,157 +307,100 @@
         }
         @keyframes iconFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+            50% { transform: translateY(-6px); }
         }
-        .timeframe-title {
-            font-size: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFF, #7AD0FF);
+        .timeframe-title-large {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF, #00FFAA, #2C9CD4);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(0,255,170,0.3);
+            animation: titlePulse 2s ease-in-out infinite;
         }
-        .timeframe-values {
+        @keyframes titlePulse {
+            0%, 100% { opacity: 0.9; text-shadow: 0 0 5px rgba(0,255,170,0.3); }
+            50% { opacity: 1; text-shadow: 0 0 20px rgba(0,255,170,0.6); }
+        }
+        .timeframe-sub {
+            font-size: 0.85rem;
+            color: #B0E0FF;
+            margin-bottom: 12px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+        .timeframe-badge-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             margin-top: 8px;
         }
-        .timeframe-badge {
+        .badge-time {
             background: rgba(0,0,0,0.5);
-            padding: 3px 12px;
+            padding: 5px 14px;
             border-radius: 40px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            border: 1px solid rgba(44,156,212,0.5);
+            border: 1px solid rgba(44,156,212,0.6);
             transition: all 0.2s;
         }
-        .timeframe-badge:hover {
+        .badge-time:hover {
             background: #2C9CD4;
             color: #0A0F1E;
             transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(44,156,212,0.5);
         }
-        .timeframe-desc {
-            font-size: 0.6rem;
+        .area-kuat {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
             color: #8BA0C0;
-            margin-top: 8px;
-            letter-spacing: 0.5px;
-        }
-        
-        footer { margin-top: 24px; text-align: center; font-size: 0.55rem; opacity: 0.4; border-top: 1px solid #1E2A3A; padding-top: 12px; }
-        
-        /* SIGNAL LOADING OVERLAY */
-        .signal-loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(3, 5, 12, 0.98);
-            backdrop-filter: blur(30px);
-            z-index: 10001;
+            border-top: 1px solid rgba(44,156,212,0.3);
+            padding-top: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeInOverlay 0.3s ease;
+            gap: 12px;
         }
-        @keyframes fadeInOverlay {
-            from { opacity: 0; backdrop-filter: blur(0px); }
-            to { opacity: 1; backdrop-filter: blur(30px); }
+        .area-kuat i {
+            color: #00FFAA;
+            font-size: 0.9rem;
+            animation: pulseIcon 1.5s infinite;
         }
-        .loading-card-premium {
-            background: linear-gradient(145deg, #0C1222, #060A16);
-            border-radius: 64px;
-            padding: 45px 55px;
-            text-align: center;
-            border: 1px solid rgba(44, 156, 212, 0.4);
-            max-width: 550px;
-            width: 90%;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(8px);
-        }
-        .loading-animation-icon {
-            font-size: 4rem;
-            background: linear-gradient(135deg, #2C9CD4, #00FFAA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: iconRotate 2s linear infinite;
-            display: inline-block;
-        }
-        @keyframes iconRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loading-title {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin: 25px 0 15px;
+        .area-kuat span {
             background: linear-gradient(135deg, #FFF, #00FFAA);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1px;
+            font-weight: 700;
         }
-        .loading-steps {
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        .step-load {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: #8BA0C0;
-            transition: all 0.3s;
-        }
-        .step-load i {
-            font-size: 1.8rem;
-            transition: all 0.3s;
-        }
-        .step-load.active {
-            color: #00FFAA;
-            text-shadow: 0 0 8px rgba(0,255,170,0.5);
-            transform: scale(1.02);
-        }
-        .step-load.active i {
-            transform: scale(1.1);
-        }
-        .progress-bar-premium-load {
-            height: 6px;
-            background: #1F2A3E;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 25px 0 20px;
-        }
-        .progress-fill-premium-load {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #2C9CD4, #00FFAA);
-            border-radius: 10px;
-            transition: width 0.2s linear;
-        }
-        .loading-status {
-            font-size: 0.85rem;
-            font-family: 'Inter', monospace;
-            font-weight: 600;
-            letter-spacing: 1px;
-            background: rgba(0,0,0,0.4);
-            display: inline-block;
-            padding: 6px 18px;
-            border-radius: 40px;
-            color: #B0E0FF;
-            margin-top: 5px;
+        @media (max-width: 640px) {
+            .timeframe-card-h1 { max-width: 100%; padding: 16px 20px; }
+            .timeframe-title-large { font-size: 2.2rem; letter-spacing: 2px; }
+            .timeframe-icon-large { font-size: 2.5rem; }
         }
         
-        /* MODAL CREDIT */
+        footer { margin-top: 24px; text-align: center; font-size: 0.55rem; opacity: 0.4; border-top: 1px solid #1E2A3A; padding-top: 12px; }
+        .signal-loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 12, 0.98); backdrop-filter: blur(30px); z-index: 10001; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.3s ease; }
+        @keyframes fadeInOverlay { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(30px); } }
+        .loading-card-premium { background: linear-gradient(145deg, #0C1222, #060A16); border-radius: 64px; padding: 45px 55px; text-align: center; border: 1px solid rgba(44, 156, 212, 0.4); max-width: 550px; width: 90%; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); backdrop-filter: blur(8px); }
+        .loading-animation-icon { font-size: 4rem; background: linear-gradient(135deg, #2C9CD4, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; animation: iconRotate 2s linear infinite; display: inline-block; }
+        @keyframes iconRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-title { font-size: 1.6rem; font-weight: 800; margin: 25px 0 15px; background: linear-gradient(135deg, #FFF, #00FFAA); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 1px; }
+        .loading-steps { display: flex; justify-content: center; gap: 35px; margin: 30px 0; flex-wrap: wrap; }
+        .step-load { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 0.75rem; color: #8BA0C0; transition: all 0.3s; }
+        .step-load i { font-size: 1.8rem; transition: all 0.3s; }
+        .step-load.active { color: #00FFAA; text-shadow: 0 0 8px rgba(0,255,170,0.5); transform: scale(1.02); }
+        .step-load.active i { transform: scale(1.1); }
+        .progress-bar-premium-load { height: 6px; background: #1F2A3E; border-radius: 10px; overflow: hidden; margin: 25px 0 20px; }
+        .progress-fill-premium-load { height: 100%; width: 0%; background: linear-gradient(90deg, #2C9CD4, #00FFAA); border-radius: 10px; transition: width 0.2s linear; }
+        .loading-status { font-size: 0.85rem; font-family: 'Inter', monospace; font-weight: 600; letter-spacing: 1px; background: rgba(0,0,0,0.4); display: inline-block; padding: 6px 18px; border-radius: 40px; color: #B0E0FF; margin-top: 5px; }
         .modal-credit { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2,4,12,0.96); backdrop-filter: blur(48px); z-index: 20000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
         .modal-credit.active { visibility: visible; opacity: 1; }
         .modal-container { background: linear-gradient(145deg, rgba(12,22,45,0.98), rgba(6,12,28,0.98)); border-radius: 56px; max-width: 620px; width: 90%; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(44,156,212,0.5); }
@@ -1563,38 +425,8 @@
         .image-preview-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); backdrop-filter: blur(40px); z-index: 30000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; }
         .image-preview-overlay.active { visibility: visible; opacity: 1; }
         .image-preview-overlay img { max-width: 90%; max-height: 90%; border-radius: 32px; }
-        
-        @media (max-width: 900px) {
-            .dashboard-grid { display: flex; flex-direction: column; gap: 28px; }
-            .risk-grid { grid-template-columns: 1fr; gap: 12px; }
-            .decision-glow span { font-size: 1.2rem; letter-spacing: 4px; }
-            .loading-card-premium { padding: 30px 25px; }
-            .loading-steps { gap: 20px; }
-            .vote-stats-horizontal { gap: 16px; }
-            .vote-stat-item { min-width: 90px; padding: 16px 8px; }
-            .vote-number { font-size: 1.8rem; }
-            .timeframe-card { min-width: 140px; }
-        }
-        @media (max-width: 640px) {
-            .signal-header { flex-direction: column; align-items: center; text-align: center; }
-            .decision-glow { padding: 12px 28px; }
-            .decision-glow span { font-size: 1rem; letter-spacing: 3px; }
-            .risk-value { font-size: 1rem; }
-            .vote-stats-horizontal { gap: 12px; }
-            .vote-stat-item { min-width: 80px; padding: 12px 6px; }
-            .vote-number { font-size: 1.4rem; }
-            .vote-percent { font-size: 0.7rem; }
-            .timeframe-container {
-                overflow-x: auto;
-                justify-content: flex-start;
-                gap: 12px;
-            }
-            .timeframe-card {
-                flex: 0 0 auto;
-                width: 45%;
-                min-width: 140px;
-            }
-        }
+        @media (max-width: 900px) { .dashboard-grid { display: flex; flex-direction: column; gap: 28px; } .risk-grid { grid-template-columns: 1fr; gap: 12px; } .decision-glow span { font-size: 1.2rem; letter-spacing: 4px; } .loading-card-premium { padding: 30px 25px; } .loading-steps { gap: 20px; } .vote-stats-horizontal { gap: 16px; } .vote-stat-item { min-width: 90px; padding: 16px 8px; } .vote-number { font-size: 1.8rem; } }
+        @media (max-width: 640px) { .signal-header { flex-direction: column; align-items: center; text-align: center; } .decision-glow { padding: 12px 28px; } .decision-glow span { font-size: 1rem; letter-spacing: 3px; } .risk-value { font-size: 1rem; } .vote-stats-horizontal { gap: 12px; } .vote-stat-item { min-width: 80px; padding: 12px 6px; } .vote-number { font-size: 1.4rem; } .vote-percent { font-size: 0.7rem; } }
     </style>
 </head>
 <body>
@@ -1620,7 +452,7 @@
                     </div>
                     <div class="logo-text-premium"><h1>Screener Pro</h1></div>
                 </div>
-                <div class="header-stats"><div class="stat-item"><i class="fas fa-microchip"></i><div class="stat-info"><span class="stat-label">15 Indicators</span><span class="stat-value">Breakout System</span></div></div></div>
+                <div class="header-stats"><div class="stat-item"><i class="fas fa-microchip"></i><div class="stat-info"><span class="stat-label">15 Indicators</span><span class="stat-value">Konfirmasi</span></div></div></div>
                 <div class="credit-control-premium"><div class="credit-card"><i class="fas fa-coins"></i><span class="credit-amount" id="limitCountHeader">0</span><span class="credit-label">CREDITS</span></div><button class="btn-buy-credit" id="addLimitBtnHeader"><i class="fas fa-plus-circle"></i> <span>Tambah Limit</span><div class="btn-glow"></div></button></div>
             </div>
         </div>
@@ -1637,20 +469,52 @@
             </div>
             <div style="display: none; margin-bottom:0;" id="signalCardWrapper"><div id="signalPanel"></div></div>
         </div>
+        
+        <!-- REKOMENDASI TIMEFRAME H1 -->
         <div class="info-timeframe">
-            <div class="timeframe-container">
-                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-bolt"></i></div><div class="timeframe-title">Scalping</div><div class="timeframe-values"><span class="timeframe-badge">M1</span><span class="timeframe-badge">M5</span></div><div class="timeframe-desc">Breakout cepat</div></div>
-                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-chart-line"></i></div><div class="timeframe-title">Day Trading</div><div class="timeframe-values"><span class="timeframe-badge">M15</span><span class="timeframe-badge">H1</span><span class="timeframe-badge">H4</span></div><div class="timeframe-desc">Konfirmasi breakout</div></div>
+            <div class="timeframe-header">
+                <div class="badge-recommend"><i class="fas fa-chart-line"></i> REKOMENDASI TIMEFRAME</div>
+                <h3>Konfirmasi Area Kuat</h3>
+            </div>
+            <div class="timeframe-single-card">
+                <div class="timeframe-card-h1">
+                    <div class="timeframe-icon-large"><i class="fas fa-chart-simple"></i></div>
+                    <div class="timeframe-title-large">H1</div>
+                    <div class="timeframe-sub">1 Hour · Optimal Breakout</div>
+                    <div class="timeframe-badge-container">
+                        <span class="badge-time"><i class="fas fa-check-circle"></i> Sinyal Valid</span>
+                        <span class="badge-time"><i class="fas fa-waveform"></i> Momentum Akurat</span>
+                        <span class="badge-time"><i class="fas fa-bolt"></i> Entry Presisi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="area-kuat">
+                <i class="fas fa-shield-alt"></i>
+                <span>AREA KONFIRMASI TERKUAT</span>
+                <i class="fas fa-shield-alt"></i>
             </div>
         </div>
-        <footer>© Hunters Group · 15 Indicators Breakout System · Real-Time Price Integration · Licence 2025</footer>
+        
+        <footer>© Hunters Group · 15 Indicators (SuperTrend, Aroon, HMA) · Entry XAUUSD 0.1% · SL 0.33% · TP1 0.495% · Real-Time</footer>
     </div>
 </div>
 <div id="creditModal" class="modal-credit"><div class="modal-container"><div id="step1" class="modal-step"><div class="modal-header"><h2><i class="fas fa-gem"></i> Beli Credit</h2><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button></div><div class="info-harga"><i class="fas fa-tag"></i> Harga per credit: <strong style="color:#00FFAA;">Rp6.500</strong></div><div class="jumlah-control"><button class="jumlah-btn" id="minusCredit"><i class="fas fa-minus"></i></button><span class="jumlah-value" id="jumlahCredit">1</span><button class="jumlah-btn" id="plusCredit"><i class="fas fa-plus"></i></button></div><div class="total-display-modern" id="totalBayarDisplay"></div><div class="qris-area"><img class="qris-img" id="qrisImage" src="https://blogger.googleusercontent.com/img/a/AVvXsEhH0Z6ewE2H7V-Maa0448YScMvF2qjha4Xt6uKlioFSJeUXHSzYesEbB2CsWE1LRdJSN7QxwYW1yGRDN2uyYVY6DtaTfKn_727s9cC2dWr3mNoezeKIFci6rRK6HzbQzCE1DYg8q1F5DWOm9RbypUNB5ipKcIDbXL0GW9d9SRIQ3QePOqw_lcEL4t1Wh_DK" alt="QRIS"><div class="qris-caption" style="font-size:0.7rem; margin-top:8px;">Scan QRIS menggunakan mobile banking atau e-wallet</div></div><button class="btn-action" id="nextToStep2">Lanjut ke Konfirmasi <i class="fas fa-arrow-right"></i></button></div><div id="step2" class="modal-step" style="display: none;"><div class="modal-header"><h2><i class="fas fa-shield-alt"></i> Konfirmasi Pembayaran</h2><button class="close-modal" id="closeModalBtn2"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Nomor Transaksi <span style="color:#F87171;">*</span></label><input type="text" id="kodeTransaksi" placeholder="Contoh: 1234567890"></div><div class="form-group"><label>Nama Lengkap <span style="color:#F87171;">*</span></label><input type="text" id="namaLengkap" placeholder="Contoh: John Doe"></div><div class="form-group"><label>Sumber Dana <span style="color:#F87171;">*</span></label><select id="sumberDana"><option value="BCA">BCA</option><option value="Mandiri">Mandiri</option><option value="BNI">BNI</option><option value="BRI">BRI</option><option value="Dana">Dana</option><option value="OVO">OVO</option><option value="GoPay">GoPay</option><option value="ShopeePay">ShopeePay</option></select></div><div class="form-group"><label>Email Aktif <span style="color:#F87171;">*</span></label><input type="email" id="email" placeholder="email@gmail.com"></div><button class="btn-action" id="confirmPurchaseBtn"><i class="fas fa-check-circle"></i> Konfirmasi Pembayaran</button><button class="btn-action btn-back" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> Kembali</button></div></div></div>
 <div id="imagePreviewOverlay" class="image-preview-overlay"><img id="previewImageFull" src="" alt="preview"></div>
 
 <script>
-    // ========== THREE.JS GLOBE ==========
+    // ========== PERBAIKAN DETEKSI TIMEFRAME ==========
+    function detectTimeframeImproved(text) {
+        const lower = text.toLowerCase();
+        if (/\bh4\b|\b4h\b|\b4 hour\b/.test(lower)) return { interval: '4h', display: 'H4' };
+        if (/\bh1\b|\b1h\b|\b1 hour\b/.test(lower)) return { interval: '1h', display: 'H1' };
+        if (/\bm30\b|\b30m\b|\b30 min\b/.test(lower)) return { interval: '30min', display: 'M30' };
+        if (/\bm15\b|\b15m\b|\b15 min\b/.test(lower)) return { interval: '15min', display: 'M15' };
+        if (/\bm5\b|\b5m\b|\b5 min\b/.test(lower)) return { interval: '5min', display: 'M5' };
+        if (/\bm1\b|\b1m\b|\b1 min\b/.test(lower)) return { interval: '1min', display: 'M1' };
+        return { interval: '1h', display: 'H1' };
+    }
+
+    // ========== THREE.JS GLOBE & PARTICLE ==========
     (function() {
         const container = document.querySelector('.globe-container-3d');
         if (container) {
@@ -1686,7 +550,6 @@
         }, 45);
     })();
 
-    // Particle Background
     const pCanvas = document.getElementById('particleCanvas');
     if (pCanvas) {
         const pCtx = pCanvas.getContext('2d');
@@ -1823,16 +686,6 @@
         if (forex) return `${forex[1].toUpperCase()}/${forex[2].toUpperCase()}`;
         return null;
     }
-    function detectTimeframe(text) {
-        const lower = text.toLowerCase();
-        if (/\bm15\b|\b15m\b/.test(lower)) return { interval: '15min', display: 'M15' };
-        if (/\bm30\b|\b30m\b/.test(lower)) return { interval: '30min', display: 'M30' };
-        if (/\bm1\b|\b1m\b/.test(lower)) return { interval: '1min', display: 'M1' };
-        if (/\bm5\b|\b5m\b/.test(lower)) return { interval: '5min', display: 'M5' };
-        if (/\bh1\b|\b1h\b/.test(lower)) return { interval: '1h', display: 'H1' };
-        if (/\bh4\b|\b4h\b/.test(lower)) return { interval: '4h', display: 'H4' };
-        return { interval: '1day', display: 'Daily' };
-    }
     async function getRealTimePrice(symbol) {
         if (symbol === 'BTCUSD') {
             try {
@@ -1887,7 +740,7 @@
         };
     }
 
-    // ========== 15 INDICATORS VOTING - DIPERBAIKI UNTUK XAUUSD & BREAKOUT YANG VALID ==========
+    // ========== 15 INDICATORS VOTING (ENTRY XAUUSD 0.1%, SL 0.33%) ==========
     class FifteenIndicatorsVoting {
         constructor(pairSymbol) {
             this.votes = { buy: 0, sell: 0, neutral: 0 };
@@ -1895,7 +748,6 @@
             const upper = (pairSymbol || '').toUpperCase();
             this.isCrypto = (upper === 'BTCUSD' || upper === 'ETHUSD' || upper === 'SOLUSD' || upper === 'XRPUSD' || upper === 'BNBUSD');
             this.isXau = (upper === 'XAUUSD');
-            // Parameter default untuk forex / komoditas
             this.rsiPeriod = 14;
             this.stochPeriod = 14;
             this.bbStdDev = 2;
@@ -1903,57 +755,54 @@
             this.cciPeriod = 20;
             this.mfiPeriod = 14;
             this.willrPeriod = 14;
-            // Untuk XAUUSD, kita akan lebih mengutamakan tren
+            this.superTrendPeriod = 10;
+            this.superTrendMultiplier = 3;
+            this.aroonPeriod = 25;
+            this.hullPeriod = 20;
         }
         analyze(highs, lows, closes, volumes) {
             const currentPrice = closes[closes.length - 1];
             this.votes = { buy: 0, sell: 0, neutral: 0 };
             this.voteDetails = [];
-            
-            // --- 1. Tren EMA (9,21,50) ---
-            const ema9 = this.calculateEMA(closes, 9);
-            const ema21 = this.calculateEMA(closes, 21);
-            const ema50 = this.calculateEMA(closes, 50);
-            const e9 = ema9[ema9.length-1], e21 = ema21[ema21.length-1], e50 = ema50[ema50.length-1];
-            const isBullishTrend = (e9 > e21 && currentPrice > e50);
-            const isBearishTrend = (e9 < e21 && currentPrice < e50);
-            if (isBullishTrend) this.addVote('buy', 'EMA9 > EMA21 & price above EMA50 (bullish trend)', e9);
-            else if (isBearishTrend) this.addVote('sell', 'EMA9 < EMA21 & price below EMA50 (bearish trend)', e9);
-            else this.addVote('neutral', 'EMA mixed / sideways', e9);
-            
-            // --- 2. Parabolic SAR (arah terbaru) ---
+            const atrValues = this.calculateATR(highs, lows, closes, 14);
+            const latestAtr = atrValues[atrValues.length-1] || 0;
+            const superTrend = this.calculateSuperTrend(highs, lows, closes, this.superTrendPeriod, this.superTrendMultiplier);
+            const st = superTrend[superTrend.length-1];
+            const stDirection = superTrend.direction ? superTrend.direction[superTrend.direction.length-1] : (currentPrice > st ? 'up' : 'down');
+            if (stDirection === 'up') this.addVote('buy', `SuperTrend bullish`, st);
+            else if (stDirection === 'down') this.addVote('sell', `SuperTrend bearish`, st);
+            else this.addVote('neutral', `SuperTrend flat`, st);
+            const aroon = this.calculateAroon(highs, lows, this.aroonPeriod);
+            const aroonUp = aroon.up[aroon.up.length-1];
+            const aroonDown = aroon.down[aroon.down.length-1];
+            if (aroonUp > 70 && aroonUp > aroonDown) this.addVote('buy', `Aroon Up kuat (${aroonUp.toFixed(1)})`, aroonUp);
+            else if (aroonDown > 70 && aroonDown > aroonUp) this.addVote('sell', `Aroon Down kuat (${aroonDown.toFixed(1)})`, aroonDown);
+            else if (aroonUp > aroonDown) this.addVote('buy', `Aroon Up > Down`, aroonUp);
+            else if (aroonDown > aroonUp) this.addVote('sell', `Aroon Down > Up`, aroonDown);
+            else this.addVote('neutral', `Aroon netral`, 0);
+            const hma = this.calculateHullMA(closes, this.hullPeriod);
+            const lastHma = hma[hma.length-1];
+            if (currentPrice > lastHma) this.addVote('buy', `HMA bullish`, lastHma);
+            else if (currentPrice < lastHma) this.addVote('sell', `HMA bearish`, lastHma);
+            else this.addVote('neutral', `HMA neutral`, lastHma);
             const psar = this.calculatePSAR(highs, lows, 0.02, 0.2);
             const sar = psar[psar.length-1];
             if (currentPrice > sar) this.addVote('buy', 'PSAR below price (uptrend)', sar);
             else if (currentPrice < sar) this.addVote('sell', 'PSAR above price (downtrend)', sar);
             else this.addVote('neutral', 'PSAR at price', sar);
-            
-            // --- 3. ADX + DI (trend strength) - prioritas untuk XAUUSD ---
             const adxData = this.calculateADX(highs, lows, closes, 14);
             const adxVal = adxData.adx[adxData.adx.length-1];
             const plusDI = adxData.plusDI[adxData.plusDI.length-1];
             const minusDI = adxData.minusDI[adxData.minusDI.length-1];
-            let trendStrength = 0;
-            if (adxVal > 25 && plusDI > minusDI) {
-                this.addVote('buy', `Strong uptrend (ADX ${adxVal.toFixed(1)})`, adxVal);
-                trendStrength = 1;
-            } else if (adxVal > 25 && minusDI > plusDI) {
-                this.addVote('sell', `Strong downtrend (ADX ${adxVal.toFixed(1)})`, adxVal);
-                trendStrength = -1;
-            } else {
-                this.addVote('neutral', `Weak/No trend (ADX ${adxVal.toFixed(1)})`, adxVal);
-                trendStrength = 0;
-            }
-            
-            // --- 4. Volume confirmation ---
+            if (adxVal > 25 && plusDI > minusDI) this.addVote('buy', `Strong uptrend (ADX ${adxVal.toFixed(1)})`, adxVal);
+            else if (adxVal > 25 && minusDI > plusDI) this.addVote('sell', `Strong downtrend (ADX ${adxVal.toFixed(1)})`, adxVal);
+            else this.addVote('neutral', `Weak trend (ADX ${adxVal.toFixed(1)})`, adxVal);
             if (volumes && volumes.length > 20) {
                 const volSignal = this.analyzeVolume(volumes, closes);
-                if (volSignal.signal === 'bullish') this.addVote('buy', 'Volume surge confirms bullish move', volSignal.ratio);
-                else if (volSignal.signal === 'bearish') this.addVote('sell', 'Volume surge confirms bearish move', volSignal.ratio);
+                if (volSignal.signal === 'bullish') this.addVote('buy', 'Volume surge bullish', volSignal.ratio);
+                else if (volSignal.signal === 'bearish') this.addVote('sell', 'Volume surge bearish', volSignal.ratio);
                 else this.addVote('neutral', 'Volume normal', volSignal.ratio);
             } else this.addVote('neutral', 'Volume data not available', 0);
-            
-            // --- 5. Support/Resistance breakout (dinamis) ---
             const recentHighs = highs.slice(-30);
             const recentLows = lows.slice(-30);
             const resistance = Math.max(...recentHighs.slice(0, -1));
@@ -1963,68 +812,52 @@
             if (breakoutUp) this.addVote('buy', 'Breakout above resistance', resistance);
             else if (breakoutDown) this.addVote('sell', 'Breakdown below support', support);
             else this.addVote('neutral', 'No breakout S/R', currentPrice);
-            
-            // --- 6. Bollinger Bands (breakout of bands) ---
             const bb = this.calculateBollingerBands(closes, 20, this.bbStdDev);
             const upperBB = bb.upper[bb.upper.length-1], lowerBB = bb.lower[bb.lower.length-1];
-            if (currentPrice > upperBB) this.addVote('buy', 'Breakout above upper BB (volatility expansion)', currentPrice);
+            if (currentPrice > upperBB) this.addVote('buy', 'Breakout above upper BB', currentPrice);
             else if (currentPrice < lowerBB) this.addVote('sell', 'Breakdown below lower BB', currentPrice);
             else this.addVote('neutral', 'Price inside BB range', currentPrice);
-            
-            // --- 7. MACD (momentum) ---
             const macd = this.calculateMACD(closes, 12, 26, 9);
             const macdLine = macd.macd[macd.macd.length-1];
             const signalLine = macd.signal[macd.signal.length-1];
             const hist = macdLine - signalLine;
-            if (hist > 0 && macdLine > signalLine) this.addVote('buy', 'MACD bullish (above signal)', hist);
-            else if (hist < 0 && macdLine < signalLine) this.addVote('sell', 'MACD bearish (below signal)', hist);
+            if (hist > 0 && macdLine > signalLine) this.addVote('buy', 'MACD bullish', hist);
+            else if (hist < 0 && macdLine < signalLine) this.addVote('sell', 'MACD bearish', hist);
             else this.addVote('neutral', 'MACD flat', hist);
-            
-            // --- 8. RSI (disesuaikan: jika uptrend kuat, abaikan overbought) ---
             const rsi = this.calculateRSI(closes, this.rsiPeriod);
             const r = rsi[rsi.length-1];
-            if (this.isXau && isBullishTrend && r > 70) {
-                this.addVote('neutral', `RSI overbought but strong uptrend (${r.toFixed(1)})`, r);
-            } else if (this.isXau && isBearishTrend && r < 30) {
-                this.addVote('neutral', `RSI oversold but strong downtrend (${r.toFixed(1)})`, r);
-            } else {
+            const isBullishTrend = (stDirection === 'up' && currentPrice > lastHma);
+            const isBearishTrend = (stDirection === 'down' && currentPrice < lastHma);
+            if (this.isXau && isBullishTrend && r > 70) this.addVote('neutral', `RSI overbought but strong uptrend`, r);
+            else if (this.isXau && isBearishTrend && r < 30) this.addVote('neutral', `RSI oversold but strong downtrend`, r);
+            else {
                 if (r < 30) this.addVote('buy', `RSI oversold (${r.toFixed(1)})`, r);
                 else if (r > 70) this.addVote('sell', `RSI overbought (${r.toFixed(1)})`, r);
                 else if (r < 45) this.addVote('sell', `RSI bearish zone (${r.toFixed(1)})`, r);
                 else if (r > 55) this.addVote('buy', `RSI bullish zone (${r.toFixed(1)})`, r);
                 else this.addVote('neutral', `RSI neutral (${r.toFixed(1)})`, r);
             }
-            
-            // --- 9. Stochastic (dengan filter tren untuk XAUUSD) ---
             const stoch = this.calculateStochastic(highs, lows, closes, this.stochPeriod, 3);
             const k = stoch.k[stoch.k.length-1];
-            if (this.isXau && isBullishTrend && k > 80) {
-                this.addVote('neutral', `Stochastic overbought but uptrend (${k.toFixed(1)})`, k);
-            } else if (this.isXau && isBearishTrend && k < 20) {
-                this.addVote('neutral', `Stochastic oversold but downtrend (${k.toFixed(1)})`, k);
-            } else {
+            if (this.isXau && isBullishTrend && k > 80) this.addVote('neutral', `Stochastic overbought but uptrend`, k);
+            else if (this.isXau && isBearishTrend && k < 20) this.addVote('neutral', `Stochastic oversold but downtrend`, k);
+            else {
                 if (k < 20) this.addVote('buy', `Stochastic oversold (${k.toFixed(1)})`, k);
                 else if (k > 80) this.addVote('sell', `Stochastic overbought (${k.toFixed(1)})`, k);
                 else this.addVote('neutral', `Stochastic neutral (${k.toFixed(1)})`, k);
             }
-            
-            // --- 10. CCI (breakout signal) ---
             const cci = this.calculateCCI(highs, lows, closes, this.cciPeriod);
             const cciVal = cci[cci.length-1];
             if (cciVal > 100) this.addVote('buy', `CCI bullish (>100)`, cciVal);
             else if (cciVal < -100) this.addVote('sell', `CCI bearish (<-100)`, cciVal);
             else if (cciVal > 0) this.addVote('buy', `CCI positive`, cciVal);
             else this.addVote('sell', `CCI negative`, cciVal);
-            
-            // --- 11. Williams %R ---
             const willR = this.calculateWilliamsR(highs, lows, closes, this.willrPeriod);
             const w = willR[willR.length-1];
             if (w < -80) this.addVote('buy', `Williams %R oversold (${w.toFixed(1)})`, w);
             else if (w > -20) this.addVote('sell', `Williams %R overbought (${w.toFixed(1)})`, w);
             else if (w < -50) this.addVote('buy', `Williams %R bearish zone`, w);
             else this.addVote('sell', `Williams %R bullish zone`, w);
-            
-            // --- 12. MFI (money flow) ---
             if (volumes && volumes.length > this.mfiPeriod) {
                 const mfi = this.calculateMFI(highs, lows, closes, volumes, this.mfiPeriod);
                 const mfiVal = mfi[mfi.length-1];
@@ -2034,78 +867,78 @@
                 else if (mfiVal < 40) this.addVote('sell', `MFI bearish (${mfiVal.toFixed(1)})`, mfiVal);
                 else this.addVote('neutral', `MFI neutral`, mfiVal);
             } else this.addVote('neutral', 'MFI data insufficient', 0);
-            
-            // --- 13. ATR (volatility expansion) ---
-            const atr = this.calculateATR(highs, lows, closes, 14);
-            const atrVal = atr[atr.length-1];
-            const avgAtr = atr.slice(-20).reduce((a,b)=>a+b,0)/Math.min(20, atr.length);
-            if (atrVal > avgAtr * 1.3) this.addVote('buy', `Volatility expansion (ATR high)`, atrVal);
-            else if (atrVal < avgAtr * 0.8) this.addVote('neutral', `Low volatility`, atrVal);
-            else this.addVote('neutral', `Normal volatility`, atrVal);
-            
-            // --- 14. Candlestick pattern ---
+            const avgAtr = atrValues.slice(-20).reduce((a,b)=>a+b,0)/Math.min(20, atrValues.length);
+            if (latestAtr > avgAtr * 1.3) this.addVote('buy', `High volatility - breakout likely`, latestAtr);
+            else if (latestAtr < avgAtr * 0.8) this.addVote('neutral', `Low volatility - wait`, latestAtr);
+            else this.addVote('neutral', `Normal volatility`, latestAtr);
             const pattern = this.identifyCandlePattern(highs, lows, closes);
             if (pattern.signal === 'bullish') this.addVote('buy', `Bullish: ${pattern.name}`, 0);
             else if (pattern.signal === 'bearish') this.addVote('sell', `Bearish: ${pattern.name}`, 0);
             else this.addVote('neutral', `Pattern: ${pattern.name}`, 0);
             
-            // --- 15. SMA200 (long-term filter) ---
-            const sma200 = this.calculateSMA(closes, 200);
-            const s200 = sma200[sma200.length-1];
-            if (s200 && currentPrice > s200) this.addVote('buy', `Price above SMA200 (long-term bullish)`, s200);
-            else if (s200 && currentPrice < s200) this.addVote('sell', `Price below SMA200 (long-term bearish)`, s200);
-            else this.addVote('neutral', `Price near SMA200`, s200);
-            
-            // --- Final decision dengan prioritas tren untuk XAUUSD ---
             const totalAll = this.votes.buy + this.votes.sell + this.votes.neutral;
             const buyPercent = totalAll > 0 ? (this.votes.buy / totalAll) * 100 : 0;
             const sellPercent = totalAll > 0 ? (this.votes.sell / totalAll) * 100 : 0;
             const totalValid = this.votes.buy + this.votes.sell;
             const voteDiff = Math.abs(this.votes.buy - this.votes.sell);
             let finalDecision = 'HOLD', confidence = 50, reason = '', recommendation = '';
-            
-            // Jika XAUUSD dan uptrend kuat (EMA bullish & ADX > 25 & +DI > -DI) -> BUY
-            const isStrongUptrend = isBullishTrend && adxVal > 25 && plusDI > minusDI;
-            const isStrongDowntrend = isBearishTrend && adxVal > 25 && minusDI > plusDI;
-            
-            if (this.isXau && isStrongUptrend) {
+            const strongBullish = (stDirection === 'up' && currentPrice > lastHma && aroonUp > aroonDown);
+            const strongBearish = (stDirection === 'down' && currentPrice < lastHma && aroonDown > aroonUp);
+            if (this.isXau && strongBullish) {
                 finalDecision = 'BUY';
-                confidence = Math.min(96, 80 + (buyPercent * 0.2));
-                reason = `Strong uptrend XAUUSD (ADX ${adxVal.toFixed(1)})`;
-                recommendation = `Harga XAUUSD dalam tren naik kuat. Entry BUY STOP di atas harga.`;
-            } else if (this.isXau && isStrongDowntrend) {
+                confidence = Math.min(96, 75 + (buyPercent * 0.25));
+                reason = `SuperTrend & HMA bullish, Aroon Up ${aroonUp.toFixed(1)}`;
+                recommendation = `XAUUSD dalam tren naik kuat. Entry BUY STOP di atas harga (0.1%), SL 0.33%.`;
+            } 
+            else if (this.isXau && strongBearish) {
                 finalDecision = 'SELL';
-                confidence = Math.min(96, 80 + (sellPercent * 0.2));
-                reason = `Strong downtrend XAUUSD (ADX ${adxVal.toFixed(1)})`;
-                recommendation = `Harga XAUUSD dalam tren turun kuat. Entry SELL STOP di bawah harga.`;
-            } else if (breakoutUp && (this.votes.buy > this.votes.sell || buyPercent > 55)) {
+                confidence = Math.min(96, 75 + (sellPercent * 0.25));
+                reason = `SuperTrend & HMA bearish, Aroon Down ${aroonDown.toFixed(1)}`;
+                recommendation = `XAUUSD dalam tren turun. Entry SELL STOP di bawah harga (0.1%), SL 0.33%.`;
+            }
+            else if (this.isCrypto && stDirection === 'up' && adxVal > 25 && plusDI > minusDI) {
+                finalDecision = 'BUY';
+                confidence = Math.min(96, 75 + (buyPercent * 0.2));
+                reason = `Crypto strong uptrend`;
+                recommendation = `Tren naik kuat. Entry BUY STOP di atas harga.`;
+            }
+            else if (this.isCrypto && stDirection === 'down' && adxVal > 25 && minusDI > plusDI) {
+                finalDecision = 'SELL';
+                confidence = Math.min(96, 75 + (sellPercent * 0.2));
+                reason = `Crypto strong downtrend`;
+                recommendation = `Tren turun kuat. Entry SELL STOP di bawah harga.`;
+            }
+            else if (breakoutUp && (this.votes.buy > this.votes.sell || buyPercent > 55)) {
                 finalDecision = 'BUY';
                 confidence = 65 + (buyPercent * 0.3);
-                reason = `Breakout up signal (${this.votes.buy} BUY vs ${this.votes.sell} SELL)`;
-                recommendation = `Harga breakout ke atas. Entry BUY STOP di atas harga.`;
-            } else if (breakoutDown && (this.votes.sell > this.votes.buy || sellPercent > 55)) {
+                reason = `Breakout up (${this.votes.buy} BUY vs ${this.votes.sell} SELL)`;
+                recommendation = `Breakout ke atas. Entry BUY STOP di atas harga.`;
+            }
+            else if (breakoutDown && (this.votes.sell > this.votes.buy || sellPercent > 55)) {
                 finalDecision = 'SELL';
                 confidence = 65 + (sellPercent * 0.3);
-                reason = `Breakdown signal (${this.votes.sell} SELL vs ${this.votes.buy} BUY)`;
-                recommendation = `Harga breakdown ke bawah. Entry SELL STOP di bawah harga.`;
-            } else if (this.votes.buy > this.votes.sell && voteDiff >= 2) {
+                reason = `Breakdown (${this.votes.sell} SELL vs ${this.votes.buy} BUY)`;
+                recommendation = `Breakdown ke bawah. Entry SELL STOP di bawah harga.`;
+            }
+            else if (this.votes.buy > this.votes.sell && voteDiff >= 2) {
                 finalDecision = 'BUY';
                 confidence = 50 + (buyPercent * 0.4);
                 reason = `${this.votes.buy} BUY vs ${this.votes.sell} SELL`;
-                recommendation = `Momentum positif. Entry BUY STOP pada breakout resistance.`;
-            } else if (this.votes.sell > this.votes.buy && voteDiff >= 2) {
+                recommendation = `Momentum positif. Entry BUY STOP di atas resistance.`;
+            }
+            else if (this.votes.sell > this.votes.buy && voteDiff >= 2) {
                 finalDecision = 'SELL';
                 confidence = 50 + (sellPercent * 0.4);
                 reason = `${this.votes.sell} SELL vs ${this.votes.buy} BUY`;
-                recommendation = `Tekanan jual dominan. Entry SELL STOP pada breakdown support.`;
-            } else {
+                recommendation = `Tekanan jual. Entry SELL STOP di bawah support.`;
+            }
+            else {
                 finalDecision = 'HOLD';
                 confidence = 40 + (voteDiff * 10);
                 reason = `Tidak ada breakout jelas (${this.votes.buy} BUY / ${this.votes.sell} SELL)`;
-                recommendation = `Tunggu konfirmasi breakout lebih lanjut. Disarankan HOLD.`;
+                recommendation = `Tunggu konfirmasi breakout. Disarankan HOLD.`;
             }
-            
-            const entryLevels = this.calculateFixedRiskRewardEntry(finalDecision, currentPrice);
+            const entryLevels = this.calculateDynamicEntryLevels(finalDecision, currentPrice, latestAtr);
             return {
                 decision: finalDecision,
                 confidence: Math.min(96, Math.floor(confidence)),
@@ -2117,215 +950,99 @@
                 stopLoss: entryLevels.stopLoss,
                 takeProfits: entryLevels.takeProfits,
                 riskReward: entryLevels.riskReward,
-                entryType: entryLevels.entryType
+                entryType: entryLevels.entryType,
+                atrUsed: latestAtr
             };
         }
-        
         addVote(type, reason, value) { this.votes[type]++; this.voteDetails.push({ type, reason, value: typeof value === 'number' ? value.toFixed(5) : value }); }
         
-        calculateFixedRiskRewardEntry(decision, price) {
-            const riskPercent = 0.0020;
-            const breakoutDist = 0.0005;
+        calculateDynamicEntryLevels(decision, price, atr) {
+            // XAUUSD: ENTRY 0.1% (0.001), SL 0.33% (0.0033), TP1 0.495%, TP2 0.825%, TP3 1.155%
+            if (this.isXau) {
+                const entryPercent = 0.001;        // 0.1% (SESUAI PERMINTAAN)
+                const slPercent = 0.0033;          // 0.33% (TIDAK BERUBAH)
+                const tp1Percent = slPercent * 1.5; // 0.495%
+                const tp2Percent = slPercent * 2.5; // 0.825%
+                const tp3Percent = slPercent * 3.5; // 1.155%
+                if (decision === 'BUY') {
+                    const entry = price * (1 + entryPercent);
+                    const stopLoss = entry * (1 - slPercent);
+                    const tp1 = entry * (1 + tp1Percent);
+                    const tp2 = entry * (1 + tp2Percent);
+                    const tp3 = entry * (1 + tp3Percent);
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' };
+                } else if (decision === 'SELL') {
+                    const entry = price * (1 - entryPercent);
+                    const stopLoss = entry * (1 + slPercent);
+                    const tp1 = entry * (1 - tp1Percent);
+                    const tp2 = entry * (1 - tp2Percent);
+                    const tp3 = entry * (1 - tp3Percent);
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' };
+                }
+                return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
+            }
+            // Crypto & lainnya tetap pakai ATR
+            if (this.isCrypto && atr && atr > 0) {
+                const breakoutDist = atr * 0.5;
+                const riskAmount = atr * 2.0;
+                const tpMult1 = 2.0, tpMult2 = 3.0, tpMult3 = 4.0;
+                const reward1 = riskAmount * tpMult1, reward2 = riskAmount * tpMult2, reward3 = riskAmount * tpMult3;
+                if (decision === 'BUY') {
+                    const entry = price + breakoutDist;
+                    const stopLoss = entry - riskAmount;
+                    const tp1 = entry + reward1, tp2 = entry + reward2, tp3 = entry + reward3;
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: (riskAmount>0?(reward1/riskAmount).toFixed(1):'2.0'), entryType: 'BUY STOP' };
+                } else if (decision === 'SELL') {
+                    const entry = price - breakoutDist;
+                    const stopLoss = entry + riskAmount;
+                    const tp1 = entry - reward1, tp2 = entry - reward2, tp3 = entry - reward3;
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: (riskAmount>0?(reward1/riskAmount).toFixed(1):'2.0'), entryType: 'SELL STOP' };
+                }
+                return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
+            }
+            // Fallback umum
+            const fallbackDist = 0.001;
             if (decision === 'BUY') {
-                const entry = price * (1 + breakoutDist);
-                const stopLoss = entry * (1 - riskPercent);
-                const tp1 = entry * (1 + riskPercent * 1.5);
-                const tp2 = entry * (1 + riskPercent * 2.5);
-                const tp3 = entry * (1 + riskPercent * 3.5);
+                const entry = price * (1 + fallbackDist);
+                const stopLoss = entry * (1 - 0.002);
+                const tp1 = entry * (1 + 0.003), tp2 = entry * (1 + 0.005), tp3 = entry * (1 + 0.007);
                 return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' };
             } else if (decision === 'SELL') {
-                const entry = price * (1 - breakoutDist);
-                const stopLoss = entry * (1 + riskPercent);
-                const tp1 = entry * (1 - riskPercent * 1.5);
-                const tp2 = entry * (1 - riskPercent * 2.5);
-                const tp3 = entry * (1 - riskPercent * 3.5);
+                const entry = price * (1 - fallbackDist);
+                const stopLoss = entry * (1 + 0.002);
+                const tp1 = entry * (1 - 0.003), tp2 = entry * (1 - 0.005), tp3 = entry * (1 - 0.007);
                 return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' };
             }
             return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
         }
         
-        // === Helper methods (standar) ===
+        // ========== INDIKATOR STANDAR ==========
         calculateEMA(data, period) { const k = 2/(period+1); const ema = [data[0]]; for(let i=1;i<data.length;i++) ema.push(data[i]*k + ema[i-1]*(1-k)); return ema; }
         calculateSMA(data, period) { const sma = []; for(let i=period-1;i<data.length;i++) { const sum = data.slice(i-period+1,i+1).reduce((a,b)=>a+b,0); sma.push(sum/period); } return sma; }
-        calculateRSI(data, period) {
-            let gains=0,losses=0;
-            for(let i=1;i<=period;i++){ const ch=data[i]-data[i-1]; if(ch>=0) gains+=ch; else losses-=ch; }
-            let avgGain=gains/period, avgLoss=losses/period, rs=avgGain/avgLoss;
-            const rsi=[100-(100/(1+rs))];
-            for(let i=period+1;i<data.length;i++){
-                const ch=data[i]-data[i-1];
-                if(ch>=0){ avgGain=(avgGain*(period-1)+ch)/period; avgLoss=(avgLoss*(period-1))/period; }
-                else { avgGain=(avgGain*(period-1))/period; avgLoss=(avgLoss*(period-1)-ch)/period; }
-                rs=avgGain/avgLoss;
-                rsi.push(100-(100/(1+rs)));
-            }
-            return rsi;
-        }
+        calculateRSI(data, period) { let gains=0,losses=0; for(let i=1;i<=period;i++){ const ch=data[i]-data[i-1]; if(ch>=0) gains+=ch; else losses-=ch; } let avgGain=gains/period, avgLoss=losses/period, rs=avgGain/avgLoss; const rsi=[100-(100/(1+rs))]; for(let i=period+1;i<data.length;i++){ const ch=data[i]-data[i-1]; if(ch>=0){ avgGain=(avgGain*(period-1)+ch)/period; avgLoss=(avgLoss*(period-1))/period; } else { avgGain=(avgGain*(period-1))/period; avgLoss=(avgLoss*(period-1)-ch)/period; } rs=avgGain/avgLoss; rsi.push(100-(100/(1+rs))); } return rsi; }
         calculateMACD(data,fast,slow,signal){ const emaFast=this.calculateEMA(data,fast); const emaSlow=this.calculateEMA(data,slow); const macdLine=emaFast.map((v,i)=>v-emaSlow[i]); const signalLine=this.calculateEMA(macdLine,signal); return {macd:macdLine,signal:signalLine}; }
-        calculateBollingerBands(data,period,stdDev){
-            const mid=[],up=[],low=[];
-            for(let i=period-1;i<data.length;i++){
-                const w=data.slice(i-period+1,i+1);
-                const sma=w.reduce((a,b)=>a+b,0)/period;
-                const variance=w.map(x=>Math.pow(x-sma,2)).reduce((a,b)=>a+b,0)/period;
-                const std=Math.sqrt(variance);
-                mid.push(sma); up.push(sma+stdDev*std); low.push(sma-stdDev*std);
-            }
-            return {middle:mid,upper:up,lower:low};
-        }
-        calculateStochastic(highs,lows,closes,period,smooth){
-            const k=[];
-            for(let i=period-1;i<closes.length;i++){
-                const highW=highs.slice(i-period+1,i+1);
-                const lowW=lows.slice(i-period+1,i+1);
-                const highest=Math.max(...highW), lowest=Math.min(...lowW);
-                k.push(((closes[i]-lowest)/(highest-lowest))*100);
-            }
-            return {k};
-        }
-        calculatePSAR(highs,lows,step,maxStep){
-            const sar=[]; let trend=1,ep=highs[0],af=step,currentSar=lows[0];
-            sar.push(currentSar);
-            for(let i=1;i<highs.length;i++){
-                let prevSar=sar[i-1];
-                if(trend===1){
-                    currentSar=prevSar+af*(ep-prevSar);
-                    if(i>=2 && currentSar>lows[i-2]) currentSar=lows[i-2];
-                    if(currentSar>lows[i-1]) currentSar=lows[i-1];
-                    if(currentSar>lows[i]){ trend=-1; currentSar=ep; af=step; ep=lows[i]; }
-                    else { if(highs[i]>ep){ ep=highs[i]; af=Math.min(af+step,maxStep); } }
-                } else {
-                    currentSar=prevSar+af*(ep-prevSar);
-                    if(i>=2 && currentSar<highs[i-2]) currentSar=highs[i-2];
-                    if(currentSar<highs[i-1]) currentSar=highs[i-1];
-                    if(currentSar<highs[i]){ trend=1; currentSar=ep; af=step; ep=highs[i]; }
-                    else { if(lows[i]<ep){ ep=lows[i]; af=Math.min(af+step,maxStep); } }
-                }
-                sar.push(currentSar);
-            }
-            return sar;
-        }
-        calculateADX(highs,lows,closes,period){
-            const tr=[]; for(let i=1;i<highs.length;i++) tr.push(Math.max(highs[i]-lows[i],Math.abs(highs[i]-closes[i-1]),Math.abs(lows[i]-closes[i-1])));
-            const plusDM=[],minusDM=[];
-            for(let i=1;i<highs.length;i++){ const up=highs[i]-highs[i-1], down=lows[i-1]-lows[i]; plusDM.push((up>down && up>0)?up:0); minusDM.push((down>up && down>0)?down:0); }
-            const smoothPlusDM=this.calculateEMA(plusDM,period);
-            const smoothMinusDM=this.calculateEMA(minusDM,period);
-            const smoothTR=this.calculateEMA(tr,period);
-            const plusDI=smoothPlusDM.map((v,i)=> (v/smoothTR[i])*100);
-            const minusDI=smoothMinusDM.map((v,i)=> (v/smoothTR[i])*100);
-            const dx=plusDI.map((v,i)=> (v+minusDI[i])===0?0:(Math.abs(v-minusDI[i])/(v+minusDI[i]))*100);
-            const adx=this.calculateEMA(dx,period);
-            return {adx,plusDI,minusDI};
-        }
-        analyzeVolume(volumes,closes){
-            const recentVol = volumes.filter(v=>v!==null).slice(-20);
-            if(recentVol.length < 10) return {signal:'neutral',ratio:1};
-            const avg=recentVol.slice(0,-1).reduce((a,b)=>a+b,0)/(recentVol.length-1);
-            const ratio=recentVol[recentVol.length-1]/avg;
-            const priceChange=(closes[closes.length-1]-closes[closes.length-2])/closes[closes.length-2];
-            if(ratio>1.3 && priceChange>0) return {signal:'bullish',ratio};
-            if(ratio>1.3 && priceChange<0) return {signal:'bearish',ratio};
-            return {signal:'neutral',ratio};
-        }
-        calculateCCI(highs,lows,closes,period){
-            const tp = highs.map((h,i)=> (h + lows[i] + closes[i])/3);
-            const sma = this.calculateSMA(tp, period);
-            const mad = [];
-            for(let i=period-1;i<tp.length;i++){
-                const slice = tp.slice(i-period+1,i+1);
-                const mean = sma[i-(period-1)];
-                const sumAbs = slice.reduce((acc,val)=> acc + Math.abs(val-mean),0);
-                mad.push(sumAbs/period);
-            }
-            const cci = [];
-            for(let i=0;i<sma.length;i++){
-                if(mad[i] === 0) cci.push(0);
-                else cci.push((tp[i+period-1] - sma[i]) / (0.015 * mad[i]));
-            }
-            return cci;
-        }
-        calculateMFI(highs,lows,closes,volumes,period){
-            const typicalPrice = highs.map((h,i)=> (h + lows[i] + closes[i])/3);
-            const rawMoneyFlow = typicalPrice.map((tp,i)=> tp * (volumes[i] || 0));
-            const moneyFlow = [];
-            for(let i=1;i<typicalPrice.length;i++){
-                const diff = typicalPrice[i] - typicalPrice[i-1];
-                if(diff > 0) moneyFlow.push({positive: rawMoneyFlow[i], negative: 0});
-                else if(diff < 0) moneyFlow.push({positive: 0, negative: rawMoneyFlow[i]});
-                else moneyFlow.push({positive: 0, negative: 0});
-            }
-            const mfi = [];
-            for(let i=period-1;i<moneyFlow.length;i++){
-                const posSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.positive,0);
-                const negSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.negative,0);
-                const ratio = (negSum===0)?100:(posSum/negSum);
-                const mfiVal = 100 - (100/(1+ratio));
-                mfi.push(mfiVal);
-            }
-            return mfi;
-        }
-        calculateWilliamsR(highs,lows,closes,period){
-            const wr = [];
-            for(let i=period-1;i<closes.length;i++){
-                const highSlice = highs.slice(i-period+1,i+1);
-                const lowSlice = lows.slice(i-period+1,i+1);
-                const highest = Math.max(...highSlice);
-                const lowest = Math.min(...lowSlice);
-                const val = ((highest - closes[i]) / (highest - lowest)) * -100;
-                wr.push(val);
-            }
-            return wr;
-        }
-        calculateATR(highs,lows,closes,period){
-            const tr = [];
-            for(let i=1;i<highs.length;i++){
-                const hl = highs[i]-lows[i];
-                const hc = Math.abs(highs[i]-closes[i-1]);
-                const lc = Math.abs(lows[i]-closes[i-1]);
-                tr.push(Math.max(hl, hc, lc));
-            }
-            const atr = this.calculateEMA(tr, period);
-            return atr;
-        }
-        identifyCandlePattern(highs,lows,closes){
-            if(closes.length<3) return {name:'Unknown',signal:'neutral'};
-            const lastClose=closes[closes.length-1],lastOpen=closes[closes.length-2],lastHigh=highs[highs.length-1],lastLow=lows[lows.length-1],prevClose=closes[closes.length-3];
-            const body=Math.abs(lastClose-lastOpen),range=lastHigh-lastLow;
-            const lowerWick=Math.min(lastClose,lastOpen)-lastLow, upperWick=lastHigh-Math.max(lastClose,lastOpen);
-            if(body<range*0.3 && lowerWick>body*2 && lastClose>lastOpen) return {name:'Hammer',signal:'bullish'};
-            if(body<range*0.3 && upperWick>body*2 && lastClose<lastOpen) return {name:'Shooting Star',signal:'bearish'};
-            if(lastClose>lastOpen && lastOpen<prevClose && lastClose>prevClose) return {name:'Bullish Engulfing',signal:'bullish'};
-            if(lastClose<lastOpen && lastOpen>prevClose && lastClose<prevClose) return {name:'Bearish Engulfing',signal:'bearish'};
-            if(body<range*0.1) return {name:'Doji',signal:'neutral'};
-            return {name:'No Pattern',signal:'neutral'};
-        }
+        calculateBollingerBands(data,period,stdDev){ const mid=[],up=[],low=[]; for(let i=period-1;i<data.length;i++){ const w=data.slice(i-period+1,i+1); const sma=w.reduce((a,b)=>a+b,0)/period; const variance=w.map(x=>Math.pow(x-sma,2)).reduce((a,b)=>a+b,0)/period; const std=Math.sqrt(variance); mid.push(sma); up.push(sma+stdDev*std); low.push(sma-stdDev*std); } return {middle:mid,upper:up,lower:low}; }
+        calculateStochastic(highs,lows,closes,period,smooth){ const k=[]; for(let i=period-1;i<closes.length;i++){ const highW=highs.slice(i-period+1,i+1); const lowW=lows.slice(i-period+1,i+1); const highest=Math.max(...highW), lowest=Math.min(...lowW); k.push(((closes[i]-lowest)/(highest-lowest))*100); } return {k}; }
+        calculatePSAR(highs,lows,step,maxStep){ const sar=[]; let trend=1,ep=highs[0],af=step,currentSar=lows[0]; sar.push(currentSar); for(let i=1;i<highs.length;i++){ let prevSar=sar[i-1]; if(trend===1){ currentSar=prevSar+af*(ep-prevSar); if(i>=2 && currentSar>lows[i-2]) currentSar=lows[i-2]; if(currentSar>lows[i-1]) currentSar=lows[i-1]; if(currentSar>lows[i]){ trend=-1; currentSar=ep; af=step; ep=lows[i]; } else { if(highs[i]>ep){ ep=highs[i]; af=Math.min(af+step,maxStep); } } } else { currentSar=prevSar+af*(ep-prevSar); if(i>=2 && currentSar<highs[i-2]) currentSar=highs[i-2]; if(currentSar<highs[i-1]) currentSar=highs[i-1]; if(currentSar<highs[i]){ trend=1; currentSar=ep; af=step; ep=highs[i]; } else { if(lows[i]<ep){ ep=lows[i]; af=Math.min(af+step,maxStep); } } } sar.push(currentSar); } return sar; }
+        calculateADX(highs,lows,closes,period){ const tr=[]; for(let i=1;i<highs.length;i++) tr.push(Math.max(highs[i]-lows[i],Math.abs(highs[i]-closes[i-1]),Math.abs(lows[i]-closes[i-1]))); const plusDM=[],minusDM=[]; for(let i=1;i<highs.length;i++){ const up=highs[i]-highs[i-1], down=lows[i-1]-lows[i]; plusDM.push((up>down && up>0)?up:0); minusDM.push((down>up && down>0)?down:0); } const smoothPlusDM=this.calculateEMA(plusDM,period); const smoothMinusDM=this.calculateEMA(minusDM,period); const smoothTR=this.calculateEMA(tr,period); const plusDI=smoothPlusDM.map((v,i)=> (v/smoothTR[i])*100); const minusDI=smoothMinusDM.map((v,i)=> (v/smoothTR[i])*100); const dx=plusDI.map((v,i)=> (v+minusDI[i])===0?0:(Math.abs(v-minusDI[i])/(v+minusDI[i]))*100); const adx=this.calculateEMA(dx,period); return {adx,plusDI,minusDI}; }
+        analyzeVolume(volumes,closes){ const recentVol = volumes.filter(v=>v!==null).slice(-20); if(recentVol.length < 10) return {signal:'neutral',ratio:1}; const avg=recentVol.slice(0,-1).reduce((a,b)=>a+b,0)/(recentVol.length-1); const ratio=recentVol[recentVol.length-1]/avg; const priceChange=(closes[closes.length-1]-closes[closes.length-2])/closes[closes.length-2]; if(ratio>1.3 && priceChange>0) return {signal:'bullish',ratio}; if(ratio>1.3 && priceChange<0) return {signal:'bearish',ratio}; return {signal:'neutral',ratio}; }
+        calculateCCI(highs,lows,closes,period){ const tp = highs.map((h,i)=> (h + lows[i] + closes[i])/3); const sma = this.calculateSMA(tp, period); const mad = []; for(let i=period-1;i<tp.length;i++){ const slice = tp.slice(i-period+1,i+1); const mean = sma[i-(period-1)]; const sumAbs = slice.reduce((acc,val)=> acc + Math.abs(val-mean),0); mad.push(sumAbs/period); } const cci = []; for(let i=0;i<sma.length;i++){ if(mad[i] === 0) cci.push(0); else cci.push((tp[i+period-1] - sma[i]) / (0.015 * mad[i])); } return cci; }
+        calculateMFI(highs,lows,closes,volumes,period){ const typicalPrice = highs.map((h,i)=> (h + lows[i] + closes[i])/3); const rawMoneyFlow = typicalPrice.map((tp,i)=> tp * (volumes[i] || 0)); const moneyFlow = []; for(let i=1;i<typicalPrice.length;i++){ const diff = typicalPrice[i] - typicalPrice[i-1]; if(diff > 0) moneyFlow.push({positive: rawMoneyFlow[i], negative: 0}); else if(diff < 0) moneyFlow.push({positive: 0, negative: rawMoneyFlow[i]}); else moneyFlow.push({positive: 0, negative: 0}); } const mfi = []; for(let i=period-1;i<moneyFlow.length;i++){ const posSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.positive,0); const negSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.negative,0); const ratio = (negSum===0)?100:(posSum/negSum); const mfiVal = 100 - (100/(1+ratio)); mfi.push(mfiVal); } return mfi; }
+        calculateWilliamsR(highs,lows,closes,period){ const wr = []; for(let i=period-1;i<closes.length;i++){ const highSlice = highs.slice(i-period+1,i+1); const lowSlice = lows.slice(i-period+1,i+1); const highest = Math.max(...highSlice); const lowest = Math.min(...lowSlice); const val = ((highest - closes[i]) / (highest - lowest)) * -100; wr.push(val); } return wr; }
+        calculateATR(highs,lows,closes,period){ const tr = []; for(let i=1;i<highs.length;i++){ const hl = highs[i]-lows[i]; const hc = Math.abs(highs[i]-closes[i-1]); const lc = Math.abs(lows[i]-closes[i-1]); tr.push(Math.max(hl, hc, lc)); } const atr = this.calculateEMA(tr, period); return atr; }
+        identifyCandlePattern(highs,lows,closes){ if(closes.length<3) return {name:'Unknown',signal:'neutral'}; const lastClose=closes[closes.length-1],lastOpen=closes[closes.length-2],lastHigh=highs[highs.length-1],lastLow=lows[lows.length-1],prevClose=closes[closes.length-3]; const body=Math.abs(lastClose-lastOpen),range=lastHigh-lastLow; const lowerWick=Math.min(lastClose,lastOpen)-lastLow, upperWick=lastHigh-Math.max(lastClose,lastOpen); if(body<range*0.3 && lowerWick>body*2 && lastClose>lastOpen) return {name:'Hammer',signal:'bullish'}; if(body<range*0.3 && upperWick>body*2 && lastClose<lastOpen) return {name:'Shooting Star',signal:'bearish'}; if(lastClose>lastOpen && lastOpen<prevClose && lastClose>prevClose) return {name:'Bullish Engulfing',signal:'bullish'}; if(lastClose<lastOpen && lastOpen>prevClose && lastClose<prevClose) return {name:'Bearish Engulfing',signal:'bearish'}; if(body<range*0.1) return {name:'Doji',signal:'neutral'}; return {name:'No Pattern',signal:'neutral'}; }
+        calculateSuperTrend(highs, lows, closes, period, multiplier) { const atr = this.calculateATR(highs, lows, closes, period); const upperBand = [], lowerBand = [], trend = []; for (let i = 0; i < closes.length; i++) { const hl2 = (highs[i] + lows[i]) / 2; const basicUpper = hl2 + multiplier * atr[i]; const basicLower = hl2 - multiplier * atr[i]; if (i === 0) { upperBand.push(basicUpper); lowerBand.push(basicLower); trend.push(1); } else { let newUpper = basicUpper, newLower = basicLower; if (basicUpper < upperBand[i-1]) newUpper = basicUpper; else newUpper = upperBand[i-1]; if (basicLower > lowerBand[i-1]) newLower = basicLower; else newLower = lowerBand[i-1]; upperBand.push(newUpper); lowerBand.push(newLower); let currentTrend = trend[i-1]; if (currentTrend === 1 && closes[i] <= lowerBand[i]) currentTrend = -1; else if (currentTrend === -1 && closes[i] >= upperBand[i]) currentTrend = 1; trend.push(currentTrend); } } const superTrend = []; for (let i = 0; i < closes.length; i++) { if (trend[i] === 1) superTrend.push(lowerBand[i]); else superTrend.push(upperBand[i]); } superTrend.direction = trend.map(t => t === 1 ? 'up' : 'down'); return superTrend; }
+        calculateAroon(highs, lows, period) { const aroonUp = [], aroonDown = []; for (let i = period-1; i < highs.length; i++) { const sliceHigh = highs.slice(i-period+1, i+1); const sliceLow = lows.slice(i-period+1, i+1); const highestIdx = sliceHigh.indexOf(Math.max(...sliceHigh)); const lowestIdx = sliceLow.indexOf(Math.min(...sliceLow)); aroonUp.push(((period - 1 - highestIdx) / (period - 1)) * 100); aroonDown.push(((period - 1 - lowestIdx) / (period - 1)) * 100); } return { up: aroonUp, down: aroonDown }; }
+        calculateHullMA(data, period) { const halfPeriod = Math.floor(period / 2); const sqrtPeriod = Math.floor(Math.sqrt(period)); const wma = (arr, p) => { const result = []; for (let i = p-1; i < arr.length; i++) { let sum = 0, weightSum = 0; for (let j = 0; j < p; j++) { const weight = j+1; sum += arr[i - j] * weight; weightSum += weight; } result.push(sum / weightSum); } return result; }; const wmaHalf = wma(data, halfPeriod); const wmaFull = wma(data, period); const rawHull = []; const minLen = Math.min(wmaHalf.length, wmaFull.length); for (let i = 0; i < minLen; i++) { rawHull.push(2 * wmaHalf[i] - wmaFull[i]); } const hull = wma(rawHull, sqrtPeriod); const pad = new Array(data.length - hull.length).fill(hull[0] || data[0]); return [...pad, ...hull]; }
     }
 
-    // ========== RE-ENTRY LEVELS ==========
-    function recalcEntryLevels(decision, livePrice, symbol) {
-        const breakoutPercent = 0.0005;
-        const riskPercent = 0.0020;
-        if (decision === 'BUY') {
-            const entry = livePrice * (1 + breakoutPercent);
-            const stopLoss = entry * (1 - riskPercent);
-            const tp1 = entry * (1 + riskPercent * 1.5);
-            const tp2 = entry * (1 + riskPercent * 2.5);
-            const tp3 = entry * (1 + riskPercent * 3.5);
-            return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' };
-        } else if (decision === 'SELL') {
-            const entry = livePrice * (1 - breakoutPercent);
-            const stopLoss = entry * (1 + riskPercent);
-            const tp1 = entry * (1 - riskPercent * 1.5);
-            const tp2 = entry * (1 - riskPercent * 2.5);
-            const tp3 = entry * (1 - riskPercent * 3.5);
-            return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' };
-        }
+    function recalcEntryLevels(decision, livePrice, symbol, atrValue) {
+        if (decision === 'BUY') { const entry = livePrice * 1.001; const stopLoss = entry * 0.998; const tp1 = entry * 1.003, tp2 = entry * 1.005, tp3 = entry * 1.007; return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' }; }
+        else if (decision === 'SELL') { const entry = livePrice * 0.999; const stopLoss = entry * 1.002; const tp1 = entry * 0.997, tp2 = entry * 0.995, tp3 = entry * 0.993; return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' }; }
         return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
     }
 
-    // ========== GLOBAL & OCR ==========
-    let currentSymbol = null, currentTimeframe = '1day', currentPrice = 0;
+    let currentSymbol = null, currentTimeframe = '1h', currentPrice = 0;
     let isProcessing = false;
     const dropzoneDiv = document.getElementById('dropzone');
     const fileInputElem = document.getElementById('fileInput');
@@ -2365,7 +1082,7 @@
                 if (!pair) { let userInput = prompt("Tidak dapat mendeteksi pair. Masukkan kode pair (contoh: XAUUSD):", "XAUUSD"); if (userInput) pair = userInput.toUpperCase(); }
                 if (!pair) pair = 'XAUUSD';
                 pair = normalizePair(pair);
-                const tf = detectTimeframe(cleanText);
+                const tf = detectTimeframeImproved(cleanText);
                 currentSymbol = pair;
                 currentTimeframe = tf.interval;
                 if (assetDisplayArea) {
@@ -2413,12 +1130,13 @@
             voteDetailsHtml += `<div class="detail-vote-item" data-index="${idx}" style="--i: ${idx};"><div class="vote-type-badge ${typeClass}">${typeIcon}</div><div class="detail-reason">${v.reason}</div><div class="detail-value">${v.value}</div></div>`;
         });
         const tpHtml = result.takeProfits ? result.takeProfits.map((tp, idx) => `<div class="tp-item-modern" style="border-left-color:${result.decision === 'BUY' ? '#00FFAA' : '#FF5555'};"><span>Target ${idx+1}</span><span style="font-weight:700;">${round(tp.price)}</span><span style="font-size:0.65rem;">${tp.percentage}%</span></div>`).join('') : '';
+        const atrInfo = result.atrUsed ? `<div class="insight-stat" style="background:rgba(0,255,170,0.2);"><i class="fas fa-chart-line"></i> ATR: ${round(result.atrUsed)}</div>` : '';
         const html = `
         <div class="signal-premium-card">
             <div class="signal-header"><div class="pair-badge"><i class="fas fa-chart-line"></i> ${pairSymbol} | ${timeframeDisplay}</div><div class="entry-type-badge">${result.entryType}</div><div class="consensus-badge">15 Indicators</div></div>
             <div class="signal-decision-modern"><div class="decision-glow" style="background:${result.decision === 'BUY' ? 'linear-gradient(135deg,#00C896,#008F5F)' : (result.decision === 'SELL' ? 'linear-gradient(135deg,#E63946,#B91C1C)' : 'linear-gradient(135deg,#F4A261,#E76F00)')}"><i class="fas fa-arrow-${result.decision === 'BUY' ? 'up' : (result.decision === 'SELL' ? 'down' : 'pause')}"></i><span>${result.decision}</span></div></div>
-            <div class="current-price-row"><span class="price-badge">Current Price: ${currentPriceDisplay}</span><span class="entry-gap-badge">Jarak Entry: ~0.05%</span></div>
-            <div class="recommendation-panel"><div class="insight-header"><i class="fas fa-bullhorn"></i><span>INSIGHT</span></div><div class="insight-content"><div class="insight-text">${result.recommendationText}</div><div class="insight-stats"><div class="insight-stat confidence-badge"><i class="fas fa-chart-line"></i> Confidence: ${result.confidence}%</div><div class="insight-stat votediff-badge"><i class="fas fa-vote-yea"></i> Vote Diff: ${Math.abs(result.voteSummary.buy - result.voteSummary.sell)}</div></div></div></div>
+            <div class="current-price-row"><span class="price-badge">Current Price: ${currentPriceDisplay}</span><span class="entry-gap-badge">Entry Dist: 0.1% (SL 0.33%)</span></div>
+            <div class="recommendation-panel"><div class="insight-header"><i class="fas fa-bullhorn"></i><span>INSIGHT</span></div><div class="insight-content"><div class="insight-text">${result.recommendationText}</div><div class="insight-stats"><div class="insight-stat confidence-badge"><i class="fas fa-chart-line"></i> Confidence: ${result.confidence}%</div><div class="insight-stat votediff-badge"><i class="fas fa-vote-yea"></i> Vote Diff: ${Math.abs(result.voteSummary.buy - result.voteSummary.sell)}</div>${atrInfo}</div></div></div>
             <div class="vote-stats-horizontal"><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.buy}</div><div class="vote-label">BUY</div><div class="vote-percent">${result.voteSummary.buyPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.sell}</div><div class="vote-label">SELL</div><div class="vote-percent">${result.voteSummary.sellPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.neutral}</div><div class="vote-label">NEUTRAL</div><div class="vote-percent">${neutralPercent}%</div></div></div>
             <div class="bar-container"><div class="vote-bar"><div class="vote-bar-buy" style="width:${buyPercent}%;">BUY ${buyPercent}%</div><div class="vote-bar-sell" style="width:${sellPercent}%;">SELL ${sellPercent}%</div>${neutralPercent > 0 ? `<div class="vote-bar-neutral" style="width:${neutralPercent}%;">NEU ${neutralPercent}%</div>` : ''}</div></div>
             <div class="confidence-modern"><div class="confidence-header"><span><i class="fas fa-chart-line"></i> Breakout Strength</span><span>${result.confidence}%</span></div><div class="confidence-bar-bg" title="Klik untuk detail konsensus"><div class="confidence-bar-fill" style="width:${result.confidence}%;"></div></div><div class="confidence-value"><div class="reason-text"><i class="fas fa-microchip"></i> ${result.reason}</div><div class="power-badge"><i class="fas fa-bolt"></i> ${result.confidence}% power</div></div></div>
@@ -2470,21 +1188,19 @@
                 if (live && live.price && !isNaN(live.price)) { livePrice = live.price; liveTimestamp = live.timestamp; }
                 else { livePrice = marketData.currentPrice; liveTimestamp = new Date().toISOString(); }
                 currentPrice = livePrice;
-                if (statusTextLoader) statusTextLoader.innerHTML = 'Calculating 15 indicators (breakout mode)...';
+                if (statusTextLoader) statusTextLoader.innerHTML = 'Calculating 15 indicators...';
                 if (step2) step2.classList.add('active');
                 await new Promise(r => setTimeout(r, 400));
                 const engine = new FifteenIndicatorsVoting(currentSymbol);
                 let result = engine.analyze(marketData.highs, marketData.lows, marketData.closes, marketData.volumes);
-                const levels = recalcEntryLevels(result.decision, currentPrice, currentSymbol);
-                result.entry = levels.entry; result.stopLoss = levels.stopLoss; result.takeProfits = levels.takeProfits; result.riskReward = levels.riskReward; result.entryType = levels.entryType;
-                if (statusTextLoader) statusTextLoader.innerHTML = 'Finalizing breakout signal...';
+                if (statusTextLoader) statusTextLoader.innerHTML = 'Finalizing signal...';
                 if (step4) step4.classList.add('active');
                 clearInterval(interval);
                 if (progressFill) progressFill.style.width = '100%';
                 await new Promise(r => setTimeout(r, 500));
                 loader.style.opacity = '0';
                 setTimeout(() => loader.remove(), 400);
-                const tfDisplay = { '1min': 'M1', '5min': 'M5', '15min': 'M15', '30min': 'M30', '1h': 'H1', '4h': 'H4', '1day': 'Daily' }[currentTimeframe] || 'Daily';
+                const tfDisplay = { '1min': 'M1', '5min': 'M5', '15min': 'M15', '30min': 'M30', '1h': 'H1', '4h': 'H4', '1day': 'Daily' }[currentTimeframe] || 'H1';
                 renderSignalOutput(result, currentSymbol, tfDisplay, livePrice, liveTimestamp);
             } catch (err) { console.error(err); clearInterval(interval); loader.remove(); alert("Error: " + err.message); }
         };
