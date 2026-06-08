@@ -3,7 +3,7 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Screener Pro | 15 Indicators Real-Time Breakout Entry</title>
+    <title>Screener Pro | 15 Indicators Breakout Entry</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1620,7 +1620,7 @@
                     </div>
                     <div class="logo-text-premium"><h1>Screener Pro</h1></div>
                 </div>
-                <div class="header-stats"><div class="stat-item"><i class="fas fa-microchip"></i><div class="stat-info"><span class="stat-label">15 Indicators</span><span class="stat-value">Voting Active</span></div></div></div>
+                <div class="header-stats"><div class="stat-item"><i class="fas fa-microchip"></i><div class="stat-info"><span class="stat-label">15 Indicators</span><span class="stat-value">Breakout System</span></div></div></div>
                 <div class="credit-control-premium"><div class="credit-card"><i class="fas fa-coins"></i><span class="credit-amount" id="limitCountHeader">0</span><span class="credit-label">CREDITS</span></div><button class="btn-buy-credit" id="addLimitBtnHeader"><i class="fas fa-plus-circle"></i> <span>Tambah Limit</span><div class="btn-glow"></div></button></div>
             </div>
         </div>
@@ -1639,11 +1639,11 @@
         </div>
         <div class="info-timeframe">
             <div class="timeframe-container">
-                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-bolt"></i></div><div class="timeframe-title">Scalping</div><div class="timeframe-values"><span class="timeframe-badge">M1</span><span class="timeframe-badge">M5</span></div><div class="timeframe-desc">Entry cepat, </div></div>
-                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-chart-line"></i></div><div class="timeframe-title">Day Trading</div><div class="timeframe-values"><span class="timeframe-badge">M15</span><span class="timeframe-badge">H1</span><span class="timeframe-badge">H4</span></div><div class="timeframe-desc">konfirmasi kuat</div></div>
+                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-bolt"></i></div><div class="timeframe-title">Scalping</div><div class="timeframe-values"><span class="timeframe-badge">M1</span><span class="timeframe-badge">M5</span></div><div class="timeframe-desc">Breakout cepat</div></div>
+                <div class="timeframe-card"><div class="timeframe-icon"><i class="fas fa-chart-line"></i></div><div class="timeframe-title">Day Trading</div><div class="timeframe-values"><span class="timeframe-badge">M15</span><span class="timeframe-badge">H1</span><span class="timeframe-badge">H4</span></div><div class="timeframe-desc">Konfirmasi breakout</div></div>
             </div>
         </div>
-        <footer>© Hunters Group · 15 Indicators Voting System · Breakout Entry Strategy · Real-Time Price Integration · Licence 2025</footer>
+        <footer>© Hunters Group · 15 Indicators Breakout System · Real-Time Price Integration · Licence 2025</footer>
     </div>
 </div>
 <div id="creditModal" class="modal-credit"><div class="modal-container"><div id="step1" class="modal-step"><div class="modal-header"><h2><i class="fas fa-gem"></i> Beli Credit</h2><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button></div><div class="info-harga"><i class="fas fa-tag"></i> Harga per credit: <strong style="color:#00FFAA;">Rp6.500</strong></div><div class="jumlah-control"><button class="jumlah-btn" id="minusCredit"><i class="fas fa-minus"></i></button><span class="jumlah-value" id="jumlahCredit">1</span><button class="jumlah-btn" id="plusCredit"><i class="fas fa-plus"></i></button></div><div class="total-display-modern" id="totalBayarDisplay"></div><div class="qris-area"><img class="qris-img" id="qrisImage" src="https://blogger.googleusercontent.com/img/a/AVvXsEhH0Z6ewE2H7V-Maa0448YScMvF2qjha4Xt6uKlioFSJeUXHSzYesEbB2CsWE1LRdJSN7QxwYW1yGRDN2uyYVY6DtaTfKn_727s9cC2dWr3mNoezeKIFci6rRK6HzbQzCE1DYg8q1F5DWOm9RbypUNB5ipKcIDbXL0GW9d9SRIQ3QePOqw_lcEL4t1Wh_DK" alt="QRIS"><div class="qris-caption" style="font-size:0.7rem; margin-top:8px;">Scan QRIS menggunakan mobile banking atau e-wallet</div></div><button class="btn-action" id="nextToStep2">Lanjut ke Konfirmasi <i class="fas fa-arrow-right"></i></button></div><div id="step2" class="modal-step" style="display: none;"><div class="modal-header"><h2><i class="fas fa-shield-alt"></i> Konfirmasi Pembayaran</h2><button class="close-modal" id="closeModalBtn2"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Nomor Transaksi <span style="color:#F87171;">*</span></label><input type="text" id="kodeTransaksi" placeholder="Contoh: 1234567890"></div><div class="form-group"><label>Nama Lengkap <span style="color:#F87171;">*</span></label><input type="text" id="namaLengkap" placeholder="Contoh: John Doe"></div><div class="form-group"><label>Sumber Dana <span style="color:#F87171;">*</span></label><select id="sumberDana"><option value="BCA">BCA</option><option value="Mandiri">Mandiri</option><option value="BNI">BNI</option><option value="BRI">BRI</option><option value="Dana">Dana</option><option value="OVO">OVO</option><option value="GoPay">GoPay</option><option value="ShopeePay">ShopeePay</option></select></div><div class="form-group"><label>Email Aktif <span style="color:#F87171;">*</span></label><input type="email" id="email" placeholder="email@gmail.com"></div><button class="btn-action" id="confirmPurchaseBtn"><i class="fas fa-check-circle"></i> Konfirmasi Pembayaran</button><button class="btn-action btn-back" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> Kembali</button></div></div></div>
@@ -1887,65 +1887,106 @@
         };
     }
 
-    // ========== 15 INDICATORS VOTING DENGAN DETEKSI PAIR ==========
+    // ========== 15 INDICATORS VOTING - DIPERBAIKI UNTUK XAUUSD & BREAKOUT YANG VALID ==========
     class FifteenIndicatorsVoting {
         constructor(pairSymbol) {
             this.votes = { buy: 0, sell: 0, neutral: 0 };
             this.voteDetails = [];
             const upper = (pairSymbol || '').toUpperCase();
             this.isCrypto = (upper === 'BTCUSD' || upper === 'ETHUSD' || upper === 'SOLUSD' || upper === 'XRPUSD' || upper === 'BNBUSD');
-            if (this.isCrypto) {
-                this.rsiPeriod = 21;
-                this.stochPeriod = 21;
-                this.bbStdDev = 2.5;
-                this.adxStrongThreshold = 30;
-                this.useTrendFilter = true;
-            } else {
-                this.rsiPeriod = 14;
-                this.stochPeriod = 14;
-                this.bbStdDev = 2;
-                this.adxStrongThreshold = 25;
-                this.useTrendFilter = false;
-            }
+            this.isXau = (upper === 'XAUUSD');
+            // Parameter default untuk forex / komoditas
+            this.rsiPeriod = 14;
+            this.stochPeriod = 14;
+            this.bbStdDev = 2;
+            this.adxStrongThreshold = 25;
+            this.cciPeriod = 20;
+            this.mfiPeriod = 14;
+            this.willrPeriod = 14;
+            // Untuk XAUUSD, kita akan lebih mengutamakan tren
         }
         analyze(highs, lows, closes, volumes) {
             const currentPrice = closes[closes.length - 1];
             this.votes = { buy: 0, sell: 0, neutral: 0 };
             this.voteDetails = [];
+            
+            // --- 1. Tren EMA (9,21,50) ---
             const ema9 = this.calculateEMA(closes, 9);
             const ema21 = this.calculateEMA(closes, 21);
             const ema50 = this.calculateEMA(closes, 50);
             const e9 = ema9[ema9.length-1], e21 = ema21[ema21.length-1], e50 = ema50[ema50.length-1];
-            const isUptrend = currentPrice > e50;
-            const isDowntrend = currentPrice < e50;
+            const isBullishTrend = (e9 > e21 && currentPrice > e50);
+            const isBearishTrend = (e9 < e21 && currentPrice < e50);
+            if (isBullishTrend) this.addVote('buy', 'EMA9 > EMA21 & price above EMA50 (bullish trend)', e9);
+            else if (isBearishTrend) this.addVote('sell', 'EMA9 < EMA21 & price below EMA50 (bearish trend)', e9);
+            else this.addVote('neutral', 'EMA mixed / sideways', e9);
+            
+            // --- 2. Parabolic SAR (arah terbaru) ---
+            const psar = this.calculatePSAR(highs, lows, 0.02, 0.2);
+            const sar = psar[psar.length-1];
+            if (currentPrice > sar) this.addVote('buy', 'PSAR below price (uptrend)', sar);
+            else if (currentPrice < sar) this.addVote('sell', 'PSAR above price (downtrend)', sar);
+            else this.addVote('neutral', 'PSAR at price', sar);
+            
+            // --- 3. ADX + DI (trend strength) - prioritas untuk XAUUSD ---
             const adxData = this.calculateADX(highs, lows, closes, 14);
             const adxVal = adxData.adx[adxData.adx.length-1];
             const plusDI = adxData.plusDI[adxData.plusDI.length-1];
             const minusDI = adxData.minusDI[adxData.minusDI.length-1];
-            const isStrongUptrend = (adxVal > this.adxStrongThreshold && plusDI > minusDI);
-            const isStrongDowntrend = (adxVal > this.adxStrongThreshold && minusDI > plusDI);
-            const addVoteWithWeight = (type, reason, value, isTrendIndicator = false) => {
-                let weight = 1;
-                if (this.isCrypto && isTrendIndicator && (isStrongUptrend || isStrongDowntrend)) weight = 2;
-                for (let i = 0; i < weight; i++) this.addVote(type, reason, value);
-            };
-            // EMA9 vs EMA21
-            if (e9 > e21 && currentPrice > e9) addVoteWithWeight('buy', 'EMA9 above EMA21 (Golden Cross)', e9, true);
-            else if (e9 < e21 && currentPrice < e9) addVoteWithWeight('sell', 'EMA9 below EMA21 (Death Cross)', e9, true);
-            else this.addVote('neutral', 'EMA9 & EMA21 mixed', e9);
-            // RSI
+            let trendStrength = 0;
+            if (adxVal > 25 && plusDI > minusDI) {
+                this.addVote('buy', `Strong uptrend (ADX ${adxVal.toFixed(1)})`, adxVal);
+                trendStrength = 1;
+            } else if (adxVal > 25 && minusDI > plusDI) {
+                this.addVote('sell', `Strong downtrend (ADX ${adxVal.toFixed(1)})`, adxVal);
+                trendStrength = -1;
+            } else {
+                this.addVote('neutral', `Weak/No trend (ADX ${adxVal.toFixed(1)})`, adxVal);
+                trendStrength = 0;
+            }
+            
+            // --- 4. Volume confirmation ---
+            if (volumes && volumes.length > 20) {
+                const volSignal = this.analyzeVolume(volumes, closes);
+                if (volSignal.signal === 'bullish') this.addVote('buy', 'Volume surge confirms bullish move', volSignal.ratio);
+                else if (volSignal.signal === 'bearish') this.addVote('sell', 'Volume surge confirms bearish move', volSignal.ratio);
+                else this.addVote('neutral', 'Volume normal', volSignal.ratio);
+            } else this.addVote('neutral', 'Volume data not available', 0);
+            
+            // --- 5. Support/Resistance breakout (dinamis) ---
+            const recentHighs = highs.slice(-30);
+            const recentLows = lows.slice(-30);
+            const resistance = Math.max(...recentHighs.slice(0, -1));
+            const support = Math.min(...recentLows.slice(0, -1));
+            const breakoutUp = currentPrice > resistance;
+            const breakoutDown = currentPrice < support;
+            if (breakoutUp) this.addVote('buy', 'Breakout above resistance', resistance);
+            else if (breakoutDown) this.addVote('sell', 'Breakdown below support', support);
+            else this.addVote('neutral', 'No breakout S/R', currentPrice);
+            
+            // --- 6. Bollinger Bands (breakout of bands) ---
+            const bb = this.calculateBollingerBands(closes, 20, this.bbStdDev);
+            const upperBB = bb.upper[bb.upper.length-1], lowerBB = bb.lower[bb.lower.length-1];
+            if (currentPrice > upperBB) this.addVote('buy', 'Breakout above upper BB (volatility expansion)', currentPrice);
+            else if (currentPrice < lowerBB) this.addVote('sell', 'Breakdown below lower BB', currentPrice);
+            else this.addVote('neutral', 'Price inside BB range', currentPrice);
+            
+            // --- 7. MACD (momentum) ---
+            const macd = this.calculateMACD(closes, 12, 26, 9);
+            const macdLine = macd.macd[macd.macd.length-1];
+            const signalLine = macd.signal[macd.signal.length-1];
+            const hist = macdLine - signalLine;
+            if (hist > 0 && macdLine > signalLine) this.addVote('buy', 'MACD bullish (above signal)', hist);
+            else if (hist < 0 && macdLine < signalLine) this.addVote('sell', 'MACD bearish (below signal)', hist);
+            else this.addVote('neutral', 'MACD flat', hist);
+            
+            // --- 8. RSI (disesuaikan: jika uptrend kuat, abaikan overbought) ---
             const rsi = this.calculateRSI(closes, this.rsiPeriod);
             const r = rsi[rsi.length-1];
-            if (this.isCrypto && this.useTrendFilter && (isStrongUptrend || isStrongDowntrend)) {
-                if (isStrongUptrend && r > 70) this.addVote('neutral', `RSI overbought but strong uptrend (${r.toFixed(1)})`, r);
-                else if (isStrongDowntrend && r < 30) this.addVote('neutral', `RSI oversold but strong downtrend (${r.toFixed(1)})`, r);
-                else {
-                    if (r < 30) this.addVote('buy', `RSI oversold (${r.toFixed(1)})`, r);
-                    else if (r > 70) this.addVote('sell', `RSI overbought (${r.toFixed(1)})`, r);
-                    else if (r < 45) this.addVote('sell', `RSI bearish zone (${r.toFixed(1)})`, r);
-                    else if (r > 55) this.addVote('buy', `RSI bullish zone (${r.toFixed(1)})`, r);
-                    else this.addVote('neutral', `RSI neutral (${r.toFixed(1)})`, r);
-                }
+            if (this.isXau && isBullishTrend && r > 70) {
+                this.addVote('neutral', `RSI overbought but strong uptrend (${r.toFixed(1)})`, r);
+            } else if (this.isXau && isBearishTrend && r < 30) {
+                this.addVote('neutral', `RSI oversold but strong downtrend (${r.toFixed(1)})`, r);
             } else {
                 if (r < 30) this.addVote('buy', `RSI oversold (${r.toFixed(1)})`, r);
                 else if (r > 70) this.addVote('sell', `RSI overbought (${r.toFixed(1)})`, r);
@@ -1953,121 +1994,124 @@
                 else if (r > 55) this.addVote('buy', `RSI bullish zone (${r.toFixed(1)})`, r);
                 else this.addVote('neutral', `RSI neutral (${r.toFixed(1)})`, r);
             }
-            // MACD
-            const macd = this.calculateMACD(closes, 12, 26, 9);
-            const macdLine = macd.macd[macd.macd.length-1];
-            const signalLine = macd.signal[macd.signal.length-1];
-            const hist = macdLine - signalLine;
-            if (hist > 0 && macdLine > signalLine) this.addVote('buy', 'MACD bullish', hist);
-            else if (hist < 0 && macdLine < signalLine) this.addVote('sell', 'MACD bearish', hist);
-            else this.addVote('neutral', 'MACD flat', hist);
-            // Bollinger Bands
-            const bb = this.calculateBollingerBands(closes, 20, this.bbStdDev);
-            const upper = bb.upper[bb.upper.length-1], middle = bb.middle[bb.middle.length-1], lower = bb.lower[bb.lower.length-1];
-            if (this.isCrypto && this.useTrendFilter && (isStrongUptrend || isStrongDowntrend)) {
-                if (isStrongUptrend && currentPrice >= upper) this.addVote('neutral', 'Price above upper BB but strong uptrend', currentPrice);
-                else if (isStrongDowntrend && currentPrice <= lower) this.addVote('neutral', 'Price below lower BB but strong downtrend', currentPrice);
-                else {
-                    if (currentPrice <= lower) this.addVote('buy', 'Price at lower Bollinger Band', currentPrice);
-                    else if (currentPrice >= upper) this.addVote('sell', 'Price at upper Bollinger Band', currentPrice);
-                    else if (currentPrice < middle) this.addVote('buy', 'Price below middle BB', currentPrice);
-                    else if (currentPrice > middle) this.addVote('sell', 'Price above middle BB', currentPrice);
-                    else this.addVote('neutral', 'Price at middle BB', currentPrice);
-                }
-            } else {
-                if (currentPrice <= lower) this.addVote('buy', 'Price at lower Bollinger Band', currentPrice);
-                else if (currentPrice >= upper) this.addVote('sell', 'Price at upper Bollinger Band', currentPrice);
-                else if (currentPrice < middle) this.addVote('buy', 'Price below middle BB', currentPrice);
-                else if (currentPrice > middle) this.addVote('sell', 'Price above middle BB', currentPrice);
-                else this.addVote('neutral', 'Price at middle BB', currentPrice);
-            }
-            // Stochastic
+            
+            // --- 9. Stochastic (dengan filter tren untuk XAUUSD) ---
             const stoch = this.calculateStochastic(highs, lows, closes, this.stochPeriod, 3);
             const k = stoch.k[stoch.k.length-1];
-            if (this.isCrypto && this.useTrendFilter && (isStrongUptrend || isStrongDowntrend)) {
-                if (isStrongUptrend && k > 80) this.addVote('neutral', `Stochastic overbought but strong uptrend (${k.toFixed(1)})`, k);
-                else if (isStrongDowntrend && k < 20) this.addVote('neutral', `Stochastic oversold but strong downtrend (${k.toFixed(1)})`, k);
-                else {
-                    if (k < 20) this.addVote('buy', `Stochastic oversold (${k.toFixed(1)})`, k);
-                    else if (k > 80) this.addVote('sell', `Stochastic overbought (${k.toFixed(1)})`, k);
-                    else this.addVote('neutral', `Stochastic neutral (${k.toFixed(1)})`, k);
-                }
+            if (this.isXau && isBullishTrend && k > 80) {
+                this.addVote('neutral', `Stochastic overbought but uptrend (${k.toFixed(1)})`, k);
+            } else if (this.isXau && isBearishTrend && k < 20) {
+                this.addVote('neutral', `Stochastic oversold but downtrend (${k.toFixed(1)})`, k);
             } else {
                 if (k < 20) this.addVote('buy', `Stochastic oversold (${k.toFixed(1)})`, k);
                 else if (k > 80) this.addVote('sell', `Stochastic overbought (${k.toFixed(1)})`, k);
                 else this.addVote('neutral', `Stochastic neutral (${k.toFixed(1)})`, k);
             }
-            // PSAR
-            const psar = this.calculatePSAR(highs, lows, 0.02, 0.2);
-            const sar = psar[psar.length-1];
-            if (currentPrice > sar) addVoteWithWeight('buy', 'PSAR below price (uptrend)', sar, true);
-            else if (currentPrice < sar) addVoteWithWeight('sell', 'PSAR above price (downtrend)', sar, true);
-            else this.addVote('neutral', 'PSAR at price', sar);
-            // ADX
-            if (adxVal > 25 && plusDI > minusDI) addVoteWithWeight('buy', `Strong uptrend (ADX: ${adxVal.toFixed(1)})`, adxVal, true);
-            else if (adxVal > 25 && minusDI > plusDI) addVoteWithWeight('sell', `Strong downtrend (ADX: ${adxVal.toFixed(1)})`, adxVal, true);
-            else this.addVote('neutral', `Weak/No trend (ADX: ${adxVal.toFixed(1)})`, adxVal);
-            // Volume
-            if (volumes && volumes.length > 20) {
-                const volSignal = this.analyzeVolume(volumes, closes);
-                if (volSignal.signal === 'bullish') this.addVote('buy', 'Volume surge confirms bullish move', volSignal.ratio);
-                else if (volSignal.signal === 'bearish') this.addVote('sell', 'Volume surge confirms bearish move', volSignal.ratio);
-                else this.addVote('neutral', 'Volume normal', volSignal.ratio);
-            } else this.addVote('neutral', 'Volume data not available', 0);
-            // Support/Resistance
-            const support = this.findSupport(lows, currentPrice);
-            const resistance = this.findResistance(highs, currentPrice);
-            const distToSupport = ((currentPrice - support) / currentPrice) * 100;
-            const distToResistance = ((resistance - currentPrice) / currentPrice) * 100;
-            if (distToSupport < 0.3 && distToSupport >= 0) this.addVote('buy', 'Price near support', support);
-            else if (distToResistance < 0.3 && distToResistance >= 0) this.addVote('sell', 'Price near resistance', resistance);
-            else this.addVote('neutral', 'Price between S/R levels', currentPrice);
-            // Candlestick pattern
+            
+            // --- 10. CCI (breakout signal) ---
+            const cci = this.calculateCCI(highs, lows, closes, this.cciPeriod);
+            const cciVal = cci[cci.length-1];
+            if (cciVal > 100) this.addVote('buy', `CCI bullish (>100)`, cciVal);
+            else if (cciVal < -100) this.addVote('sell', `CCI bearish (<-100)`, cciVal);
+            else if (cciVal > 0) this.addVote('buy', `CCI positive`, cciVal);
+            else this.addVote('sell', `CCI negative`, cciVal);
+            
+            // --- 11. Williams %R ---
+            const willR = this.calculateWilliamsR(highs, lows, closes, this.willrPeriod);
+            const w = willR[willR.length-1];
+            if (w < -80) this.addVote('buy', `Williams %R oversold (${w.toFixed(1)})`, w);
+            else if (w > -20) this.addVote('sell', `Williams %R overbought (${w.toFixed(1)})`, w);
+            else if (w < -50) this.addVote('buy', `Williams %R bearish zone`, w);
+            else this.addVote('sell', `Williams %R bullish zone`, w);
+            
+            // --- 12. MFI (money flow) ---
+            if (volumes && volumes.length > this.mfiPeriod) {
+                const mfi = this.calculateMFI(highs, lows, closes, volumes, this.mfiPeriod);
+                const mfiVal = mfi[mfi.length-1];
+                if (mfiVal < 20) this.addVote('buy', `MFI oversold (${mfiVal.toFixed(1)})`, mfiVal);
+                else if (mfiVal > 80) this.addVote('sell', `MFI overbought (${mfiVal.toFixed(1)})`, mfiVal);
+                else if (mfiVal > 60) this.addVote('buy', `MFI bullish (${mfiVal.toFixed(1)})`, mfiVal);
+                else if (mfiVal < 40) this.addVote('sell', `MFI bearish (${mfiVal.toFixed(1)})`, mfiVal);
+                else this.addVote('neutral', `MFI neutral`, mfiVal);
+            } else this.addVote('neutral', 'MFI data insufficient', 0);
+            
+            // --- 13. ATR (volatility expansion) ---
+            const atr = this.calculateATR(highs, lows, closes, 14);
+            const atrVal = atr[atr.length-1];
+            const avgAtr = atr.slice(-20).reduce((a,b)=>a+b,0)/Math.min(20, atr.length);
+            if (atrVal > avgAtr * 1.3) this.addVote('buy', `Volatility expansion (ATR high)`, atrVal);
+            else if (atrVal < avgAtr * 0.8) this.addVote('neutral', `Low volatility`, atrVal);
+            else this.addVote('neutral', `Normal volatility`, atrVal);
+            
+            // --- 14. Candlestick pattern ---
             const pattern = this.identifyCandlePattern(highs, lows, closes);
             if (pattern.signal === 'bullish') this.addVote('buy', `Bullish: ${pattern.name}`, 0);
             else if (pattern.signal === 'bearish') this.addVote('sell', `Bearish: ${pattern.name}`, 0);
             else this.addVote('neutral', `Pattern: ${pattern.name}`, 0);
             
+            // --- 15. SMA200 (long-term filter) ---
+            const sma200 = this.calculateSMA(closes, 200);
+            const s200 = sma200[sma200.length-1];
+            if (s200 && currentPrice > s200) this.addVote('buy', `Price above SMA200 (long-term bullish)`, s200);
+            else if (s200 && currentPrice < s200) this.addVote('sell', `Price below SMA200 (long-term bearish)`, s200);
+            else this.addVote('neutral', `Price near SMA200`, s200);
+            
+            // --- Final decision dengan prioritas tren untuk XAUUSD ---
             const totalAll = this.votes.buy + this.votes.sell + this.votes.neutral;
             const buyPercent = totalAll > 0 ? (this.votes.buy / totalAll) * 100 : 0;
             const sellPercent = totalAll > 0 ? (this.votes.sell / totalAll) * 100 : 0;
-            const neutralPercent = totalAll > 0 ? (this.votes.neutral / totalAll) * 100 : 0;
             const totalValid = this.votes.buy + this.votes.sell;
             const voteDiff = Math.abs(this.votes.buy - this.votes.sell);
             let finalDecision = 'HOLD', confidence = 50, reason = '', recommendation = '';
-            if (this.isCrypto && isStrongUptrend) {
+            
+            // Jika XAUUSD dan uptrend kuat (EMA bullish & ADX > 25 & +DI > -DI) -> BUY
+            const isStrongUptrend = isBullishTrend && adxVal > 25 && plusDI > minusDI;
+            const isStrongDowntrend = isBearishTrend && adxVal > 25 && minusDI > plusDI;
+            
+            if (this.isXau && isStrongUptrend) {
                 finalDecision = 'BUY';
-                confidence = 70 + (buyPercent * 0.2);
-                reason = `Strong uptrend (ADX ${adxVal.toFixed(1)})`;
-                recommendation = `Tren naik sangat kuat. Entry BUY STOP di atas harga (Breakout).`;
-            } else if (this.isCrypto && isStrongDowntrend) {
+                confidence = Math.min(96, 80 + (buyPercent * 0.2));
+                reason = `Strong uptrend XAUUSD (ADX ${adxVal.toFixed(1)})`;
+                recommendation = `Harga XAUUSD dalam tren naik kuat. Entry BUY STOP di atas harga.`;
+            } else if (this.isXau && isStrongDowntrend) {
                 finalDecision = 'SELL';
-                confidence = 70 + (sellPercent * 0.2);
-                reason = `Strong downtrend (ADX ${adxVal.toFixed(1)})`;
-                recommendation = `Tren turun sangat kuat. Entry SELL STOP di bawah harga (Breakdown).`;
+                confidence = Math.min(96, 80 + (sellPercent * 0.2));
+                reason = `Strong downtrend XAUUSD (ADX ${adxVal.toFixed(1)})`;
+                recommendation = `Harga XAUUSD dalam tren turun kuat. Entry SELL STOP di bawah harga.`;
+            } else if (breakoutUp && (this.votes.buy > this.votes.sell || buyPercent > 55)) {
+                finalDecision = 'BUY';
+                confidence = 65 + (buyPercent * 0.3);
+                reason = `Breakout up signal (${this.votes.buy} BUY vs ${this.votes.sell} SELL)`;
+                recommendation = `Harga breakout ke atas. Entry BUY STOP di atas harga.`;
+            } else if (breakoutDown && (this.votes.sell > this.votes.buy || sellPercent > 55)) {
+                finalDecision = 'SELL';
+                confidence = 65 + (sellPercent * 0.3);
+                reason = `Breakdown signal (${this.votes.sell} SELL vs ${this.votes.buy} BUY)`;
+                recommendation = `Harga breakdown ke bawah. Entry SELL STOP di bawah harga.`;
             } else if (this.votes.buy > this.votes.sell && voteDiff >= 2) {
                 finalDecision = 'BUY';
                 confidence = 50 + (buyPercent * 0.4);
                 reason = `${this.votes.buy} BUY vs ${this.votes.sell} SELL`;
-                recommendation = `Momentum positif dari ${this.votes.buy} indikator. Entry BUY STOP di atas harga (Breakout).`;
+                recommendation = `Momentum positif. Entry BUY STOP pada breakout resistance.`;
             } else if (this.votes.sell > this.votes.buy && voteDiff >= 2) {
                 finalDecision = 'SELL';
                 confidence = 50 + (sellPercent * 0.4);
                 reason = `${this.votes.sell} SELL vs ${this.votes.buy} BUY`;
-                recommendation = `Tekanan jual dominan. Entry SELL STOP di bawah harga (Breakdown).`;
+                recommendation = `Tekanan jual dominan. Entry SELL STOP pada breakdown support.`;
             } else {
                 finalDecision = 'HOLD';
                 confidence = 40 + (voteDiff * 10);
-                reason = `TIE (${this.votes.buy} BUY vs ${this.votes.sell} SELL)`;
-                recommendation = `Kondisi pasar tidak menentukan arah. Disarankan HOLD.`;
+                reason = `Tidak ada breakout jelas (${this.votes.buy} BUY / ${this.votes.sell} SELL)`;
+                recommendation = `Tunggu konfirmasi breakout lebih lanjut. Disarankan HOLD.`;
             }
+            
             const entryLevels = this.calculateFixedRiskRewardEntry(finalDecision, currentPrice);
             return {
                 decision: finalDecision,
                 confidence: Math.min(96, Math.floor(confidence)),
                 reason: reason,
                 recommendationText: recommendation,
-                voteSummary: { buy: this.votes.buy, sell: this.votes.sell, neutral: this.votes.neutral, totalValid: totalValid, buyPercentage: buyPercent.toFixed(1), sellPercentage: sellPercent.toFixed(1), neutralPercentage: neutralPercent.toFixed(1) },
+                voteSummary: { buy: this.votes.buy, sell: this.votes.sell, neutral: this.votes.neutral, totalValid: totalValid, buyPercentage: buyPercent.toFixed(1), sellPercentage: sellPercent.toFixed(1), neutralPercentage: (100-buyPercent-sellPercent).toFixed(1) },
                 voteDetails: this.voteDetails,
                 entry: entryLevels.entry,
                 stopLoss: entryLevels.stopLoss,
@@ -2076,28 +2120,33 @@
                 entryType: entryLevels.entryType
             };
         }
+        
         addVote(type, reason, value) { this.votes[type]++; this.voteDetails.push({ type, reason, value: typeof value === 'number' ? value.toFixed(5) : value }); }
+        
         calculateFixedRiskRewardEntry(decision, price) {
-            const risk = 0.0015;
-            const breakout = 0.0005;
+            const riskPercent = 0.0020;
+            const breakoutDist = 0.0005;
             if (decision === 'BUY') {
-                const entry = price * (1 + breakout);
-                const stopLoss = entry * (1 - risk);
-                const tp1 = entry * (1 + risk * 1.5);
-                const tp2 = entry * (1 + risk * 2.5);
-                const tp3 = entry * (1 + risk * 3.5);
+                const entry = price * (1 + breakoutDist);
+                const stopLoss = entry * (1 - riskPercent);
+                const tp1 = entry * (1 + riskPercent * 1.5);
+                const tp2 = entry * (1 + riskPercent * 2.5);
+                const tp3 = entry * (1 + riskPercent * 3.5);
                 return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' };
             } else if (decision === 'SELL') {
-                const entry = price * (1 - breakout);
-                const stopLoss = entry * (1 + risk);
-                const tp1 = entry * (1 - risk * 1.5);
-                const tp2 = entry * (1 - risk * 2.5);
-                const tp3 = entry * (1 - risk * 3.5);
+                const entry = price * (1 - breakoutDist);
+                const stopLoss = entry * (1 + riskPercent);
+                const tp1 = entry * (1 - riskPercent * 1.5);
+                const tp2 = entry * (1 - riskPercent * 2.5);
+                const tp3 = entry * (1 - riskPercent * 3.5);
                 return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' };
             }
             return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
         }
+        
+        // === Helper methods (standar) ===
         calculateEMA(data, period) { const k = 2/(period+1); const ema = [data[0]]; for(let i=1;i<data.length;i++) ema.push(data[i]*k + ema[i-1]*(1-k)); return ema; }
+        calculateSMA(data, period) { const sma = []; for(let i=period-1;i<data.length;i++) { const sum = data.slice(i-period+1,i+1).reduce((a,b)=>a+b,0); sma.push(sum/period); } return sma; }
         calculateRSI(data, period) {
             let gains=0,losses=0;
             for(let i=1;i<=period;i++){ const ch=data[i]-data[i-1]; if(ch>=0) gains+=ch; else losses-=ch; }
@@ -2165,21 +2214,80 @@
             const smoothTR=this.calculateEMA(tr,period);
             const plusDI=smoothPlusDM.map((v,i)=> (v/smoothTR[i])*100);
             const minusDI=smoothMinusDM.map((v,i)=> (v/smoothTR[i])*100);
-            const dx=plusDI.map((v,i)=> (Math.abs(v-minusDI[i])/(v+minusDI[i]))*100);
+            const dx=plusDI.map((v,i)=> (v+minusDI[i])===0?0:(Math.abs(v-minusDI[i])/(v+minusDI[i]))*100);
             const adx=this.calculateEMA(dx,period);
             return {adx,plusDI,minusDI};
         }
         analyzeVolume(volumes,closes){
-            const recent=volumes.slice(-20);
-            const avg=recent.slice(0,-1).reduce((a,b)=>a+b,0)/19;
-            const ratio=volumes[volumes.length-1]/avg;
+            const recentVol = volumes.filter(v=>v!==null).slice(-20);
+            if(recentVol.length < 10) return {signal:'neutral',ratio:1};
+            const avg=recentVol.slice(0,-1).reduce((a,b)=>a+b,0)/(recentVol.length-1);
+            const ratio=recentVol[recentVol.length-1]/avg;
             const priceChange=(closes[closes.length-1]-closes[closes.length-2])/closes[closes.length-2];
             if(ratio>1.3 && priceChange>0) return {signal:'bullish',ratio};
             if(ratio>1.3 && priceChange<0) return {signal:'bearish',ratio};
             return {signal:'neutral',ratio};
         }
-        findSupport(lows,currentPrice){ const recent=lows.slice(-30); const supports=recent.filter(l=>l<currentPrice); return supports.length>0?Math.max(...supports):Math.min(...recent); }
-        findResistance(highs,currentPrice){ const recent=highs.slice(-30); const res=recent.filter(h=>h>currentPrice); return res.length>0?Math.min(...res):Math.max(...recent); }
+        calculateCCI(highs,lows,closes,period){
+            const tp = highs.map((h,i)=> (h + lows[i] + closes[i])/3);
+            const sma = this.calculateSMA(tp, period);
+            const mad = [];
+            for(let i=period-1;i<tp.length;i++){
+                const slice = tp.slice(i-period+1,i+1);
+                const mean = sma[i-(period-1)];
+                const sumAbs = slice.reduce((acc,val)=> acc + Math.abs(val-mean),0);
+                mad.push(sumAbs/period);
+            }
+            const cci = [];
+            for(let i=0;i<sma.length;i++){
+                if(mad[i] === 0) cci.push(0);
+                else cci.push((tp[i+period-1] - sma[i]) / (0.015 * mad[i]));
+            }
+            return cci;
+        }
+        calculateMFI(highs,lows,closes,volumes,period){
+            const typicalPrice = highs.map((h,i)=> (h + lows[i] + closes[i])/3);
+            const rawMoneyFlow = typicalPrice.map((tp,i)=> tp * (volumes[i] || 0));
+            const moneyFlow = [];
+            for(let i=1;i<typicalPrice.length;i++){
+                const diff = typicalPrice[i] - typicalPrice[i-1];
+                if(diff > 0) moneyFlow.push({positive: rawMoneyFlow[i], negative: 0});
+                else if(diff < 0) moneyFlow.push({positive: 0, negative: rawMoneyFlow[i]});
+                else moneyFlow.push({positive: 0, negative: 0});
+            }
+            const mfi = [];
+            for(let i=period-1;i<moneyFlow.length;i++){
+                const posSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.positive,0);
+                const negSum = moneyFlow.slice(i-period+1,i+1).reduce((s,item)=> s+item.negative,0);
+                const ratio = (negSum===0)?100:(posSum/negSum);
+                const mfiVal = 100 - (100/(1+ratio));
+                mfi.push(mfiVal);
+            }
+            return mfi;
+        }
+        calculateWilliamsR(highs,lows,closes,period){
+            const wr = [];
+            for(let i=period-1;i<closes.length;i++){
+                const highSlice = highs.slice(i-period+1,i+1);
+                const lowSlice = lows.slice(i-period+1,i+1);
+                const highest = Math.max(...highSlice);
+                const lowest = Math.min(...lowSlice);
+                const val = ((highest - closes[i]) / (highest - lowest)) * -100;
+                wr.push(val);
+            }
+            return wr;
+        }
+        calculateATR(highs,lows,closes,period){
+            const tr = [];
+            for(let i=1;i<highs.length;i++){
+                const hl = highs[i]-lows[i];
+                const hc = Math.abs(highs[i]-closes[i-1]);
+                const lc = Math.abs(lows[i]-closes[i-1]);
+                tr.push(Math.max(hl, hc, lc));
+            }
+            const atr = this.calculateEMA(tr, period);
+            return atr;
+        }
         identifyCandlePattern(highs,lows,closes){
             if(closes.length<3) return {name:'Unknown',signal:'neutral'};
             const lastClose=closes[closes.length-1],lastOpen=closes[closes.length-2],lastHigh=highs[highs.length-1],lastLow=lows[lows.length-1],prevClose=closes[closes.length-3];
@@ -2194,16 +2302,10 @@
         }
     }
 
-    // ========== RE-ENTRY LEVELS (SL untuk kripto 0.45%, XAU 0.20%) ==========
+    // ========== RE-ENTRY LEVELS ==========
     function recalcEntryLevels(decision, livePrice, symbol) {
-        const upperSymbol = (symbol || '').toUpperCase();
         const breakoutPercent = 0.0005;
-        let riskPercent;
-        if (upperSymbol === 'BTCUSD' || upperSymbol === 'ETHUSD' || upperSymbol === 'SOLUSD' || upperSymbol === 'XRPUSD' || upperSymbol === 'BNBUSD') {
-            riskPercent = 0.0045; // 0.45% untuk kripto
-        } else {
-            riskPercent = 0.0020; // 0.20% untuk XAUUSD/forex
-        }
+        const riskPercent = 0.0020;
         if (decision === 'BUY') {
             const entry = livePrice * (1 + breakoutPercent);
             const stopLoss = entry * (1 - riskPercent);
@@ -2290,7 +2392,7 @@
     function showPremiumLoader() {
         const overlay = document.createElement('div');
         overlay.className = 'signal-loading-overlay';
-        overlay.innerHTML = `<div class="loading-card-premium"><div class="loading-animation-icon"><i class="fas fa-vote-yea"></i></div><div class="loading-title">15 Indicators Voting Engine</div><div class="loading-steps"><div class="step-load" id="premStep1"><i class="fas fa-chart-line"></i><span>Fetch Data</span></div><div class="step-load" id="premStep2"><i class="fas fa-chart-simple"></i><span>Calculate</span></div><div class="step-load" id="premStep3"><i class="fas fa-vote-yea"></i><span>Voting</span></div><div class="step-load" id="premStep4"><i class="fas fa-check-double"></i><span>Signal</span></div></div><div class="progress-bar-premium-load"><div class="progress-fill-premium-load" id="premProgressFill"></div></div><div class="loading-status" id="premStatusText">Initializing 15 indicators...</div><div style="margin-top:20px; display:flex; justify-content:center; gap:12px;"><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite;"></div><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite 0.2s;"></div><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite 0.4s;"></div></div></div>`;
+        overlay.innerHTML = `<div class="loading-card-premium"><div class="loading-animation-icon"><i class="fas fa-vote-yea"></i></div><div class="loading-title">15 Indicators Breakout Engine</div><div class="loading-steps"><div class="step-load" id="premStep1"><i class="fas fa-chart-line"></i><span>Fetch Data</span></div><div class="step-load" id="premStep2"><i class="fas fa-chart-simple"></i><span>Calculate</span></div><div class="step-load" id="premStep3"><i class="fas fa-vote-yea"></i><span>Voting</span></div><div class="step-load" id="premStep4"><i class="fas fa-check-double"></i><span>Signal</span></div></div><div class="progress-bar-premium-load"><div class="progress-fill-premium-load" id="premProgressFill"></div></div><div class="loading-status" id="premStatusText">Initializing 15 indicators...</div><div style="margin-top:20px; display:flex; justify-content:center; gap:12px;"><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite;"></div><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite 0.2s;"></div><div style="width:6px; height:6px; background:#00FFAA; border-radius:50%; animation: dotPulse 1.2s infinite 0.4s;"></div></div></div>`;
         document.body.appendChild(overlay);
         return overlay;
     }
@@ -2319,7 +2421,7 @@
             <div class="recommendation-panel"><div class="insight-header"><i class="fas fa-bullhorn"></i><span>INSIGHT</span></div><div class="insight-content"><div class="insight-text">${result.recommendationText}</div><div class="insight-stats"><div class="insight-stat confidence-badge"><i class="fas fa-chart-line"></i> Confidence: ${result.confidence}%</div><div class="insight-stat votediff-badge"><i class="fas fa-vote-yea"></i> Vote Diff: ${Math.abs(result.voteSummary.buy - result.voteSummary.sell)}</div></div></div></div>
             <div class="vote-stats-horizontal"><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.buy}</div><div class="vote-label">BUY</div><div class="vote-percent">${result.voteSummary.buyPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.sell}</div><div class="vote-label">SELL</div><div class="vote-percent">${result.voteSummary.sellPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.neutral}</div><div class="vote-label">NEUTRAL</div><div class="vote-percent">${neutralPercent}%</div></div></div>
             <div class="bar-container"><div class="vote-bar"><div class="vote-bar-buy" style="width:${buyPercent}%;">BUY ${buyPercent}%</div><div class="vote-bar-sell" style="width:${sellPercent}%;">SELL ${sellPercent}%</div>${neutralPercent > 0 ? `<div class="vote-bar-neutral" style="width:${neutralPercent}%;">NEU ${neutralPercent}%</div>` : ''}</div></div>
-            <div class="confidence-modern"><div class="confidence-header"><span><i class="fas fa-chart-line"></i> Consensus Strength</span><span>${result.confidence}%</span></div><div class="confidence-bar-bg" title="Klik untuk detail konsensus"><div class="confidence-bar-fill" style="width:${result.confidence}%;"></div></div><div class="confidence-value"><div class="reason-text"><i class="fas fa-microchip"></i> ${result.reason}</div><div class="power-badge"><i class="fas fa-bolt"></i> ${result.confidence}% power</div></div></div>
+            <div class="confidence-modern"><div class="confidence-header"><span><i class="fas fa-chart-line"></i> Breakout Strength</span><span>${result.confidence}%</span></div><div class="confidence-bar-bg" title="Klik untuk detail konsensus"><div class="confidence-bar-fill" style="width:${result.confidence}%;"></div></div><div class="confidence-value"><div class="reason-text"><i class="fas fa-microchip"></i> ${result.reason}</div><div class="power-badge"><i class="fas fa-bolt"></i> ${result.confidence}% power</div></div></div>
             <div class="tabs-signal"><button class="tab-btn active" data-tab="risk"><i class="fas fa-shield-alt"></i> Risk</button><button class="tab-btn" data-tab="details"><i class="fas fa-list-ul"></i> Details</button></div>
             <div id="tab-risk" class="tab-content active"><div class="risk-management-modern"><div class="risk-grid"><div class="risk-item"><div class="risk-label">Entry (Pending)</div><div class="risk-value">${result.entry ? round(result.entry) : 'N/A'}</div></div><div class="risk-item"><div class="risk-label">Stop Loss</div><div class="risk-value">${result.stopLoss ? round(result.stopLoss) : 'N/A'}</div></div></div><div class="tp-list-modern">${tpHtml}</div>${result.riskReward ? `<div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.1);"><span style="font-size:0.7rem;">Risk/Reward</span><span style="font-weight:700;">${result.riskReward}:1</span></div>` : ''}</div></div>
             <div id="tab-details" class="tab-content"><div class="detail-vote-list">${voteDetailsHtml || '<div style="text-align:center; padding:20px; color:#8BA0C0;">No details</div>'}</div></div>
@@ -2342,7 +2444,7 @@
             });
         });
         const confBar = document.querySelector('.confidence-bar-bg');
-        if (confBar) confBar.addEventListener('click', () => alert(`⚡ Consensus Strength: ${result.confidence}%\n📋 ${result.reason}`));
+        if (confBar) confBar.addEventListener('click', () => alert(`⚡ Breakout Strength: ${result.confidence}%\n📋 ${result.reason}`));
     }
 
     if (analyzeBtn) {
@@ -2368,14 +2470,14 @@
                 if (live && live.price && !isNaN(live.price)) { livePrice = live.price; liveTimestamp = live.timestamp; }
                 else { livePrice = marketData.currentPrice; liveTimestamp = new Date().toISOString(); }
                 currentPrice = livePrice;
-                if (statusTextLoader) statusTextLoader.innerHTML = 'Calculating 15 indicators...';
+                if (statusTextLoader) statusTextLoader.innerHTML = 'Calculating 15 indicators (breakout mode)...';
                 if (step2) step2.classList.add('active');
                 await new Promise(r => setTimeout(r, 400));
                 const engine = new FifteenIndicatorsVoting(currentSymbol);
                 let result = engine.analyze(marketData.highs, marketData.lows, marketData.closes, marketData.volumes);
                 const levels = recalcEntryLevels(result.decision, currentPrice, currentSymbol);
                 result.entry = levels.entry; result.stopLoss = levels.stopLoss; result.takeProfits = levels.takeProfits; result.riskReward = levels.riskReward; result.entryType = levels.entryType;
-                if (statusTextLoader) statusTextLoader.innerHTML = 'Finalizing signal...';
+                if (statusTextLoader) statusTextLoader.innerHTML = 'Finalizing breakout signal...';
                 if (step4) step4.classList.add('active');
                 clearInterval(interval);
                 if (progressFill) progressFill.style.width = '100%';
