@@ -495,7 +495,7 @@
             </div>
         </div>
         
-        <footer>© Hunters Group · 15 Indicators (SuperTrend, Aroon, HMA) · Entry XAUUSD 0.1% · SL 0.33% · TP1 0.495% · Real-Time</footer>
+        <footer>© Hunters Group · 15 Indicators (SuperTrend, Aroon, HMA) · Entry XAUUSD 0.1% SL 0.33% TP1 0.3% · Entry BTCUSD 0.12% SL 0.45% TP1 0.36% · Real-Time</footer>
     </div>
 </div>
 <div id="creditModal" class="modal-credit"><div class="modal-container"><div id="step1" class="modal-step"><div class="modal-header"><h2><i class="fas fa-gem"></i> Beli Credit</h2><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button></div><div class="info-harga"><i class="fas fa-tag"></i> Harga per credit: <strong style="color:#00FFAA;">Rp6.500</strong></div><div class="jumlah-control"><button class="jumlah-btn" id="minusCredit"><i class="fas fa-minus"></i></button><span class="jumlah-value" id="jumlahCredit">1</span><button class="jumlah-btn" id="plusCredit"><i class="fas fa-plus"></i></button></div><div class="total-display-modern" id="totalBayarDisplay"></div><div class="qris-area"><img class="qris-img" id="qrisImage" src="https://blogger.googleusercontent.com/img/a/AVvXsEhH0Z6ewE2H7V-Maa0448YScMvF2qjha4Xt6uKlioFSJeUXHSzYesEbB2CsWE1LRdJSN7QxwYW1yGRDN2uyYVY6DtaTfKn_727s9cC2dWr3mNoezeKIFci6rRK6HzbQzCE1DYg8q1F5DWOm9RbypUNB5ipKcIDbXL0GW9d9SRIQ3QePOqw_lcEL4t1Wh_DK" alt="QRIS"><div class="qris-caption" style="font-size:0.7rem; margin-top:8px;">Scan QRIS menggunakan mobile banking atau e-wallet</div></div><button class="btn-action" id="nextToStep2">Lanjut ke Konfirmasi <i class="fas fa-arrow-right"></i></button></div><div id="step2" class="modal-step" style="display: none;"><div class="modal-header"><h2><i class="fas fa-shield-alt"></i> Konfirmasi Pembayaran</h2><button class="close-modal" id="closeModalBtn2"><i class="fas fa-times"></i></button></div><div class="form-group"><label>Nomor Transaksi <span style="color:#F87171;">*</span></label><input type="text" id="kodeTransaksi" placeholder="Contoh: 1234567890"></div><div class="form-group"><label>Nama Lengkap <span style="color:#F87171;">*</span></label><input type="text" id="namaLengkap" placeholder="Contoh: John Doe"></div><div class="form-group"><label>Sumber Dana <span style="color:#F87171;">*</span></label><select id="sumberDana"><option value="BCA">BCA</option><option value="Mandiri">Mandiri</option><option value="BNI">BNI</option><option value="BRI">BRI</option><option value="Dana">Dana</option><option value="OVO">OVO</option><option value="GoPay">GoPay</option><option value="ShopeePay">ShopeePay</option></select></div><div class="form-group"><label>Email Aktif <span style="color:#F87171;">*</span></label><input type="email" id="email" placeholder="email@gmail.com"></div><button class="btn-action" id="confirmPurchaseBtn"><i class="fas fa-check-circle"></i> Konfirmasi Pembayaran</button><button class="btn-action btn-back" id="backToStep1Btn"><i class="fas fa-arrow-left"></i> Kembali</button></div></div></div>
@@ -748,6 +748,7 @@
             const upper = (pairSymbol || '').toUpperCase();
             this.isCrypto = (upper === 'BTCUSD' || upper === 'ETHUSD' || upper === 'SOLUSD' || upper === 'XRPUSD' || upper === 'BNBUSD');
             this.isXau = (upper === 'XAUUSD');
+            this.isBtc = (upper === 'BTCUSD'); // khusus BTCUSD
             this.rsiPeriod = 14;
             this.stochPeriod = 14;
             this.bbStdDev = 2;
@@ -957,11 +958,35 @@
         addVote(type, reason, value) { this.votes[type]++; this.voteDetails.push({ type, reason, value: typeof value === 'number' ? value.toFixed(5) : value }); }
         
         calculateDynamicEntryLevels(decision, price, atr) {
-            // XAUUSD: ENTRY 0.1% (0.001), SL 0.33% (0.0033), TP1 0.495%, TP2 0.825%, TP3 1.155%
+            // KHUSUS BTCUSD: entry 0.12%, SL 0.45% (DIUBAH), TP1 0.36%, TP2 0.72%, TP3 1.08%
+            if (this.isBtc) {
+                const entryPercent = 0.0012;    // 0.12%
+                const slPercent = 0.0045;       // 0.45% (diubah dari 0.35%)
+                const tp1Percent = 0.0036;      // 0.36%
+                const tp2Percent = 0.0072;      // 0.72%
+                const tp3Percent = 0.0108;      // 1.08%
+                if (decision === 'BUY') {
+                    const entry = price * (1 + entryPercent);
+                    const stopLoss = entry * (1 - slPercent);
+                    const tp1 = entry * (1 + tp1Percent);
+                    const tp2 = entry * (1 + tp2Percent);
+                    const tp3 = entry * (1 + tp3Percent);
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: (tp1Percent/slPercent).toFixed(2), entryType: 'BUY STOP' };
+                } else if (decision === 'SELL') {
+                    const entry = price * (1 - entryPercent);
+                    const stopLoss = entry * (1 + slPercent);
+                    const tp1 = entry * (1 - tp1Percent);
+                    const tp2 = entry * (1 - tp2Percent);
+                    const tp3 = entry * (1 - tp3Percent);
+                    return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: (tp1Percent/slPercent).toFixed(2), entryType: 'SELL STOP' };
+                }
+                return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
+            }
+            // XAUUSD: entry 0.1%, SL 0.33%, TP1 0.3%, TP2 0.825%, TP3 1.155%
             if (this.isXau) {
-                const entryPercent = 0.001;        // 0.1% (SESUAI PERMINTAAN)
-                const slPercent = 0.0033;          // 0.33% (TIDAK BERUBAH)
-                const tp1Percent = slPercent * 1.5; // 0.495%
+                const entryPercent = 0.001;        // 0.1%
+                const slPercent = 0.0033;          // 0.33%
+                const tp1Percent = 0.003;           // 0.3%
                 const tp2Percent = slPercent * 2.5; // 0.825%
                 const tp3Percent = slPercent * 3.5; // 1.155%
                 if (decision === 'BUY') {
@@ -981,7 +1006,7 @@
                 }
                 return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
             }
-            // Crypto & lainnya tetap pakai ATR
+            // Crypto lain (ETH, SOL, dll) tetap pakai ATR
             if (this.isCrypto && atr && atr > 0) {
                 const breakoutDist = atr * 0.5;
                 const riskAmount = atr * 2.0;
@@ -1037,6 +1062,7 @@
     }
 
     function recalcEntryLevels(decision, livePrice, symbol, atrValue) {
+        // fallback function, tidak digunakan utama
         if (decision === 'BUY') { const entry = livePrice * 1.001; const stopLoss = entry * 0.998; const tp1 = entry * 1.003, tp2 = entry * 1.005, tp3 = entry * 1.007; return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'BUY STOP' }; }
         else if (decision === 'SELL') { const entry = livePrice * 0.999; const stopLoss = entry * 1.002; const tp1 = entry * 0.997, tp2 = entry * 0.995, tp3 = entry * 0.993; return { entry, stopLoss, takeProfits: [{ price: tp1, percentage: 40 }, { price: tp2, percentage: 35 }, { price: tp3, percentage: 25 }], riskReward: '1.5', entryType: 'SELL STOP' }; }
         return { entry: null, stopLoss: null, takeProfits: null, riskReward: null, entryType: 'MARKET' };
@@ -1135,7 +1161,7 @@
         <div class="signal-premium-card">
             <div class="signal-header"><div class="pair-badge"><i class="fas fa-chart-line"></i> ${pairSymbol} | ${timeframeDisplay}</div><div class="entry-type-badge">${result.entryType}</div><div class="consensus-badge">15 Indicators</div></div>
             <div class="signal-decision-modern"><div class="decision-glow" style="background:${result.decision === 'BUY' ? 'linear-gradient(135deg,#00C896,#008F5F)' : (result.decision === 'SELL' ? 'linear-gradient(135deg,#E63946,#B91C1C)' : 'linear-gradient(135deg,#F4A261,#E76F00)')}"><i class="fas fa-arrow-${result.decision === 'BUY' ? 'up' : (result.decision === 'SELL' ? 'down' : 'pause')}"></i><span>${result.decision}</span></div></div>
-            <div class="current-price-row"><span class="price-badge">Current Price: ${currentPriceDisplay}</span><span class="entry-gap-badge">Entry Dist: 0.1% (SL 0.33%)</span></div>
+            <div class="current-price-row"><span class="price-badge">Current Price: ${currentPriceDisplay}</span><span class="entry-gap-badge">${pairSymbol === 'BTCUSD' ? 'Entry Dist: 0.12% | SL: 0.45% | TP1: 0.36%' : (pairSymbol === 'XAUUSD' ? 'Entry Dist: 0.1% | SL: 0.33% | TP1: 0.3%' : 'Entry Dist: ATR-based')}</span></div>
             <div class="recommendation-panel"><div class="insight-header"><i class="fas fa-bullhorn"></i><span>INSIGHT</span></div><div class="insight-content"><div class="insight-text">${result.recommendationText}</div><div class="insight-stats"><div class="insight-stat confidence-badge"><i class="fas fa-chart-line"></i> Confidence: ${result.confidence}%</div><div class="insight-stat votediff-badge"><i class="fas fa-vote-yea"></i> Vote Diff: ${Math.abs(result.voteSummary.buy - result.voteSummary.sell)}</div>${atrInfo}</div></div></div>
             <div class="vote-stats-horizontal"><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.buy}</div><div class="vote-label">BUY</div><div class="vote-percent">${result.voteSummary.buyPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.sell}</div><div class="vote-label">SELL</div><div class="vote-percent">${result.voteSummary.sellPercentage}%</div></div><div class="vote-stat-item"><div class="vote-number">${result.voteSummary.neutral}</div><div class="vote-label">NEUTRAL</div><div class="vote-percent">${neutralPercent}%</div></div></div>
             <div class="bar-container"><div class="vote-bar"><div class="vote-bar-buy" style="width:${buyPercent}%;">BUY ${buyPercent}%</div><div class="vote-bar-sell" style="width:${sellPercent}%;">SELL ${sellPercent}%</div>${neutralPercent > 0 ? `<div class="vote-bar-neutral" style="width:${neutralPercent}%;">NEU ${neutralPercent}%</div>` : ''}</div></div>
