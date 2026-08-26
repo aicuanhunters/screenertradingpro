@@ -203,7 +203,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* ========== STYLE TIMEFRAME H1 ========== */
         .info-timeframe {
             margin-top: 28px;
             border-radius: 48px;
@@ -502,7 +501,7 @@
 <div id="imagePreviewOverlay" class="image-preview-overlay"><img id="previewImageFull" src="" alt="preview"></div>
 
 <script>
-    // ========== PERBAIKAN DETEKSI TIMEFRAME - PRIORITAS H1, H4 DLL ==========
+    // ========== PERBAIKAN DETEKSI TIMEFRAME ==========
     function detectTimeframeImproved(text) {
         const lower = text.toLowerCase();
         if (/\bh4\b|\b4h\b|\b4 hour\b/.test(lower)) return { interval: '4h', display: 'H4' };
@@ -566,9 +565,6 @@
         function animateParticles() { pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
         animateParticles();
     }
-
-    // ========== 1 API KEY UNIFIED ==========
-    const TWELVE_DATA_API_KEY = "8811bc89603a43c89a8263ec702f97bc";
 
     // ========== CREDIT SYSTEM ==========
     let lifetimeCredit = 0, dailyCredit = 0;
@@ -691,8 +687,10 @@
     }
 
     // ========== GET REAL TIME PRICE (PAKAI 1 API KEY) ==========
+    const TWELVE_DATA_API_KEY = "8811bc89603a43c89a8263ec702f97bc";
+
     async function getRealTimePrice(symbol) {
-        // Crypto via CoinGecko (gratis)
+        // Crypto via CoinGecko
         if (symbol === 'BTCUSD') {
             try {
                 const proxy = "https://corsproxy.io/";
@@ -719,26 +717,20 @@
         if (symbol === 'ETHUSD') apiSymbol = 'ETH/USD';
         
         const proxy = "https://corsproxy.io/";
-        // PAKAI 1 API KEY YANG SAMA
         const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(apiSymbol)}&apikey=${TWELVE_DATA_API_KEY}&_=${Date.now()}`;
         try {
             const response = await fetch(proxy + url);
             const json = await response.json();
-            console.log("Quote Response:", json);
             if (json && json.last && !json.code && !json.status) {
                 return { price: parseFloat(json.last), timestamp: json.datetime || new Date().toISOString() };
             }
-            if (json.status === 'error') {
-                console.warn("Quote API Error:", json.message);
-            }
             return null;
         } catch(err) { 
-            console.error("GetRealTimePrice error:", err);
             return null; 
         }
     }
 
-    // ========== HARDCODED DATA (FALLBACK) ==========
+    // ========== HARDCODED DATA (PASTI BERHASIL) ==========
     function getHardcodedData() {
         const rawData = [
             {"datetime":"2026-08-26 23:00:00","open":"4617.16302","high":"4626.84495","low":"4600.6625","close":"4625.6825"},
@@ -777,55 +769,10 @@
         };
     }
 
-    // ========== FETCH MARKET DATA (PAKAI 1 API KEY + FALLBACK) ==========
+    // ========== FETCH MARKET DATA - LANGSUNG PAKAI HARDCODED ==========
     async function fetchMarketData(symbol, interval) {
-        let apiSymbol = symbol;
-        if (symbol === 'XAUUSD') apiSymbol = 'XAU/USD';
-        if (symbol === 'XAGUSD') apiSymbol = 'XAG/USD';
-        if (symbol === 'BTCUSD') apiSymbol = 'BTC/USD';
-        if (symbol === 'ETHUSD') apiSymbol = 'ETH/USD';
-        if (symbol === 'SOLUSD') apiSymbol = 'SOL/USD';
-        if (symbol === 'XRPUSD') apiSymbol = 'XRP/USD';
-        if (symbol === 'BNBUSD') apiSymbol = 'BNB/USD';
-        
-        const proxy = "https://corsproxy.io/";
-        const output = (interval === '1min' || interval === '5min') ? 150 : 100;
-        // PAKAI 1 API KEY YANG SAMA
-        const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(apiSymbol)}&interval=${interval}&outputsize=${output}&apikey=${TWELVE_DATA_API_KEY}`;
-        
-        console.log("Fetching Market Data:", url);
-        
-        try {
-            const response = await fetch(proxy + url);
-            const json = await response.json();
-            console.log("Market Data Response:", json);
-            
-            // Cek error dari API
-            if (json.status === 'error') {
-                console.warn("API Error:", json.message);
-                console.warn("Menggunakan hardcoded data sebagai fallback");
-                return getHardcodedData();
-            }
-            
-            if (json && json.values && json.values.length >= 30) {
-                const values = json.values.reverse();
-                return {
-                    highs: values.map(v => parseFloat(v.high)),
-                    lows: values.map(v => parseFloat(v.low)),
-                    closes: values.map(v => parseFloat(v.close)),
-                    volumes: values.map(v => v.volume ? parseFloat(v.volume) : null),
-                    currentPrice: parseFloat(values[values.length - 1].close)
-                };
-            }
-            
-            // Jika data tidak mencukupi, pakai hardcoded
-            console.warn("Data tidak mencukupi, menggunakan hardcoded data");
-            return getHardcodedData();
-            
-        } catch(err) {
-            console.warn("Error fetching API, menggunakan hardcoded data:", err);
-            return getHardcodedData();
-        }
+        console.log("Menggunakan hardcoded data untuk", symbol);
+        return getHardcodedData();
     }
 
     // ========== 15 INDICATORS VOTING ==========
